@@ -1,5 +1,8 @@
 package com.me4502.supermart.stock;
 
+import java.util.Optional;
+import java.util.OptionalDouble;
+
 /**
  * Represents an item that can be stocked. This class is immutable.
  *
@@ -45,11 +48,11 @@ public interface Item {
     int getReorderAmount();
 
     /**
-     * Get's the ideal temperature for this item to remain at.
+     * Get's the ideal temperature for this item to remain at, if applicable.
      *
      * @return The ideal temperature
      */
-    double getIdealTemperature();
+    OptionalDouble getIdealTemperature();
 
     /**
      * Builder class to build Item instances.
@@ -101,6 +104,8 @@ public interface Item {
         /**
          * Set's the ideal temperature of the {@link Item}.
          *
+         * This is an optional field.
+         *
          * @param idealTemperature The ideal temperature
          * @return The builder, for chaining
          */
@@ -109,7 +114,7 @@ public interface Item {
         /**
          * Builds the {@link Item} using the given values.
          *
-         * If any of the values have not been filled in, this
+         * If any of the required values have not been filled in, this
          * should throw an {@link IllegalStateException}.
          *
          * @return The build Item

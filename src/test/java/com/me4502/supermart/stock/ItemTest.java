@@ -1,6 +1,8 @@
 package com.me4502.supermart.stock;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
 
 import com.me4502.supermart.SuperMartApplication;
 import org.junit.Before;
@@ -32,7 +34,6 @@ public class ItemTest {
     private Item buildTestItem2() {
         Item.Builder builder = SuperMartApplication.getInstance().getItemBuilder();
         builder.name("Test Item 2");
-        builder.idealTemperature(1.7);
         builder.manufacturingCost(-9);
         builder.reorderAmount(-19);
         builder.reorderPoint(84);
@@ -46,6 +47,11 @@ public class ItemTest {
     }
 
     @Test
+    public void testItem2CanBeBuilt() {
+        buildTestItem2();
+    }
+
+    @Test
     public void testInvalidItemCantBeBuilt() {
         Item.Builder builder = SuperMartApplication.getInstance().getItemBuilder();
         builder.build();
@@ -55,7 +61,8 @@ public class ItemTest {
     public void testItemBuiltCorrectly() {
         Item item = buildTestItem();
         assertEquals("Test Item", item.getName());
-        assertEquals(1.0, item.getIdealTemperature());
+        assertTrue(item.getIdealTemperature().isPresent());
+        assertEquals(1.0, item.getIdealTemperature().getAsDouble());
         assertEquals(1.0, item.getManufacturingCost());
         assertEquals(1, item.getReorderAmount());
         assertEquals(1, item.getReorderPoint());
@@ -66,7 +73,7 @@ public class ItemTest {
     public void testItem2BuiltCorrectly() {
         Item item = buildTestItem2();
         assertEquals("Test Item 2", item.getName());
-        assertEquals(1.7, item.getIdealTemperature());
+        assertFalse(item.getIdealTemperature().isPresent());
         assertEquals(-9, item.getManufacturingCost());
         assertEquals(-19, item.getReorderAmount());
         assertEquals(84, item.getReorderPoint());
