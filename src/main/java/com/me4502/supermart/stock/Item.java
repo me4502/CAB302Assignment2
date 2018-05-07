@@ -1,6 +1,5 @@
 package com.me4502.supermart.stock;
 
-import java.util.Optional;
 import java.util.OptionalDouble;
 
 /**
@@ -124,7 +123,8 @@ public interface Item {
 
         /**
          * Resets the state of this builder.
+         * @return The builder, for chaining
          */
-        void reset();
+        Builder reset();
     }
 }
