@@ -1,4 +1,4 @@
-package com.me4502.supermart.stock;
+package com.me4502.supermart.store;
 
 import com.google.common.collect.ImmutableSet;
 import org.apache.commons.lang3.tuple.ImmutablePair;

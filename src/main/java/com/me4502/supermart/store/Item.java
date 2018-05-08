@@ -1,4 +1,4 @@
-package com.me4502.supermart.stock;
+package com.me4502.supermart.store;
 
 import java.util.OptionalDouble;
 
@@ -10,28 +10,28 @@ import java.util.OptionalDouble;
 public interface Item {
 
     /**
-     * Get's the name of the item.
+     * Gets the name of the item.
      *
      * @return The name of the item
      */
     String getName();
 
     /**
-     * Get's the manufacturing cost of the item.
+     * Gets the manufacturing cost of the item.
      *
      * @return The manufacturing cost
      */
     double getManufacturingCost();
 
     /**
-     * Get's the sell price of the item.
+     * Gets the sell price of the item.
      *
      * @return The sell price
      */
     double getSellPrice();
 
     /**
-     * Get's the reorder point of the item. The item must be reordered
+     * Gets the reorder point of the item. The item must be reordered
      * if the stock goes below this amount.
      *
      * @return The reorder point
@@ -39,7 +39,7 @@ public interface Item {
     int getReorderPoint();
 
     /**
-     * Get's the reorder amount of this item. When a reorder occurs,
+     * Gets the reorder amount of this item. When a reorder occurs,
      * this many of the item will be ordered.
      *
      * @return The reorder amount
@@ -47,7 +47,7 @@ public interface Item {
     int getReorderAmount();
 
     /**
-     * Get's the ideal temperature for this item to remain at, if applicable.
+     * Gets the ideal temperature for this item to remain at, if applicable.
      *
      * @return The ideal temperature
      */
@@ -61,7 +61,7 @@ public interface Item {
     interface Builder {
 
         /**
-         * Set's the name of the {@link Item}.
+         * Sets the name of the {@link Item}.
          *
          * @param name The name
          * @return The builder, for chaining
@@ -69,7 +69,7 @@ public interface Item {
         Builder name(String name);
 
         /**
-         * Set's the manufacturing cost of the {@link Item}.
+         * Sets the manufacturing cost of the {@link Item}.
          *
          * @param manufacturingCost The manufacturing cost
          * @return The builder, for chaining
@@ -77,7 +77,7 @@ public interface Item {
         Builder manufacturingCost(double manufacturingCost);
 
         /**
-         * Set's the sell price of the {@link Item}.
+         * Sets the sell price of the {@link Item}.
          *
          * @param sellPrice The sell price
          * @return The builder, for chaining
@@ -85,7 +85,7 @@ public interface Item {
         Builder sellPrice(double sellPrice);
 
         /**
-         * Set's the reorder point of the {@link Item}.
+         * Sets the reorder point of the {@link Item}.
          *
          * @param reorderPoint The reorder point
          * @return The builder, for chaining
@@ -93,7 +93,7 @@ public interface Item {
         Builder reorderPoint(int reorderPoint);
 
         /**
-         * Set's the reorder amount of the {@link Item}.
+         * Sets the reorder amount of the {@link Item}.
          *
          * @param reorderAmount The reorder amount
          * @return The builder, for chaining
@@ -101,7 +101,7 @@ public interface Item {
         Builder reorderAmount(int reorderAmount);
 
         /**
-         * Set's the ideal temperature of the {@link Item}.
+         * Sets the ideal temperature of the {@link Item}.
          *
          * This is an optional field.
          *

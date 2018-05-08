@@ -1,4 +1,4 @@
-package com.me4502.supermart.stock;
+package com.me4502.supermart.store;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;

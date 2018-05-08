@@ -1,7 +1,7 @@
 package com.me4502.supermart;
 
-import com.me4502.supermart.stock.Item;
-import com.me4502.supermart.stock.Stock;
+import com.me4502.supermart.store.Item;
+import com.me4502.supermart.store.Stock;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**

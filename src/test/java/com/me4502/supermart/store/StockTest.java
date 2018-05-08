@@ -1,4 +1,4 @@
-package com.me4502.supermart.stock;
+package com.me4502.supermart.store;
 
 import com.google.common.collect.Lists;
 import com.me4502.supermart.SuperMartApplication;
