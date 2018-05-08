@@ -1,6 +1,7 @@
 package com.me4502.supermart;
 
 import com.me4502.supermart.stock.Item;
+import com.me4502.supermart.stock.Stock;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -13,7 +14,7 @@ public class SuperMartApplication {
     private static SuperMartApplication instance;
 
     /**
-     * Construct a new instance of the Supermart Application
+     * Construct a new instance of the SuperMart Application
      */
     public SuperMartApplication() {
         if (instance != null) {
@@ -32,11 +33,20 @@ public class SuperMartApplication {
     }
 
     /**
-     * Get the builder for the Item class.
+     * Get the builder for the {@link Item} class.
      *
      * @return The item builder
      */
     public Item.Builder getItemBuilder() {
+        throw new NotImplementedException();
+    }
+
+    /**
+     * Get the builder for the {@link Stock} class.
+     *
+     * @return The stock builder
+     */
+    public Stock.Builder getStockBuilder() {
         throw new NotImplementedException();
     }
 }

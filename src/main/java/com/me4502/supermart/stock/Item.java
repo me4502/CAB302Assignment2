@@ -54,7 +54,7 @@ public interface Item {
     OptionalDouble getIdealTemperature();
 
     /**
-     * Builder class to build Item instances.
+     * Builder class to build {@link Item} instances.
      *
      * @author Madeline Miller
      */
@@ -116,13 +116,14 @@ public interface Item {
          * If any of the required values have not been filled in, this
          * should throw an {@link IllegalStateException}.
          *
-         * @return The build Item
+         * @return The built Item
          * @throws IllegalStateException If a value has not been filled in
          */
         Item build();
 
         /**
          * Resets the state of this builder.
+         *
          * @return The builder, for chaining
          */
         Builder reset();
