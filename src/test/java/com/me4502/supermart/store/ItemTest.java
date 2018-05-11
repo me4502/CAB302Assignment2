@@ -37,8 +37,8 @@ public class ItemTest {
     private Item buildTestItem2() {
         return SuperMartApplication.getInstance().getItemBuilder()
                 .name("Test Item 2")
-                .manufacturingCost(-9)
-                .reorderAmount(-19)
+                .manufacturingCost(9)
+                .reorderAmount(19)
                 .reorderPoint(84)
                 .sellPrice(0)
                 .build();
@@ -54,7 +54,7 @@ public class ItemTest {
         buildTestItem2();
     }
 
-    @Test
+    @Test(expected=IllegalStateException.class)
     public void testInvalidItemCantBeBuilt() {
         Item.Builder builder = SuperMartApplication.getInstance().getItemBuilder();
         builder.build();
@@ -77,8 +77,8 @@ public class ItemTest {
         Item item = buildTestItem2();
         assertEquals("Test Item 2", item.getName());
         assertFalse(item.getIdealTemperature().isPresent());
-        assertEquals(-9, item.getManufacturingCost());
-        assertEquals(-19, item.getReorderAmount());
+        assertEquals(9, item.getManufacturingCost());
+        assertEquals(19, item.getReorderAmount());
         assertEquals(84, item.getReorderPoint());
         assertEquals(0, item.getSellPrice());
     }

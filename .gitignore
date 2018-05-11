@@ -6,3 +6,8 @@ bin/
 out/
 .DS_Store
 thumbs.db
+
+# Eclipse things
+.classpath
+.project
+.settings/

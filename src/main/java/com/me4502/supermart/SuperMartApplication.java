@@ -2,7 +2,6 @@ package com.me4502.supermart;
 
 import com.me4502.supermart.store.Item;
 import com.me4502.supermart.store.Stock;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Base class for the application state.
@@ -38,7 +37,7 @@ public class SuperMartApplication {
      * @return The item builder
      */
     public Item.Builder getItemBuilder() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -47,6 +46,6 @@ public class SuperMartApplication {
      * @return The stock builder
      */
     public Stock.Builder getStockBuilder() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 }

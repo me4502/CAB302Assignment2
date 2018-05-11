@@ -22,9 +22,9 @@ public interface Store {
     double getCapital();
 
     /**
-     * Sets
+     * Sets the capital of the store.
      *
-     * @param capital
+     * @param capital The new capital
      */
     void setCapital(double capital);
 

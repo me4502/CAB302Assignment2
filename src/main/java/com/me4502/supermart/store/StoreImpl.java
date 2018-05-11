@@ -1,7 +1,5 @@
 package com.me4502.supermart.store;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 public class StoreImpl implements Store {
 
     private static StoreImpl instance;
@@ -19,16 +17,21 @@ public class StoreImpl implements Store {
 
     @Override
     public String getName() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public double getCapital() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setCapital(double capital) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Stock getInventory() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 }
