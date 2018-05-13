@@ -3,6 +3,7 @@
  */
 
 
+
 package com.me4502.csv;
 // Reading
 import java.io.FileReader;
@@ -21,6 +22,12 @@ import java.text.SimpleDateFormat;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+
+/**
+ * Used for parsing different csv file formats, reads and writes
+ *
+ * @author Liam Dale
+ */
 public class CSV {
 	// item_properties
 	// manifest
