@@ -2,6 +2,8 @@ package com.me4502.supermart;
 
 import com.me4502.supermart.store.Item;
 import com.me4502.supermart.store.Stock;
+import com.me4502.supermart.trucks.OrdinaryTruck;
+import com.me4502.supermart.trucks.RefrigeratedTruck;
 
 /**
  * Base class for the application state.
@@ -46,6 +48,24 @@ public class SuperMartApplication {
      * @return The stock builder
      */
     public Stock.Builder getStockBuilder() {
+        throw new UnsupportedOperationException();
+    }
+    
+    /**
+     * Get the builder for the {@link OrdinaryTruck} class.
+     *
+     * @return The ordinary truck builder
+     */
+    public OrdinaryTruck.OrdinaryBuilder getOrdinaryTruckBuilder() {
+        throw new UnsupportedOperationException();
+    }
+    
+    /**
+     * Get the builder for the {@link RefrigeratedTruck} class.
+     *
+     * @return The refrigerated truck builder
+     */
+    public RefrigeratedTruck.RefrigeratedBuilder getRefrigeratedTruckBuilder() {
         throw new UnsupportedOperationException();
     }
 }
