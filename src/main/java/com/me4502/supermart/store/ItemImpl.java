@@ -2,20 +2,26 @@ package com.me4502.supermart.store;
 
 import java.util.OptionalDouble;
 
+/**
+ * Implementation of the item interface
+ *
+ * @author Liam Dale
+ */
 public class ItemImpl implements Item {
 	private String name;
-	private double manufacturingCost;
-	private double sellPrice;
-	private int reorderPoint;
-	private int reorderAmount;
+	private Double manufacturingCost;
+	private Double sellPrice;
+	private Integer reorderPoint;
+	private Integer reorderAmount;
 	private OptionalDouble idealTemperature;
-
 	
 	// Constructs an item, can overload with storage temperature
-	public ItemImpl(String name, double manufacturingCost, double sellPrice, int reorderPoint, int reorderAmount, OptionalDouble idealTemperature) throws IllegalStateException {
-		if (manufacturingCost < 0 || sellPrice < 0 || reorderPoint < 0 || reorderAmount < 0) {
-			throw new IllegalStateException();
-		}
+	/*
+	public ItemImpl(String name, Double manufacturingCost, Double sellPrice, Integer reorderPoint, Integer reorderAmount) {
+		this(name, manufacturingCost, sellPrice, reorderPoint, reorderAmount, OptionalDouble.empty());	
+	}
+	*/
+	public ItemImpl(String name, Double manufacturingCost, Double sellPrice, Integer reorderPoint, Integer reorderAmount, OptionalDouble idealTemperature) {
 		this.name = name;
 		this.manufacturingCost = manufacturingCost;
 		this.sellPrice = sellPrice;
@@ -23,13 +29,6 @@ public class ItemImpl implements Item {
 		this.reorderAmount = reorderAmount;
 		this.idealTemperature = idealTemperature;	
 	}
-	/*
-	public Item(String name, double manufacturingCost, double sellPrice, int reorderPoint, int reorderAmount) {
-		// refrigeration --> make null? integer type?
-		// dry goods boolean --> could making this an additional property be useful?
-		this(name, manufacturingCost, sellPrice, reorderPoint, reorderAmount, 100);
-	}
-	*/
 
 	// Return properties
 	public String getName() {
@@ -47,8 +46,8 @@ public class ItemImpl implements Item {
 	public int getReorderAmount() {
 		return reorderAmount;
 	}
-	public double getIdealTemperature() {
-		return idealTemperature.getAsDouble();
+	public OptionalDouble getIdealTemperature() {
+		return idealTemperature;
 	}
 	public boolean isTemperatureControlled() {
 		return idealTemperature.isPresent();
@@ -56,10 +55,10 @@ public class ItemImpl implements Item {
 	
 	public static class ItemBuilder implements Item.Builder {
 		private String name;
-		private OptionalDouble manufacturingCost;
-		private double sellPrice;
-		private int reorderPoint;
-		private int reorderAmount;
+		private Double manufacturingCost;
+		private Double sellPrice;
+		private Integer reorderPoint;
+		private Integer reorderAmount;
 		private OptionalDouble idealTemperature;
 		
 		/**
@@ -69,8 +68,9 @@ public class ItemImpl implements Item {
          * @return The builder, for chaining
          */
         public Builder name(String name) {
-        	//throw exception
+        	//throw exception - based off what?
         	this.name = name;
+        	return this;
         }
 
         /**
@@ -80,7 +80,11 @@ public class ItemImpl implements Item {
          * @return The builder, for chaining
          */
         public Builder manufacturingCost(double manufacturingCost) {
-        	
+        	if (manufacturingCost < 0) {
+    			throw new IllegalArgumentException("Manufacturing cost must be positive");
+    		}
+        	this.manufacturingCost = manufacturingCost;
+        	return this;
         }
 
         /**
@@ -89,7 +93,11 @@ public class ItemImpl implements Item {
          * @return The builder, for chaining
          */
         public Builder sellPrice(double sellPrice) {
-        	
+        	if (sellPrice < 0) {
+    			throw new IllegalArgumentException("Sell price must positive");
+    		}
+        	this.sellPrice = sellPrice;
+        	return this;
         }
 
         /**
@@ -98,7 +106,11 @@ public class ItemImpl implements Item {
          * @return The builder, for chaining
          */
         public Builder reorderPoint(int reorderPoint) {
-        	
+        	if (reorderPoint < 0) {
+    			throw new IllegalArgumentException("Reorder point must positive");
+    		}
+        	this.reorderPoint = reorderPoint;
+        	return this;
         }
 
         /**
@@ -107,7 +119,11 @@ public class ItemImpl implements Item {
          * @return The builder, for chaining
          */
         public Builder reorderAmount(int reorderAmount) {
-        	
+        	if (reorderAmount < 0) {
+    			throw new IllegalArgumentException("Reorder amount must positive");
+    		}
+        	this.reorderAmount = reorderAmount;
+        	return this;
         }
 
         /**
@@ -117,6 +133,14 @@ public class ItemImpl implements Item {
          * @return The builder, for chaining
          */
         public Builder idealTemperature(double idealTemperature) {
+        	if (idealTemperature < -20) {
+    			throw new IllegalArgumentException("Items under 20 deg Celcius can't be stored in a truck");
+    		}
+        	if (idealTemperature > 10) {
+    			throw new IllegalArgumentException("Items over 10 deg Celcius are considered dry goods");
+    		}
+        	this.idealTemperature = OptionalDouble.of(idealTemperature);
+        	return this;
         }
 
         /**
@@ -127,8 +151,10 @@ public class ItemImpl implements Item {
          * @throws IllegalStateException If a value has not been filled in
          */
         public Item build() {
-        	//throw exception if not set --> opt
-        	return new Item(name, ..);
+    		if (name == null || manufacturingCost == null|| sellPrice == null || reorderPoint == null || reorderAmount == null) {
+    			throw new IllegalStateException("Need to set all parameters besides idealTemperature");
+    		}
+        	return new ItemImpl(name, manufacturingCost, sellPrice, reorderPoint, reorderAmount, idealTemperature);
         }
 
         /**
@@ -136,7 +162,13 @@ public class ItemImpl implements Item {
          * @return The builder, for chaining
          */
         public Builder reset() {
-        	//set all to nothing
+        	name = null;
+    		manufacturingCost = null;
+    		sellPrice = null;
+    		reorderPoint = null;
+    		reorderAmount = null;
+    		idealTemperature = OptionalDouble.empty();
+    		return this;
         }
 	}
 }
