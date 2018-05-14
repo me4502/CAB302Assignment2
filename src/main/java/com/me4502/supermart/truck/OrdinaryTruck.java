@@ -7,5 +7,5 @@ package com.me4502.supermart.truck;
  */
 public interface OrdinaryTruck extends Truck {
 	
-	interface OrdinaryBuilder extends Truck.Builder {}
+	interface OrdinaryBuilder extends Truck.Builder<OrdinaryTruck, OrdinaryBuilder> {}
 }

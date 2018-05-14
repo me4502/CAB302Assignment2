@@ -29,40 +29,46 @@ public interface Truck {
      * @return The cargo
      */
 	Stock getCargo();
-	
-	interface Builder {
+
+    /**
+     * The base builder for Truck classes.
+     *
+     * @param <T> The {@link Truck} type
+     * @param <B> The {@link Builder} type
+     */
+	interface Builder<T, B> {
         /**
          * Sets the cost of the {@link Truck}.
          *
-         * @param cost, cost of hiring
+         * @param cost cost of hiring
          * @return The builder, for chaining
          */
-        Builder cost(double cost);
+        B cost(double cost);
 
         /**
          * Sets the cargo of the {@link Truck}.
          *
-         * @param cargo, cargo of truck
+         * @param cargo cargo of the truck
          * @return The builder, for chaining
          */
-        Builder cargo(Stock cargo);
+        B cargo(Stock cargo);
 
         /**
-         * Builds the {@link RefrigeratedTruck} using the given values.
+         * Builds the {@link Truck} using the given values.
          *
          * If any of the required values have not been filled in, this
          * should throw an {@link IllegalStateException}.
          *
-         * @return The built Item
+         * @return The built Truck
          * @throws IllegalStateException If a value has not been filled in
          */
-        RefrigeratedTruck build();
+        T build();
         
         /**
          * Resets the state of this builder.
          *
          * @return The builder, for chaining
          */
-        Builder reset();
+        B reset();
     }	
 }

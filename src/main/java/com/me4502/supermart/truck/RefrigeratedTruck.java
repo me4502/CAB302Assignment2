@@ -13,7 +13,7 @@ public interface RefrigeratedTruck extends Truck {
      */
 	double getStorageTemperature();
 	
-	interface RefrigeratedBuilder extends Truck.Builder {
+	interface RefrigeratedBuilder extends Truck.Builder<RefrigeratedTruck, RefrigeratedBuilder> {
         /**
          * Sets the name of the {@link RefrigeratedTruck}.
          *
