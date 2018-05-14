@@ -8,10 +8,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.OptionalDouble;
+
 import static com.me4502.supermart.SuperMartApplication.getInstance;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class StockTest {
 
@@ -21,24 +25,25 @@ public class StockTest {
     }
 
     private Item getItem1() {
-        return getInstance().getItemBuilder()
-                .sellPrice(1.0)
-                .reorderPoint(1)
-                .reorderAmount(1)
-                .manufacturingCost(1.0)
-                .name("Test Item 1")
-                .idealTemperature(1.0)
-                .build();
+        Item mockItem = mock(Item.class);
+        when(mockItem.getName()).thenReturn("Test Item 1");
+        when(mockItem.getIdealTemperature()).thenReturn(OptionalDouble.of(1.0));
+        when(mockItem.getSellPrice()).thenReturn(1.0);
+        when(mockItem.getReorderAmount()).thenReturn(1);
+        when(mockItem.getReorderPoint()).thenReturn(1);
+        when(mockItem.getManufacturingCost()).thenReturn(1.0);
+        return mockItem;
     }
 
     private Item getItem2() {
-        return getInstance().getItemBuilder()
-                .sellPrice(2.2)
-                .reorderPoint(94)
-                .reorderAmount(3)
-                .manufacturingCost(32.5)
-                .name("Test Item 2")
-                .build();
+        Item mockItem = mock(Item.class);
+        when(mockItem.getName()).thenReturn("Test Item 2");
+        when(mockItem.getIdealTemperature()).thenReturn(OptionalDouble.empty());
+        when(mockItem.getSellPrice()).thenReturn(2.2);
+        when(mockItem.getReorderAmount()).thenReturn(3);
+        when(mockItem.getReorderPoint()).thenReturn(94);
+        when(mockItem.getManufacturingCost()).thenReturn(32.5);
+        return mockItem;
     }
 
     private List<Item> getItemList1() {
