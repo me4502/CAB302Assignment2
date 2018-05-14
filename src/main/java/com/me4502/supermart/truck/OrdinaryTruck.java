@@ -1,4 +1,4 @@
-package com.me4502.supermart.trucks;
+package com.me4502.supermart.truck;
 
 /**
  * An interface for Ordinary Truck. This class is immutable.

@@ -1,4 +1,4 @@
-package com.me4502.supermart.trucks;
+package com.me4502.supermart.truck;
 
 import com.me4502.supermart.store.Stock;
 

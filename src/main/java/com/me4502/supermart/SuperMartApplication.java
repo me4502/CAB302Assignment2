@@ -2,8 +2,8 @@ package com.me4502.supermart;
 
 import com.me4502.supermart.store.Item;
 import com.me4502.supermart.store.Stock;
-import com.me4502.supermart.trucks.OrdinaryTruck;
-import com.me4502.supermart.trucks.RefrigeratedTruck;
+import com.me4502.supermart.truck.OrdinaryTruck;
+import com.me4502.supermart.truck.RefrigeratedTruck;
 
 /**
  * Base class for the application state.
