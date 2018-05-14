@@ -15,14 +15,14 @@ import com.me4502.supermart.store.Stock;
  */
 public class DummyClasses {
 	// Item implementation for creating stock --> can be used in stock tests
-	public class itemDummy implements Item {
+	public static class ItemDummy implements Item {
 		OptionalDouble idealTemperature;
 		
-		public itemDummy(OptionalDouble idealTemperature) {
+		public ItemDummy(OptionalDouble idealTemperature) {
 			this.idealTemperature = idealTemperature;
 		}
-		public itemDummy() {
-			this(null);
+		public ItemDummy() {
+			this(OptionalDouble.empty());
 		}
 		
 		@Override
@@ -51,21 +51,27 @@ public class DummyClasses {
 		}
 	}
 	// Stock implementation for testing --> used in truck tests
-	public class StockDummy implements Stock {
+	public static class StockDummy implements Stock {
 		private int totalAmount;
+		private OptionalDouble lowestTemperature;
 		
 		// Need to be able to set amount so cargo capacity can be tested
-		public StockDummy(int totalAmount) {
+		public StockDummy(int totalAmount, OptionalDouble lowestTemperature) {
 			this.totalAmount = totalAmount;
+			this.lowestTemperature = lowestTemperature;
+		}
+		// Need to be able to set amount so cargo capacity can be tested
+		public StockDummy(int totalAmount) {
+			this(totalAmount, OptionalDouble.empty());
 		}
 		
 		@Override
 		public ImmutableSet<Item> getStockedItems() {
-			return ImmutableSet.of(new itemDummy());
+			return ImmutableSet.of(new ItemDummy(lowestTemperature));
 		}
 		@Override
 		public ImmutableSet<ImmutablePair<Item, Integer>> getStockedItemQuantities() {
-			return ImmutableSet.of(ImmutablePair.of(new itemDummy(), totalAmount));
+			return ImmutableSet.of(ImmutablePair.of(new ItemDummy(), totalAmount));
 		}
 	}
 }
