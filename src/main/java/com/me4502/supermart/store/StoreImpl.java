@@ -31,7 +31,17 @@ public class StoreImpl implements Store {
     }
 
     @Override
+    public String getFormattedCapital() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public Stock getInventory() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setInventory(Stock inventory) {
         throw new UnsupportedOperationException();
     }
 }

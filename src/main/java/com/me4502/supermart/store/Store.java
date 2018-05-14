@@ -29,9 +29,25 @@ public interface Store {
     void setCapital(double capital);
 
     /**
+     * Gets the capital formatted in dollars and cents.
+     *
+     * For example, 1054.34 will be formatted as $1,054.34
+     *
+     * @return The formatted capital
+     */
+    String getFormattedCapital();
+
+    /**
      * Gets the current inventory of the store.
      *
      * @return The inventory of the store
      */
     Stock getInventory();
+
+    /**
+     * Sets the current inventory of the store.
+     *
+     * @param inventory The new inventory
+     */
+    void setInventory(Stock inventory);
 }
