@@ -9,6 +9,13 @@ import com.me4502.supermart.store.Stock;
  */
 public interface Truck {
 	
+	/**
+     * Gets the name of the truck type.
+     *
+     * @return The truck type
+     */
+	String getType();
+	
     /**
      * Gets the cost of a truck.
      *

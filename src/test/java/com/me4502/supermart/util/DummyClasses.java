@@ -16,7 +16,14 @@ import com.me4502.supermart.store.Stock;
 public class DummyClasses {
 	// Item implementation for creating stock --> can be used in stock tests
 	public class itemDummy implements Item {
-		public itemDummy() {}
+		OptionalDouble idealTemperature;
+		
+		public itemDummy(OptionalDouble idealTemperature) {
+			this.idealTemperature = idealTemperature;
+		}
+		public itemDummy() {
+			this(null);
+		}
 		
 		@Override
 		public String getName() {
@@ -40,7 +47,7 @@ public class DummyClasses {
 		}
 		@Override
 		public OptionalDouble getIdealTemperature() {
-			return null;
+			return idealTemperature;
 		}
 	}
 	// Stock implementation for testing --> used in truck tests

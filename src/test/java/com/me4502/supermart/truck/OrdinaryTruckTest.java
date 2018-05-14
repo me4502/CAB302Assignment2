@@ -3,18 +3,24 @@ package com.me4502.supermart.truck;
 import static junit.framework.TestCase.assertEquals;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.experimental.theories.*;
+import org.junit.runner.RunWith;
+import org.junit.rules.ExpectedException;
 
 import com.me4502.supermart.SuperMartApplication;
-import com.me4502.supermart.trucks.OrdinaryTruck;
+import com.me4502.supermart.truck.OrdinaryTruck;
 import com.me4502.supermart.util.DummyClasses;
-import com.me4502.supermart.util.DummyClasses.StockDummy;
 
-public class OrdinaryTruckTest {
-	
-	DummyClasses dummyClass = new DummyClasses();
-	DummyClasses.StockDummy stockDummyValid = dummyClass.new StockDummy(1); 
-	DummyClasses.StockDummy stockDummyInvalid = dummyClass.new StockDummy(801);
+public class OrdinaryTruckTest {	
+	static DummyClasses dummyClass = new DummyClasses();
+	private int stockValidAmount = 1;
+	private double truckValidCost = 750 + 0.25 * stockValidAmount;
+	DummyClasses.StockDummy stockDummyValid = dummyClass.new StockDummy(stockValidAmount); 
+	private int stockInvalidAmount = 1001;
+	private double truckInvalidCost = 750 + 0.25 * stockInvalidAmount;
+	DummyClasses.StockDummy stockDummyInvalid = dummyClass.new StockDummy(stockInvalidAmount);	
 	
 	@Before
     public void setupApplication() {
@@ -23,7 +29,7 @@ public class OrdinaryTruckTest {
 
     private OrdinaryTruck.OrdinaryBuilder truckBuilder() {
         return SuperMartApplication.getInstance().getOrdinaryTruckBuilder()
-                .cost(123.4)
+                .cost(truckValidCost)
                 .cargo(stockDummyValid);
     }
 
@@ -41,21 +47,40 @@ public class OrdinaryTruckTest {
         OrdinaryTruck.OrdinaryBuilder builder = SuperMartApplication.getInstance().getOrdinaryTruckBuilder();
         builder.build();
     }
-    
+
+    //@Test(expected=DeliveryException.class)
     @Test(expected=IllegalStateException.class)
     public void testInvalidStockBuild() {
         OrdinaryTruck.OrdinaryBuilder builder = SuperMartApplication.getInstance().getOrdinaryTruckBuilder()
-        		.cost(123.4)
+        		.cost(truckInvalidCost)
                 .cargo(stockDummyInvalid);
         builder.build();
     }
+
+    @Rule
+    public static ExpectedException thrown = ExpectedException.none();    
+    
+    @RunWith(Theories.class)
+    public static class PrimeTest {
+        @Theory
+        public void isPrime(int candidate) {
+        	DummyClasses.StockDummy stockTester = dummyClass.new StockDummy(candidate); 
+        	OrdinaryTruck.OrdinaryBuilder builder = SuperMartApplication.getInstance().getOrdinaryTruckBuilder()
+        			.cost(750 + 0.25 * candidate)
+        			.cargo(stockTester);
+        	builder.build();
+        	thrown.expect(IllegalStateException.class);
+        }
+        public static @DataPoints int[] candidates = {1, 2, 3, 4, 5};
+    }
+    
+    
     
     @Test
     public void testCorrectBuild() {
         OrdinaryTruck ordinaryTruck = buildTruck();
-        // Hamcrest import?
-        assertThat(123.4, is(equalTo(ordinaryTruck.getCost())));
-        assertThat(stockDummyValid, is(equalTo(ordinaryTruck.getCargo()));
+        assertEquals(truckValidCost, ordinaryTruck.getCost());
+        assertEquals(stockDummyValid, ordinaryTruck.getCargo());
     }
 
     @Test(expected=IllegalStateException.class)
