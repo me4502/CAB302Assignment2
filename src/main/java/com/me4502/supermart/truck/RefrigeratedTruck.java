@@ -15,7 +15,7 @@ public interface RefrigeratedTruck extends Truck {
 	
 	interface RefrigeratedBuilder extends Truck.Builder<RefrigeratedTruck, RefrigeratedBuilder> {
         /**
-         * Sets the name of the {@link RefrigeratedTruck}.
+         * Sets the storageTemperature of the {@link RefrigeratedTruck}.
          *
          * @param storageTemperature, temperature which the truck must store items at
          * @return The builder, for chaining
