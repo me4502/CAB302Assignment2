@@ -1,7 +1,5 @@
 package com.me4502.supermart.gui;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 /**
  * TODO
  *
@@ -10,6 +8,6 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class SuperMartGui {
 
     public static void main(String[] args) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 }

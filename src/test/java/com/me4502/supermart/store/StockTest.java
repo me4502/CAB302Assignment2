@@ -103,4 +103,10 @@ public class StockTest {
             assertTrue(stock.getStockedItemQuantities().stream().map(Pair::getLeft).anyMatch(stockedItem -> stockedItem.equals(item)));
         }
     }
+
+    @Test(expected=IllegalStateException.class)
+    public void testResetWorks() {
+        Stock.Builder builder = testStockBuilder1().reset();
+        assertTrue(builder.build().getStockedItems().isEmpty());
+    }
 }
