@@ -1,4 +1,4 @@
-package com.me4502.supermart.store;
+package com.me4502.supermart.util;
 
 import java.util.OptionalDouble;
 

@@ -1,4 +1,4 @@
-package com.me4502.supermart.store;
+package com.me4502.supermart.truck;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -6,8 +6,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.me4502.supermart.SuperMartApplication;
-import com.me4502.supermart.store.DummyClasses.StockDummy;
 import com.me4502.supermart.trucks.OrdinaryTruck;
+import com.me4502.supermart.util.DummyClasses;
+import com.me4502.supermart.util.DummyClasses.StockDummy;
 
 public class OrdinaryTruckTest {
 	
