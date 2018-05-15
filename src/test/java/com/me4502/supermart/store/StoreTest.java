@@ -17,7 +17,7 @@ public class StoreTest {
     @Before
     public void setupApplication() {
         new SuperMartApplication();
-        new StoreImpl();
+        new StoreImpl("Test Store");
     }
 
     @After
@@ -30,6 +30,22 @@ public class StoreTest {
     public void testGetStore() {
         Store instance = StoreImpl.getInstance();
         assertNotNull(instance);
+    }
+
+    @Test(expected=IllegalStateException.class)
+    public void testRecreateStoreFails() {
+        new StoreImpl("Test Store");
+    }
+
+    @Test
+    public void testRecreateStoreWorksAfterClose() {
+        ((StoreImpl) StoreImpl.getInstance()).close();
+        new StoreImpl("Test Store");
+    }
+
+    @Test
+    public void testGetName() {
+        assertEquals("Test Store", StoreImpl.getInstance().getName());
     }
 
     @Test

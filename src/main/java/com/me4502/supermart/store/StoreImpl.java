@@ -4,7 +4,7 @@ public class StoreImpl implements Store {
 
     private static StoreImpl instance;
 
-    public StoreImpl() {
+    public StoreImpl(String name) {
         if (instance != null) {
             throw new IllegalStateException("This object has already been instantiated");
         }
@@ -17,9 +17,6 @@ public class StoreImpl implements Store {
      * @return The instance
      */
     public static Store getInstance() {
-        if (StoreImpl.instance == null) {
-            return new StoreImpl();
-        }
         return StoreImpl.instance;
     }
 
