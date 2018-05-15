@@ -5,6 +5,7 @@ import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
 import com.me4502.supermart.SuperMartApplication;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,6 +19,11 @@ public class ItemTest {
     @Before
     public void setupApplication() {
         new SuperMartApplication();
+    }
+
+    @After
+    public void closeApplication() {
+        SuperMartApplication.getInstance().close();
     }
 
     private Item.Builder testItemBuilder() {

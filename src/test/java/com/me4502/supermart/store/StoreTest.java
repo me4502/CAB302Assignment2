@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableSet;
 import com.me4502.supermart.SuperMartApplication;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,6 +18,12 @@ public class StoreTest {
     public void setupApplication() {
         new SuperMartApplication();
         new StoreImpl();
+    }
+
+    @After
+    public void closeApplication() {
+        SuperMartApplication.getInstance().close();
+        ((StoreImpl) StoreImpl.getInstance()).close();
     }
 
     @Test

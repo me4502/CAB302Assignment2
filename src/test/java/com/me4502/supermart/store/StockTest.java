@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.me4502.supermart.SuperMartApplication;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,6 +23,11 @@ public class StockTest {
     @Before
     public void setupApplication() {
         new SuperMartApplication();
+    }
+
+    @After
+    public void closeApplication() {
+        SuperMartApplication.getInstance().close();
     }
 
     private Item getItem1() {

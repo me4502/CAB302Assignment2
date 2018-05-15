@@ -25,6 +25,13 @@ public class SuperMartApplication {
     }
 
     /**
+     * Removes the current opened instance of this class.
+     */
+    public void close() {
+        instance = null;
+    }
+
+    /**
      * Get the singleton instance of this class.
      *
      * @return The instance

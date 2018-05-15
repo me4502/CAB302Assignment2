@@ -11,8 +11,23 @@ public class StoreImpl implements Store {
         instance = this;
     }
 
+    /**
+     * Gets the current instance of this Singleton class.
+     *
+     * @return The instance
+     */
     public static Store getInstance() {
+        if (StoreImpl.instance == null) {
+            return new StoreImpl();
+        }
         return StoreImpl.instance;
+    }
+
+    /**
+     * Removes the current opened instance of this class.
+     */
+    public void close() {
+        StoreImpl.instance = null;
     }
 
     @Override
