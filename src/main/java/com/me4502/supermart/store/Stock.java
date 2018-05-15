@@ -25,6 +25,13 @@ public interface Stock {
     ImmutableSet<ImmutablePair<Item, Integer>> getStockedItemQuantities();
 
     /**
+     * Gets the total amount of the items in this Stock.
+     *
+     * @return The total amount of items
+     */
+    int getTotalAmount();
+
+    /**
      * Builder class to build {@link Stock} instances.
      *
      * @author Madeline Miller

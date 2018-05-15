@@ -110,6 +110,11 @@ public class StockTest {
         }
     }
 
+    @Test
+    public void testGetAmount() {
+        assertEquals(3, testStockBuilder1().build().getTotalAmount());
+    }
+
     @Test(expected=IllegalStateException.class)
     public void testResetWorks() {
         Stock.Builder builder = testStockBuilder1().reset();

@@ -47,7 +47,16 @@ public interface Item {
     int getReorderAmount();
 
     /**
+     * Gets whether this item is temperature controlled.
+     * @see Item#getIdealTemperature()
+     *
+     * @return If the item is temperature controlled
+     */
+    boolean isTemperatureControlled();
+
+    /**
      * Gets the ideal temperature for this item to remain at, if applicable.
+     * @see Item#isTemperatureControlled()
      *
      * @return The ideal temperature
      */
