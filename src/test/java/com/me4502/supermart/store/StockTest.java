@@ -63,7 +63,7 @@ public class StockTest {
         Stock.Builder builder = getInstance().getStockBuilder();
         List<Item> list = getItemList1();
         for (int i = 0; i < list.size(); i++) {
-            builder.addStockedItem(list.get(i), i);
+            builder.addStockedItem(list.get(i), i + 1);
         }
         return builder;
     }
@@ -84,10 +84,10 @@ public class StockTest {
         for (ImmutablePair<Item, Integer> stockQuant : stock.getStockedItemQuantities()) {
             switch (stockQuant.getRight()) {
                 case 1:
-                    assertEquals(stockQuant.getLeft(), getItem1());
+                    assertEquals(stockQuant.getLeft().getName(), getItem1().getName());
                     break;
                 case 2:
-                    assertEquals(stockQuant.getLeft(), getItem2());
+                    assertEquals(stockQuant.getLeft().getName(), getItem2().getName());
                     break;
                 default:
                     fail();
