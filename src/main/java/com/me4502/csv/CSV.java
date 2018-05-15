@@ -14,6 +14,7 @@ import java.util.Map;
 
 import com.me4502.supermart.store.Item;
 import com.me4502.supermart.store.Stock;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -73,10 +74,8 @@ public class CSV {
 		String fileDirectory = "/Users/Liam Dale/csv/" + fileName + ".csv";
 		try {
 			FileWriter writer = new FileWriter(fileDirectory);
-			// TODO:
-			// Iterate through stock hashmap --> needs to be changed to ImmutableSet<ImmutablePair<Item, int>>
-			for (Map.Entry<Item, Integer> entry : stock.getStockedItemQuantities().entrySet()) {
-				writer.write(entry.getKey().getName() + "," + entry.getValue() + "\n");
+			for (ImmutablePair<Item, Integer> pair : stock.getStockedItemQuantities()) {
+				writer.write(pair.getLeft().getName() + "," + pair.getRight() + "\n");
 			}
 			writer.close();
 		}
