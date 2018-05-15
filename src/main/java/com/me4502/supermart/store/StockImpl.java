@@ -10,7 +10,7 @@ public class StockImpl implements Stock {
 	public StockImpl(ImmutableSet<ImmutablePair<Item, Integer>> pairSet) {
 		this.pairSet = pairSet;
 	}
-
+	
 	// Getting the total value of the stock
 	public double totalValue() {
 		double totalValue = 0;
@@ -19,7 +19,7 @@ public class StockImpl implements Stock {
     	}
     	return totalValue;
 	}
-	
+
 	// Getting the total amount of items
 	public int getTotalAmount() {
 		//mapToInt unbox the Integer (i->i)
@@ -45,24 +45,11 @@ public class StockImpl implements Stock {
 		return pairSet;
 	}
 	
-	/*
-	// 
-	public boolean stockExists(Item item) {
-		if (stock.get(item) != null) {
-			return true;
-		}
-		return false;
-	}
-	*/
-	
 	public static class StockBuilder implements Stock.Builder {
 		private HashMap<Item, Integer> stock = new HashMap<Item, Integer>();
 		public Builder addStockedItem(Item item, int quantity) {
-			if (item == null) {
-    			throw new IllegalArgumentException("Can't not add an item");
-    		}
-			if (quantity < 1) {
-    			throw new IllegalArgumentException("There must be a quantity");
+			if (item == null || quantity  < 1) {
+    			throw new IllegalStateException("Can't not add an item");
     		}
 			if (stock.containsKey(item)) {
 				stock.put(item, new Integer(stock.get(item) + quantity));
@@ -74,9 +61,6 @@ public class StockImpl implements Stock {
 		}
 
 		public Stock build() {
-			if (stock.isEmpty()) {
-				throw new IllegalArgumentException("Can't make an empty stock");
-			}
 			// create the immutable set here
 			// add the immutable set of immutable pairs as a parameter
 			ImmutableSet<ImmutablePair<Item, Integer>> pairSet = stock.entrySet().stream()
@@ -91,4 +75,13 @@ public class StockImpl implements Stock {
 			return this;
 		}
 	}
+	/*
+	// 
+	public boolean stockExists(Item item) {
+		if (stock.get(item) != null) {
+			return true;
+		}
+		return false;
+	}
+	*/
 }
