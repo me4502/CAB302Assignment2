@@ -59,7 +59,7 @@ public class ItemImpl implements Item {
 		private Double sellPrice;
 		private Integer reorderPoint;
 		private Integer reorderAmount;
-		private OptionalDouble idealTemperature;
+		private OptionalDouble idealTemperature = OptionalDouble.empty();
 		
 		/**
          * Sets the name of the {@link Item}.
