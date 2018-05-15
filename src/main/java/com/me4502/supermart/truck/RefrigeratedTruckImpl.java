@@ -51,12 +51,6 @@ public class RefrigeratedTruckImpl extends AbstractTruck implements Refrigerated
         private Stock cargo;
 
         @Override
-        public RefrigeratedBuilder cost(double cost) {
-            // This shouldn't be here.
-            return this;
-        }
-
-        @Override
         public RefrigeratedBuilder cargo(Stock cargo) {
             if (cargo.getTotalAmount() > CAPACITY) {
                 throw new IllegalStateException("Cargo exceeds capacity");
@@ -79,12 +73,6 @@ public class RefrigeratedTruckImpl extends AbstractTruck implements Refrigerated
         @Override
         public RefrigeratedBuilder reset() {
             this.cargo = null;
-            return this;
-        }
-
-        @Override
-        public RefrigeratedBuilder storageTemperature(double storageTemperature) {
-            // Nope
             return this;
         }
     }

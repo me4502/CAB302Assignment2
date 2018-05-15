@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import java.util.OptionalDouble;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,6 +18,11 @@ import com.me4502.supermart.store.Stock;
 import com.me4502.supermart.truck.RefrigeratedTruck;
 
 public class RefrigeratedTruckTest {
+	private final int MIN_CAPACITY = 1;
+	private final int MAX_CAPACITY = 800;
+	private final int MIN_TEMPERATURE = -20;
+	private final int MAX_TEMPERATURE = 10;
+	
 	// Get the cost of a truck for a certain temperature
 	private double getCost(double storageTemperature) {
 		return (900 + 20*Math.pow(Math.E, storageTemperature/5));
@@ -37,16 +43,14 @@ public class RefrigeratedTruckTest {
 	}
 	
 	// Valid build parameters
-	double validStorageTemp = 1;
+	double validStorageTemp = 0;
 	double validCost = getCost(validStorageTemp);
 	Stock validStock = getStock(ImmutableSet.of(ImmutablePair.of(getItem(validStorageTemp), 100)));
 	
 	// Return builder for valid item
 	private RefrigeratedTruck.RefrigeratedBuilder truckBuilder() {
         return SuperMartApplication.getInstance().getRefrigeratedTruckBuilder()
-                .cost(validCost)
-                .cargo(validStock)
-                .storageTemperature(validStorageTemp);
+                .cargo(validStock);
     }
 	
 	// Build the valid item
@@ -55,11 +59,9 @@ public class RefrigeratedTruckTest {
     }
     
     // Return a built truck with parameters
-    private RefrigeratedTruck buildUniqueTruck(double cost, Stock cargo, double storageTemperature) {
+    private RefrigeratedTruck buildUniqueTruck(Stock cargo) {
         return SuperMartApplication.getInstance().getRefrigeratedTruckBuilder()
-                .cost(cost)
                 .cargo(cargo)
-                .storageTemperature(storageTemperature)
                 .build();
     }
     
@@ -73,6 +75,8 @@ public class RefrigeratedTruckTest {
     @Test
     public void testValidBuild() {
         RefrigeratedTruck RefrigeratedTruck = buildTruck();
+        assertEquals("refrigerated", RefrigeratedTruck.getType());
+        assertEquals(MAX_CAPACITY, RefrigeratedTruck.getCargoCapacity());
         assertEquals(validCost, RefrigeratedTruck.getCost());
         assertEquals(validStock, RefrigeratedTruck.getCargo());
         assertEquals(validStorageTemp, RefrigeratedTruck.getStorageTemperature());
@@ -96,43 +100,54 @@ public class RefrigeratedTruckTest {
 	@Test
     public void testOnLowerThresholds() {
     	// Generate bad parameters
-	    double invalidStorageTemp = -20;
-		double invalidCost = getCost(validStorageTemp);
-		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(getItem(validStorageTemp), 1)));
+		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(getItem(MIN_TEMPERATURE), MIN_CAPACITY)));
 		// Attempt to build
-    	buildUniqueTruck(invalidCost, invalidStock, invalidStorageTemp);
+    	buildUniqueTruck(invalidStock);
     }
 
     // Test values sitting below the lower boundaries
     @Test(expected=IllegalStateException.class)
     public void testBelowLowerThresholds() {
     	// Generate bad parameters
-	    double invalidStorageTemp = -21;
-		double invalidCost = getCost(validStorageTemp);
-		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(getItem(validStorageTemp), 0)));
+		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(getItem(MIN_TEMPERATURE - 1), MIN_CAPACITY - 1)));
 		// Attempt to build
-    	buildUniqueTruck(invalidCost, invalidStock, invalidStorageTemp);
+    	buildUniqueTruck(invalidStock);
     }
     
     // Test values sitting on the upper boundaries
     @Test
     public void testOnUpperThresholds() {
     	// Generate bad parameters
-	    double invalidStorageTemp = 10;
-		double invalidCost = getCost(validStorageTemp);
-		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(getItem(validStorageTemp), 800)));
+		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(getItem(MAX_TEMPERATURE), MAX_CAPACITY)));
 		// Attempt to build
-    	buildUniqueTruck(invalidCost, invalidStock, invalidStorageTemp);
+    	buildUniqueTruck(invalidStock);
     }
     
     // Test values sitting above the upper boundaries
     @Test(expected=IllegalStateException.class)
     public void testAboveUpperThresholds() {
     	// Generate bad parameters
-	    double invalidStorageTemp = 11;
-		double invalidCost = getCost(validStorageTemp);
-		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(getItem(validStorageTemp), 801)));
+		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(getItem(MAX_TEMPERATURE + 1), MAX_CAPACITY + 1)));
 		// Attempt to build
-    	buildUniqueTruck(invalidCost, invalidStock, invalidStorageTemp);
+    	buildUniqueTruck(invalidStock);
+    }
+    
+    @Test(expected=IllegalStateException.class)
+    public void testEmptyTruck() {
+		// Attempt to build
+    	buildUniqueTruck(null);
+    }
+    
+    @Test(expected=IllegalStateException.class)
+    public void testEmptyStockTruck() {
+    	// Generate bad parameters
+		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(null, null)));
+		// Attempt to build
+    	buildUniqueTruck(invalidStock);
+    }
+    
+    @After
+    public void closeApplication() {
+        SuperMartApplication.getInstance().close();
     }
 }

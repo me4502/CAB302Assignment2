@@ -1,7 +1,9 @@
 package com.me4502.supermart;
 
 import com.me4502.supermart.store.Item;
+import com.me4502.supermart.store.ItemImpl;
 import com.me4502.supermart.store.Stock;
+import com.me4502.supermart.store.StockImpl;
 import com.me4502.supermart.truck.OrdinaryTruck;
 import com.me4502.supermart.truck.OrdinaryTruckImpl;
 import com.me4502.supermart.truck.RefrigeratedTruck;
@@ -48,7 +50,7 @@ public class SuperMartApplication {
      * @return The item builder
      */
     public Item.Builder getItemBuilder() {
-        throw new UnsupportedOperationException();
+        return new ItemImpl.ItemBuilder();
     }
 
     /**
@@ -57,7 +59,7 @@ public class SuperMartApplication {
      * @return The stock builder
      */
     public Stock.Builder getStockBuilder() {
-        throw new UnsupportedOperationException();
+        return new StockImpl.StockBuilder();
     }
     
     /**

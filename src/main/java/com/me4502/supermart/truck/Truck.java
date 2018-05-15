@@ -44,13 +44,6 @@ public interface Truck {
      * @param <B> The {@link Builder} type
      */
 	interface Builder<T extends Truck, B extends Builder> {
-        /**
-         * Sets the cost of the {@link Truck}.
-         *
-         * @param cost cost of hiring
-         * @return The builder, for chaining
-         */
-        B cost(double cost);
 
         /**
          * Sets the cargo of the {@link Truck}.

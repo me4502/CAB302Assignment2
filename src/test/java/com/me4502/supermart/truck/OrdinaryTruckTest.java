@@ -18,6 +18,9 @@ import com.me4502.supermart.store.Stock;
 import com.me4502.supermart.truck.OrdinaryTruck;
 
 public class OrdinaryTruckTest {
+	private final int MIN_CAPACITY = 1;
+	private final int MAX_CAPACITY = 1000;
+	
 	// Get the cost of a truck for a certain temperature
 	private double getCost(int quantity) {
 		return (750 + 0.25 * quantity);
@@ -38,7 +41,6 @@ public class OrdinaryTruckTest {
 	// Return builder for valid item
 	private OrdinaryTruck.OrdinaryBuilder truckBuilder() {
         return SuperMartApplication.getInstance().getOrdinaryTruckBuilder()
-                .cost(validCost)
                 .cargo(validStock);
     }
 	
@@ -48,9 +50,8 @@ public class OrdinaryTruckTest {
     }
     
     // Return a built truck with parameters
-    private OrdinaryTruck buildUniqueTruck(double cost, Stock cargo) {
+    private OrdinaryTruck buildUniqueTruck(Stock cargo) {
         return SuperMartApplication.getInstance().getOrdinaryTruckBuilder()
-                .cost(cost)
                 .cargo(cargo)
                 .build();
     }
@@ -65,6 +66,8 @@ public class OrdinaryTruckTest {
     @Test
     public void testValidBuild() {
         OrdinaryTruck OrdinaryTruck = buildTruck();
+        assertEquals("ordinary", OrdinaryTruck.getType());
+        assertEquals(MAX_CAPACITY, OrdinaryTruck.getCargoCapacity());
         assertEquals(validCost, OrdinaryTruck.getCost());
         assertEquals(validStock, OrdinaryTruck.getCargo());
     }
@@ -87,54 +90,65 @@ public class OrdinaryTruckTest {
 	@Test
     public void testOnLowerThresholds() {
     	// Generate parameters
-		int borderQuantity = 1;
-		double borderCost = getCost(borderQuantity);
-		Stock borderStock = getStock(ImmutableSet.of(ImmutablePair.of(mock(Item.class), borderQuantity)));
+		Stock borderStock = getStock(ImmutableSet.of(ImmutablePair.of(mock(Item.class), MIN_CAPACITY)));
 		// Attempt to build
-    	buildUniqueTruck(borderCost, borderStock);
+    	buildUniqueTruck(borderStock);
     }
 
     // Test values sitting below the lower boundaries
     @Test(expected=IllegalStateException.class)
     public void testBelowLowerThresholds() {
     	// Generate parameters
-		int invalidQuantity = 0;
-		double invalidCost = getCost(invalidQuantity);
-		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(mock(Item.class), invalidQuantity)));
+		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(mock(Item.class), MIN_CAPACITY - 1)));
 		// Attempt to build
-    	buildUniqueTruck(invalidCost, invalidStock);
+    	buildUniqueTruck(invalidStock);
     }
     
     // Test values sitting on the upper boundaries
     @Test
     public void testOnUpperThresholds() {
     	// Generate parameters
-		int borderQuantity = 1000;
-		double borderCost = getCost(borderQuantity);
-		Stock borderStock = getStock(ImmutableSet.of(ImmutablePair.of(mock(Item.class), borderQuantity)));
+		Stock borderStock = getStock(ImmutableSet.of(ImmutablePair.of(mock(Item.class), MAX_CAPACITY)));
 		// Attempt to build
-    	buildUniqueTruck(borderCost, borderStock);
+    	buildUniqueTruck(borderStock);
     }
     
     // Test values sitting above the upper boundaries
     @Test(expected=IllegalStateException.class)
     public void testAboveUpperThresholds() {
     	// Generate parameters
-		int invalidQuantity = 1001;
-		double invalidCost = getCost(invalidQuantity);
-		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(mock(Item.class), invalidQuantity)));
+		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(mock(Item.class), MAX_CAPACITY + 1)));
 		// Attempt to build
-    	buildUniqueTruck(invalidCost, invalidStock);
+    	buildUniqueTruck(invalidStock);
     }
     
-    // Test values sitting above the upper boundaries
+    // Test hiring a refrigerated truck with no cold goods
     @Test(expected=IllegalStateException.class)
     public void testNoColdGoods() {
     	// Generate parameters
     	Item invalidItem = mock(Item.class);
-    	when(invalidItem.getIdealTemperature()).thenReturn(OptionalDouble.of(10));
+    	when(invalidItem.getIdealTemperature()).thenReturn(OptionalDouble.of(0));
 		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(invalidItem, validQuantity)));
 		// Attempt to build
-    	buildUniqueTruck(validCost, invalidStock);
+    	buildUniqueTruck(invalidStock);
+    }
+    
+    @Test(expected=IllegalStateException.class)
+    public void testEmptyTruck() {
+		// Attempt to build
+    	buildUniqueTruck(null);
+    }
+    
+    @Test(expected=IllegalStateException.class)
+    public void testEmptyStockTruck() {
+    	// Generate bad parameters
+		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(null, null)));
+		// Attempt to build
+    	buildUniqueTruck(invalidStock);
+    }
+    
+    @After
+    public void closeApplication() {
+        SuperMartApplication.getInstance().close();
     }
 }

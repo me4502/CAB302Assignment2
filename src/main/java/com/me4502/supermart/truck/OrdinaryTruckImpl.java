@@ -36,12 +36,6 @@ public class OrdinaryTruckImpl extends AbstractTruck implements OrdinaryTruck {
         private Stock cargo;
 
         @Override
-        public OrdinaryBuilder cost(double cost) {
-            // This shouldn't be here.
-            return this;
-        }
-
-        @Override
         public OrdinaryBuilder cargo(Stock cargo) {
             if (cargo.getTotalAmount() > CAPACITY) {
                 throw new IllegalStateException("Cargo exceeds capacity");
