@@ -1,9 +1,12 @@
 package com.me4502.supermart;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import com.me4502.supermart.store.Item;
 import com.me4502.supermart.store.ItemImpl;
 import com.me4502.supermart.store.Stock;
 import com.me4502.supermart.store.StockImpl;
+import com.me4502.supermart.truck.Manifest;
 import com.me4502.supermart.truck.OrdinaryTruck;
 import com.me4502.supermart.truck.OrdinaryTruckImpl;
 import com.me4502.supermart.truck.RefrigeratedTruck;
@@ -78,5 +81,15 @@ public class SuperMartApplication {
      */
     public RefrigeratedTruck.RefrigeratedBuilder getRefrigeratedTruckBuilder() {
         return new RefrigeratedTruckImpl.RefrigeratedTruckBuilderImpl();
+    }
+    
+    
+    /**
+     * Get the builder for the {@link Manifest} class.
+     *
+     * @return the manifest builder
+     */
+    public Manifest.Builder getManifestBuilder() {
+    	throw new NotImplementedException();
     }
 }
