@@ -43,7 +43,7 @@ public interface Truck {
      * @param <T> The {@link Truck} type
      * @param <B> The {@link Builder} type
      */
-	interface Builder<T, B> {
+	interface Builder<T extends Truck, B extends Builder> {
         /**
          * Sets the cost of the {@link Truck}.
          *

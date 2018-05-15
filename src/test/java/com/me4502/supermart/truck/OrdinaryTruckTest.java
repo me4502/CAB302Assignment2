@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import java.util.OptionalDouble;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
