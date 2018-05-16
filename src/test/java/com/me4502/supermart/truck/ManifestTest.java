@@ -41,9 +41,13 @@ public class ManifestTest {
         return builder;
     }
 
-    @Test
     public Manifest buildValidManifest() {
     	return validManifestBuilder().build(); 
+    }
+    
+    @Test
+    public void canBuildValid() {
+    	buildValidManifest();
     }
     
     @Test(expected=IllegalStateException.class)
