@@ -19,11 +19,6 @@ public class OrdinaryTruckTest {
 	private final int MIN_CAPACITY = 1;
 	private final int MAX_CAPACITY = 1000;
 	
-	// Get the cost of a truck for a certain temperature
-	private double getCost(int quantity) {
-		return (750 + 0.25 * quantity);
-	}
-	
 	private Item getItem(boolean isTemperatureControlled) {
 		Item item = mock(Item.class);
 		when(item.isTemperatureControlled()).thenReturn(isTemperatureControlled);
@@ -41,7 +36,7 @@ public class OrdinaryTruckTest {
 	
 	// Valid build parameters
 	int validQuantity = 100;
-	double validCost = getCost(validQuantity);
+	double validCost = 775;
 	Stock validStock = getStock(ImmutableSet.of(ImmutablePair.of(getItem(false), validQuantity)), 
 			ImmutableSet.of(mock(Item.class)), 
 			validQuantity);
@@ -139,9 +134,9 @@ public class OrdinaryTruckTest {
     	buildUniqueTruck(invalidStock);
     }
     
-    // Test hiring a refrigerated truck with no cold goods
+    // Test hiring an ordinary truck with no dry goods
     @Test(expected=IllegalStateException.class)
-    public void testNoColdGoods() {
+    public void testNoDryGoods() {
     	// Generate parameters
 		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(getItem(true), validQuantity)),
 				ImmutableSet.of(getItem(true)),

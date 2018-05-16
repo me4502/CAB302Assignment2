@@ -23,10 +23,6 @@ public class RefrigeratedTruckTest {
 	private final int MIN_TEMPERATURE = -20;
 	private final int MAX_TEMPERATURE = 10;
 	
-	// Get the cost of a truck for a certain temperature
-	private double getCost(double storageTemperature) {
-		return (900 + 20*Math.pow(Math.E, storageTemperature/5));
-	}
 	
 	// Return an item -- only need to test for item temperature
 	private Item getItem(double storageTemperature) {
@@ -49,7 +45,7 @@ public class RefrigeratedTruckTest {
 	int validAmount = 100;
 	double validStorageTemp = 0;
 	Item validItem = getItem(validStorageTemp);
-	double validCost = getCost(validStorageTemp);
+	double validCost = 1100;
 	Stock validStock = getStock(ImmutableSet.of(ImmutablePair.of(validItem, validAmount)),
 			ImmutableSet.of(validItem),
 			validAmount);
