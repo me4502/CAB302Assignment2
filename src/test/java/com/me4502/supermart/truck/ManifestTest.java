@@ -26,10 +26,14 @@ public class ManifestTest {
         SuperMartApplication.getInstance().close();
     }
 
+    // Create some trucks
+    OrdinaryTruck ordinaryTruck = mock(OrdinaryTruck.class);
+    RefrigeratedTruck refrigeratedTruck = mock(RefrigeratedTruck.class);
+    // Make a list of them
     private List<Truck> getTruckList() {
     	return Lists.newArrayList(
-    		mock(OrdinaryTruck.class),
-    		mock(RefrigeratedTruck.class)
+    		ordinaryTruck,
+    		refrigeratedTruck
     	);
     }
     
@@ -50,8 +54,8 @@ public class ManifestTest {
     	buildValidManifest();
     }
     
-    @Test(expected=IllegalStateException.class)
-    public void testEmptyFails() {
+    @Test
+    public void testEmptySucceeds() {
         getInstance().getManifestBuilder().build();
     }
     
