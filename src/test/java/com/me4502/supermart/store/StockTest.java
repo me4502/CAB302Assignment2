@@ -115,7 +115,7 @@ public class StockTest {
         assertEquals(3, testStockBuilder1().build().getTotalAmount());
     }
 
-    @Test(expected=IllegalStateException.class)
+    @Test
     public void testResetWorks() {
         Stock.Builder builder = testStockBuilder1().reset();
         assertTrue(builder.build().getStockedItems().isEmpty());
