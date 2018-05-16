@@ -85,10 +85,10 @@ public class ItemTest {
         // Test if each of the attributes is correct
         assertEquals("Test Item 2", item.getName());
         assertFalse(item.getIdealTemperature().isPresent());
-        assertEquals(9, item.getManufacturingCost());
+        assertEquals(9.0, item.getManufacturingCost());
         assertEquals(19, item.getReorderAmount());
         assertEquals(84, item.getReorderPoint());
-        assertEquals(0, item.getSellPrice());
+        assertEquals(0.0, item.getSellPrice());
     }
 
     @Test
