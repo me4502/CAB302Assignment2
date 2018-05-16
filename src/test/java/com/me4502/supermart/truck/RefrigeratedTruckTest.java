@@ -32,6 +32,7 @@ public class RefrigeratedTruckTest {
 	private Item getItem(double storageTemperature) {
 		Item item = mock(Item.class);
 		when(item.getIdealTemperature()).thenReturn(OptionalDouble.of(storageTemperature));
+		when(item.isTemperatureControlled()).thenReturn((storageTemperature <= MAX_TEMPERATURE) ? true : false);
 		return item;
 	}
 	

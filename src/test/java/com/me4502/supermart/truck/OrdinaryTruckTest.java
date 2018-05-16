@@ -4,8 +4,6 @@ import static junit.framework.TestCase.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.OptionalDouble;
-
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.junit.After;
 import org.junit.Before;
@@ -26,6 +24,12 @@ public class OrdinaryTruckTest {
 		return (750 + 0.25 * quantity);
 	}
 	
+	private Item getItem(boolean isTemperatureControlled) {
+		Item item = mock(Item.class);
+		when(item.isTemperatureControlled()).thenReturn(isTemperatureControlled);
+		return item;
+	}
+	
 	// Return a stock item -- only need to test for lowest item temperature and total amount
 	private Stock getStock(ImmutableSet<ImmutablePair<Item, Integer>> stockSetAmounts, ImmutableSet<Item> stockSet, int stockAmounts) {
 		Stock stock = mock(Stock.class);
@@ -38,7 +42,7 @@ public class OrdinaryTruckTest {
 	// Valid build parameters
 	int validQuantity = 100;
 	double validCost = getCost(validQuantity);
-	Stock validStock = getStock(ImmutableSet.of(ImmutablePair.of(mock(Item.class), validQuantity)), 
+	Stock validStock = getStock(ImmutableSet.of(ImmutablePair.of(getItem(false), validQuantity)), 
 			ImmutableSet.of(mock(Item.class)), 
 			validQuantity);
 	
@@ -95,8 +99,8 @@ public class OrdinaryTruckTest {
     public void testOnLowerThresholds() {
     	// Generate parameters
 		Stock boundaryStock = getStock(
-				ImmutableSet.of(ImmutablePair.of(mock(Item.class), MIN_CAPACITY)),
-				ImmutableSet.of(mock(Item.class)),
+				ImmutableSet.of(ImmutablePair.of(getItem(false), MIN_CAPACITY)),
+				ImmutableSet.of(getItem(false)),
 				MIN_CAPACITY);
 		// Attempt to build
     	buildUniqueTruck(boundaryStock);
@@ -106,8 +110,8 @@ public class OrdinaryTruckTest {
     @Test(expected=IllegalStateException.class)
     public void testBelowLowerThresholds() {
     	// Generate parameters
-		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(mock(Item.class), MIN_CAPACITY - 1)),
-				ImmutableSet.of(mock(Item.class)),
+		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(getItem(false), MIN_CAPACITY - 1)),
+				ImmutableSet.of(getItem(false)),
 				MIN_CAPACITY - 1);
 		// Attempt to build
     	buildUniqueTruck(invalidStock);
@@ -117,8 +121,8 @@ public class OrdinaryTruckTest {
     @Test
     public void testOnUpperThresholds() {
     	// Generate parameters
-		Stock boundaryStock = getStock(ImmutableSet.of(ImmutablePair.of(mock(Item.class), MAX_CAPACITY)),
-				ImmutableSet.of(mock(Item.class)),
+		Stock boundaryStock = getStock(ImmutableSet.of(ImmutablePair.of(getItem(false), MAX_CAPACITY)),
+				ImmutableSet.of(getItem(false)),
 				MAX_CAPACITY);
 		// Attempt to build
     	buildUniqueTruck(boundaryStock);
@@ -128,8 +132,8 @@ public class OrdinaryTruckTest {
     @Test(expected=IllegalStateException.class)
     public void testAboveUpperThresholds() {
     	// Generate parameters
-		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(mock(Item.class), MAX_CAPACITY + 1)),
-				ImmutableSet.of(mock(Item.class)),
+		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(getItem(false), MAX_CAPACITY + 1)),
+				ImmutableSet.of(getItem(false)),
 				MAX_CAPACITY + 1);
 		// Attempt to build
     	buildUniqueTruck(invalidStock);
@@ -139,10 +143,8 @@ public class OrdinaryTruckTest {
     @Test(expected=IllegalStateException.class)
     public void testNoColdGoods() {
     	// Generate parameters
-    	Item invalidItem = mock(Item.class);
-    	when(invalidItem.getIdealTemperature()).thenReturn(OptionalDouble.of(0));
-		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(invalidItem, validQuantity)),
-				ImmutableSet.of(invalidItem),
+		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(getItem(true), validQuantity)),
+				ImmutableSet.of(getItem(true)),
 				validQuantity);
 		// Attempt to build
     	buildUniqueTruck(invalidStock);
