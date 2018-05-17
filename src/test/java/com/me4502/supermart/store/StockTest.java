@@ -101,6 +101,16 @@ public class StockTest {
         assertTrue(getInstance().getStockBuilder().build().getStockedItems().isEmpty());
     }
 
+    @Test(expected=IllegalArgumentException.class)
+    public void testNullItemsFail() {
+        getInstance().getStockBuilder().addStockedItem(null, 1).build();
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testNegativeItemsFail() {
+        getInstance().getStockBuilder().addStockedItem(mock(Item.class), -1).build();
+    }
+
     @Test
     public void testSetsContainSameItems() {
         Stock stock = testStockBuilder1().build();
@@ -108,6 +118,16 @@ public class StockTest {
         for (Item item : stock.getStockedItems()) {
             assertTrue(stock.getStockedItemQuantities().stream().map(Pair::getLeft).anyMatch(stockedItem -> stockedItem.equals(item)));
         }
+    }
+
+    @Test
+    public void testBuilderMergesItems() {
+        Item mockItem = mock(Item.class);
+        Stock stock = SuperMartApplication.getInstance().getStockBuilder()
+                .addStockedItem(mockItem, 1)
+                .addStockedItem(mockItem, 2)
+                .build();
+        assertEquals(3, stock.getStockedItemQuantities().asList().get(0).getRight().intValue());
     }
 
     @Test

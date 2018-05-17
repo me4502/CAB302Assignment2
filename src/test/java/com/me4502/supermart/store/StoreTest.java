@@ -119,6 +119,12 @@ public class StoreTest {
         assertEquals(mockStock, instance.getInventory());
     }
 
+    @Test(expected=IllegalArgumentException.class)
+    public void testSettingNullStockFails() {
+        Store instance = StoreImpl.getInstance();
+        instance.setInventory(null);
+    }
+
     @Test
     public void testSettingStockIsCorrect() {
         Store instance = StoreImpl.getInstance();

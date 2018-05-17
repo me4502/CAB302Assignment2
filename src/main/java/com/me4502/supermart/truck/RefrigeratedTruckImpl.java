@@ -55,9 +55,6 @@ public class RefrigeratedTruckImpl extends AbstractTruck implements Refrigerated
             if (cargo.getTotalAmount() > CAPACITY) {
                 throw new IllegalStateException("Cargo exceeds capacity");
             }
-            if (!cargo.getStockedItems().stream().allMatch(Item::isTemperatureControlled)) {
-                throw new IllegalStateException("Cargo can only contain temperature controlled items");
-            }
             this.cargo = cargo;
             return this;
         }

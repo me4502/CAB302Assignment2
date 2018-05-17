@@ -66,6 +66,34 @@ public class ItemTest {
         builder.build();
     }
 
+    @Test(expected=IllegalArgumentException.class)
+    public void testInvalidManufacturingCost() {
+        // Can't have a negative manufacturing cost
+        SuperMartApplication.getInstance().getItemBuilder()
+                .manufacturingCost(-0.1);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testInvalidSellPrice() {
+        // Can't have a negative sell price
+        SuperMartApplication.getInstance().getItemBuilder()
+                .sellPrice(-0.1);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testInvalidReorderPoint() {
+        // Can't have a negative reorder point
+        SuperMartApplication.getInstance().getItemBuilder()
+                .reorderPoint(-1);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testInvalidReorderAmount() {
+        // Can't have a negative reorder amount
+        SuperMartApplication.getInstance().getItemBuilder()
+                .reorderAmount(-1);
+    }
+
     @Test
     public void testItemBuiltCorrectly() {
         Item item = buildTestItem();
