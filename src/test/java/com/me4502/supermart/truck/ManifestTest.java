@@ -59,10 +59,19 @@ public class ManifestTest {
         getInstance().getManifestBuilder().build();
     }
     
-    @Test(expected=IllegalStateException.class)
+    //Allow an empty manifest
+    @Test
     public void testResetWorks() {
         Manifest.Builder builder = validManifestBuilder().reset();
         assertTrue(builder.build().getTrucks().isEmpty());
+    }
+    
+    @Test
+    public void noEmptyTrucks() {
+        Manifest manifest = buildValidManifest();
+        for (Truck truck: manifest.getTrucks()) {
+            assertTrue(truck.getCargo().getTotalAmount() > 0);
+        }
     }
     
     @Test
