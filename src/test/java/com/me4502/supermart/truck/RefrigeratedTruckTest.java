@@ -150,7 +150,7 @@ public class RefrigeratedTruckTest {
     @Test(expected=IllegalStateException.class)
     public void testEmptyStockTruck() {
     	// Generate bad parameters
-		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.nullPair()),
+		Stock invalidStock = getStock(ImmutableSet.of(),
 				ImmutableSet.of(),
 				0);
 		// Attempt to build
