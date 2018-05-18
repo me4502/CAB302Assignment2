@@ -94,6 +94,13 @@ public class ItemTest {
                 .reorderAmount(-1);
     }
 
+    @Test(expected=IllegalArgumentException.class)
+    public void testInvalidTemperature() {
+        // Can't have a temperature below -20
+        SuperMartApplication.getInstance().getItemBuilder()
+                .idealTemperature(-21);
+    }
+
     @Test
     public void testItemBuiltCorrectly() {
         Item item = buildTestItem();
