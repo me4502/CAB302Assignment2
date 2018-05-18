@@ -1,6 +1,14 @@
 package com.me4502.supermart.store;
 
+import java.text.NumberFormat;
+
+import com.google.common.collect.ImmutableSet;
+
 public class StoreImpl implements Store {
+	String name;
+	double capital;
+	Stock inventory;
+	
 
     private static StoreImpl instance;
 
@@ -8,6 +16,9 @@ public class StoreImpl implements Store {
         if (instance != null) {
             throw new IllegalStateException("This object has already been instantiated");
         }
+        this.name = name;
+        this.capital = 100000;
+        this.inventory = new StockImpl(ImmutableSet.of());
         instance = this;
     }
 
@@ -29,31 +40,35 @@ public class StoreImpl implements Store {
 
     @Override
     public String getName() {
-        throw new UnsupportedOperationException();
+        return name;
     }
 
     @Override
     public double getCapital() {
-        throw new UnsupportedOperationException();
+        return capital;
     }
 
     @Override
     public void setCapital(double capital) {
-        throw new UnsupportedOperationException();
+        this.capital = capital;
     }
 
     @Override
     public String getFormattedCapital() {
-        throw new UnsupportedOperationException();
+    	NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
+        return (capital > 0) ? currencyFormatter.format(this.capital) : "-" + currencyFormatter.format(this.capital * -1);
     }
 
     @Override
     public Stock getInventory() {
-        throw new UnsupportedOperationException();
+        return this.inventory;
     }
 
     @Override
     public void setInventory(Stock inventory) {
-        throw new UnsupportedOperationException();
+    	if (inventory == null) {
+    		throw new IllegalArgumentException("Inventory can't be null");
+    	}
+        this.inventory = inventory;
     }
 }
