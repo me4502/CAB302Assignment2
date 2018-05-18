@@ -49,7 +49,7 @@ public class StockImpl implements Stock {
 		private HashMap<Item, Integer> stock = new HashMap<Item, Integer>();
 		public Builder addStockedItem(Item item, int quantity) {
 			if (item == null || quantity  < 1) {
-    			throw new IllegalStateException("Can't not add an item");
+    			throw new IllegalArgumentException("Item cannot be null and must be positive");
     		}
 			if (stock.containsKey(item)) {
 				stock.put(item, new Integer(stock.get(item) + quantity));
