@@ -1,7 +1,6 @@
 package com.me4502.supermart;
 
 import com.me4502.supermart.truck.ManifestImpl;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import com.me4502.supermart.store.Item;
 import com.me4502.supermart.store.ItemImpl;

@@ -8,6 +8,8 @@ import java.util.OptionalDouble;
 /**
  * Implementation for {@link RefrigeratedTruck}.
  *
+ * {@inheritDoc}
+ *
  * @author Madeline Miller
  */
 public class RefrigeratedTruckImpl extends AbstractTruck implements RefrigeratedTruck {
@@ -47,6 +49,11 @@ public class RefrigeratedTruckImpl extends AbstractTruck implements Refrigerated
         return CAPACITY;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @author Madeline Miller
+     */
     public static class RefrigeratedTruckBuilderImpl implements RefrigeratedTruck.RefrigeratedBuilder {
         private Stock cargo;
 

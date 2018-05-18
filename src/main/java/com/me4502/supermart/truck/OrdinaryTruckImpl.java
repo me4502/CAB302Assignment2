@@ -6,6 +6,8 @@ import com.me4502.supermart.store.Stock;
 /**
  * Implementation for {@link OrdinaryTruck}.
  *
+ * {@inheritDoc}
+ *
  * @author Madeline Miller
  */
 public class OrdinaryTruckImpl extends AbstractTruck implements OrdinaryTruck {
@@ -32,6 +34,11 @@ public class OrdinaryTruckImpl extends AbstractTruck implements OrdinaryTruck {
         return CAPACITY;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @author Madeline Miller
+     */
     public static class OrdinaryTruckBuilderImpl implements OrdinaryTruck.OrdinaryBuilder {
         private Stock cargo;
 
