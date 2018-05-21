@@ -43,7 +43,7 @@ public class StockImpl implements Stock {
 	@Override
 	public OptionalInt getItemQuantity(Item item) {
     	for (ImmutablePair<Item, Integer> pair : pairSet) {
-    		if (item == pair.getLeft()) {
+    		if (item.getName() == pair.getLeft().getName()) {
     			return OptionalInt.of(pair.getRight());
     		}
     	}
