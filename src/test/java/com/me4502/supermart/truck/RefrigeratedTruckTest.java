@@ -110,18 +110,6 @@ public class RefrigeratedTruckTest {
 		// Attempt to build
     	buildUniqueTruck(boundaryStock);
     }
-
-    // Test values sitting below the lower boundaries
-    @Test(expected=IllegalStateException.class)
-    public void testBelowLowerThresholds() {
-    	// Generate bad parameters
-		Item invalidItem = getItem(MIN_TEMPERATURE - 1);
-		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(invalidItem, MIN_CAPACITY - 1)),
-				ImmutableSet.of(invalidItem),
-				MIN_CAPACITY - 1);
-		// Attempt to build
-    	buildUniqueTruck(invalidStock);
-    }
     
     // Test values sitting on the upper boundaries
     @Test
@@ -147,7 +135,7 @@ public class RefrigeratedTruckTest {
     	buildUniqueTruck(invalidStock);
     }
     
-    @Test(expected=IllegalStateException.class)
+    @Test
     public void testEmptyStockTruck() {
     	// Generate bad parameters
 		Stock invalidStock = getStock(ImmutableSet.of(),

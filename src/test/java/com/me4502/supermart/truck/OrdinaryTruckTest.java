@@ -38,7 +38,7 @@ public class OrdinaryTruckTest {
 	int validQuantity = 100;
 	double validCost = 775;
 	Stock validStock = getStock(ImmutableSet.of(ImmutablePair.of(getItem(false), validQuantity)), 
-			ImmutableSet.of(mock(Item.class)), 
+			ImmutableSet.of(getItem(false)), 
 			validQuantity);
 	
 	// Return builder for valid item
@@ -100,20 +100,6 @@ public class OrdinaryTruckTest {
 		// Attempt to build
     	buildUniqueTruck(boundaryStock);
     }
-
-	/*
-    // Test values sitting below the lower boundaries
-    @Test(expected=IllegalStateException.class)
-    public void testBelowLowerThresholds() {
-    	// Generate parameters
-		Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(getItem(false), MIN_CAPACITY - 1)),
-				ImmutableSet.of(getItem(false)),
-				MIN_CAPACITY - 1);
-		// Attempt to build
-    	buildUniqueTruck(invalidStock);
-    }
-    */
-	
 	
     // Test values sitting on the upper boundaries
     @Test
@@ -149,7 +135,7 @@ public class OrdinaryTruckTest {
     }
     
     
-    @Test(expected=IllegalStateException.class)
+    @Test
     public void testEmptyStockTruck() {
     	// Generate bad parameters
 		Stock invalidStock = getStock(ImmutableSet.of(),
