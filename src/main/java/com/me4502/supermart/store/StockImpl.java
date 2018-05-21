@@ -11,17 +11,9 @@ public class StockImpl implements Stock {
 	public StockImpl(ImmutableSet<ImmutablePair<Item, Integer>> pairSet) {
 		this.pairSet = pairSet;
 	}
-	
-	// Getting the total value of the stock
-	public double totalValue() {
-		double totalValue = 0;
-		for (ImmutablePair<Item, Integer> pair : pairSet) {
-    		totalValue += (pair.getLeft().getSellPrice() * pair.getRight());
-    	}
-    	return totalValue;
-	}
 
 	// Getting the total amount of items
+	@Override
 	public int getTotalAmount() {
 		//mapToInt unbox the Integer (i->i)
 		//stock.values().stream().mapToInt(i->i).sum();
@@ -32,7 +24,8 @@ public class StockImpl implements Stock {
     	return totalAmount;
 	}
 	
-	// Gets a set of all stocked items.
+	// Gets a set of all stocked items
+	@Override
     public ImmutableSet<Item> getStockedItems() {
     	HashSet<Item> tempSet = new HashSet<Item>();
     	for (ImmutablePair<Item, Integer> pair : pairSet) {
@@ -42,13 +35,19 @@ public class StockImpl implements Stock {
     }
     
 	// Return the stock map
+    @Override
 	public ImmutableSet<ImmutablePair<Item, Integer>> getStockedItemQuantities() {
 		return pairSet;
 	}
 
 	@Override
 	public OptionalInt getItemQuantity(Item item) {
-		throw new UnsupportedOperationException();
+    	for (ImmutablePair<Item, Integer> pair : pairSet) {
+    		if (item == pair.getLeft()) {
+    			return OptionalInt.of(pair.getRight());
+    		}
+    	}
+    	return OptionalInt.empty();
 	}
 
 	public static class StockBuilder implements Stock.Builder {
@@ -81,13 +80,4 @@ public class StockImpl implements Stock {
 			return this;
 		}
 	}
-	/*
-	// 
-	public boolean stockExists(Item item) {
-		if (stock.get(item) != null) {
-			return true;
-		}
-		return false;
-	}
-	*/
 }
