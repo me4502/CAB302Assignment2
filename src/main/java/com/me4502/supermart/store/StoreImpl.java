@@ -1,6 +1,7 @@
 package com.me4502.supermart.store;
 
 import java.text.NumberFormat;
+import java.util.HashMap;
 import java.util.Optional;
 
 import com.google.common.collect.ImmutableSet;
@@ -9,7 +10,7 @@ public class StoreImpl implements Store {
 	String name;
 	double capital;
 	Stock inventory;
-	
+	HashMap<String, Item> stockableItems = new HashMap<String, Item>();
 
     private static StoreImpl instance;
 
@@ -75,16 +76,18 @@ public class StoreImpl implements Store {
 
     @Override
     public void addItem(Item item) {
-        throw new UnsupportedOperationException();
+    	if (!stockableItems.containsKey(item.getName())) {
+    		stockableItems.put(item.getName(), item);
+    	}
     }
 
     @Override
     public Optional<Item> getItem(String name) {
-        throw new UnsupportedOperationException();
+        return Optional.ofNullable(stockableItems.get(name));
     }
 
     @Override
     public ImmutableSet<Item> getItems() {
-        throw new UnsupportedOperationException();
+        return ImmutableSet.copyOf(stockableItems.values());
     }
 }
