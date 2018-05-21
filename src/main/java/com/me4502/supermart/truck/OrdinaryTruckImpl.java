@@ -13,6 +13,7 @@ import com.me4502.supermart.store.Stock;
 public class OrdinaryTruckImpl extends AbstractTruck implements OrdinaryTruck {
 
     private static final int CAPACITY = 1000;
+    private static final String TYPE = "Ordinary";
 
     private OrdinaryTruckImpl(Stock cargo) {
         super(cargo);
@@ -20,7 +21,7 @@ public class OrdinaryTruckImpl extends AbstractTruck implements OrdinaryTruck {
 
     @Override
     public String getType() {
-        return "ordinary";
+        return TYPE;
     }
 
     @Override
