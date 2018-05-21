@@ -40,13 +40,15 @@ public class ManifestTest {
         return stock;
     }    
     private OrdinaryTruck getOrdinaryTruck() {
+    	Stock stock = getStock();
     	OrdinaryTruck ordinaryTruck = mock(OrdinaryTruck.class);
-    	when(ordinaryTruck.getCargo()).thenReturn(getStock());
+    	when(ordinaryTruck.getCargo()).thenReturn(stock);
     	return ordinaryTruck;
     }
     private RefrigeratedTruck getRefrigeratedTruck() {
+    	Stock stock = getStock();
     	RefrigeratedTruck RefrigeratedTruck = mock(RefrigeratedTruck.class);
-    	when(RefrigeratedTruck.getCargo()).thenReturn(getStock());
+    	when(RefrigeratedTruck.getCargo()).thenReturn(stock);
     	return RefrigeratedTruck;
     }
 	
