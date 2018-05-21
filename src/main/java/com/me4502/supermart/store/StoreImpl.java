@@ -1,6 +1,7 @@
 package com.me4502.supermart.store;
 
 import java.text.NumberFormat;
+import java.util.Optional;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -70,5 +71,20 @@ public class StoreImpl implements Store {
     		throw new IllegalArgumentException("Inventory can't be null");
     	}
         this.inventory = inventory;
+    }
+
+    @Override
+    public void addItem(Item item) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Optional<Item> getItem(String name) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public ImmutableSet<Item> getItems() {
+        throw new UnsupportedOperationException();
     }
 }

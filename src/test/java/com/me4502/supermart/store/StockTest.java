@@ -13,6 +13,7 @@ import java.util.OptionalDouble;
 
 import static com.me4502.supermart.SuperMartApplication.getInstance;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
@@ -66,6 +67,18 @@ public class StockTest {
             builder.addStockedItem(list.get(i), i + 1);
         }
         return builder;
+    }
+
+    @Test
+    public void testGetItemQuantity() {
+        Stock stock = testStockBuilder1().build();
+        assertEquals(1, stock.getItemQuantity(getItem1()).orElse(0));
+    }
+
+    @Test
+    public void testGetItemQuantityMissing() {
+        Stock stock = getInstance().getStockBuilder().addStockedItem(getItem1(), 1).build();
+        assertFalse(stock.getItemQuantity(getItem2()).isPresent());
     }
 
     @Test

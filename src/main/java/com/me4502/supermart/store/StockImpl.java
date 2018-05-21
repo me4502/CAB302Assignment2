@@ -1,6 +1,7 @@
 package com.me4502.supermart.store;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.OptionalInt;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import com.google.common.collect.ImmutableSet;
@@ -44,7 +45,12 @@ public class StockImpl implements Stock {
 	public ImmutableSet<ImmutablePair<Item, Integer>> getStockedItemQuantities() {
 		return pairSet;
 	}
-	
+
+	@Override
+	public OptionalInt getItemQuantity(Item item) {
+		throw new UnsupportedOperationException();
+	}
+
 	public static class StockBuilder implements Stock.Builder {
 		private HashMap<Item, Integer> stock = new HashMap<Item, Integer>();
 		public Builder addStockedItem(Item item, int quantity) {

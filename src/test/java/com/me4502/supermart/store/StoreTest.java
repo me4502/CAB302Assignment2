@@ -1,6 +1,7 @@
 package com.me4502.supermart.store;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -135,5 +136,30 @@ public class StoreTest {
         instance.setInventory(mockStock);
         assertTrue(instance.getInventory().getStockedItems().stream()
                 .anyMatch(item -> item.getName().equals("Test")));
+    }
+
+    @Test
+    public void testAddingItemsWork() {
+        Store instance = StoreImpl.getInstance();
+        Item mockItem = mock(Item.class);
+        when(mockItem.getName()).thenReturn("Test Item");
+        instance.addItem(mockItem);
+        assertEquals("Test Item", instance.getItem("Test Item").map(Item::getName).orElse("Empty"));
+    }
+
+    @Test
+    public void testGettingOtherItemIsEmpty() {
+        Store instance = StoreImpl.getInstance();
+        assertFalse(instance.getItem("Empty").isPresent());
+    }
+
+    @Test
+    public void testGetItemsSet() {
+        Store instance = StoreImpl.getInstance();
+        assertEquals(0, instance.getItems().size());
+        Item mockItem = mock(Item.class);
+        when(mockItem.getName()).thenReturn("Test Item");
+        instance.addItem(mockItem);
+        assertEquals(1, instance.getItems().size());
     }
 }

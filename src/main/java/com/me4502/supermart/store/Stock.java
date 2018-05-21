@@ -3,6 +3,8 @@ package com.me4502.supermart.store;
 import com.google.common.collect.ImmutableSet;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
+import java.util.OptionalInt;
+
 /**
  * Represents a collection of {@link Item} instances with quantities. This class is immutable.
  *
@@ -23,6 +25,17 @@ public interface Stock {
      * @return The stocked items with quantities
      */
     ImmutableSet<ImmutablePair<Item, Integer>> getStockedItemQuantities();
+
+    /**
+     * Gets the quantity of the item, if present.
+     *
+     * If an item is not stocked, this is empty. If it's
+     * stocked, but the stock is out, this returns 0.
+     *
+     * @param item The item to check the quantity of
+     * @return The item quantity, if present
+     */
+    OptionalInt getItemQuantity(Item item);
 
     /**
      * Gets the total amount of the items in this Stock.

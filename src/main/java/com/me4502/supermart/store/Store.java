@@ -1,5 +1,9 @@
 package com.me4502.supermart.store;
 
+import com.google.common.collect.ImmutableSet;
+
+import java.util.Optional;
+
 /**
  * Represents a store. This class is a singleton.
  *
@@ -50,4 +54,35 @@ public interface Store {
      * @param inventory The new inventory
      */
     void setInventory(Stock inventory);
+
+    /**
+     * Adds a stockable item to this Store.
+     *
+     * This refers to a possible stockable item,
+     * not the actual stock of the store.
+     *
+     * @param item The item
+     */
+    void addItem(Item item);
+
+    /**
+     * Gets an item from the stockable items by name, if present.
+     *
+     * This refers to a possible stockable item,
+     * not the actual stock of the store.
+     *
+     * @param name The item name
+     * @return The item, if present
+     */
+    Optional<Item> getItem(String name);
+
+    /**
+     * Gets the items that this store can possibly stock.
+     *
+     * This refers to the possible stockable items, not
+     * the actual stock of the store.
+     *
+     * @return An immutable set of items
+     */
+    ImmutableSet<Item> getItems();
 }
