@@ -17,6 +17,7 @@ public class RefrigeratedTruckImpl extends AbstractTruck implements Refrigerated
     private static final int CAPACITY = 800;
     private static final double MIN_TEMP = -20;
     private static final double MAX_TEMP = 10;
+    private static final String TYPE = "Refrigerated";
 
     private RefrigeratedTruckImpl(Stock cargo) {
         super(cargo);
@@ -24,7 +25,7 @@ public class RefrigeratedTruckImpl extends AbstractTruck implements Refrigerated
 
     @Override
     public String getType() {
-        return "refrigerated";
+        return TYPE;
     }
 
     @Override
