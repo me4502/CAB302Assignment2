@@ -7,7 +7,12 @@ package com.me4502.supermart.truck;
  */
 public interface OrdinaryTruck extends Truck {
 
-    interface OrdinaryBuilder extends Truck.Builder<OrdinaryTruck, OrdinaryBuilder> {
+	/**
+    * Builder class to build {@link OrdinaryTruck} instances.
+    *
+    * @author Liam Dale
+    */
+	interface OrdinaryBuilder extends Truck.Builder<OrdinaryTruck, OrdinaryBuilder> {
 
     }
 }

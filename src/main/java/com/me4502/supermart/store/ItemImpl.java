@@ -3,7 +3,7 @@ package com.me4502.supermart.store;
 import java.util.OptionalDouble;
 
 /**
- * Implementation of the item interface
+ * Implementation for the {@link Item} interface
  *
  * @author Liam Dale
  */
@@ -19,7 +19,7 @@ public class ItemImpl implements Item {
     // Constructs an item, can overload with storage temperature
 	/*
 	public ItemImpl(String name, Double manufacturingCost, Double sellPrice, Integer reorderPoint, Integer reorderAmount) {
-		this(name, manufacturingCost, sellPrice, reorderPoint, reorderAmount, OptionalDouble.empty());	
+		this(name, manufacturingCost, sellPrice, reorderPoint, reorderAmount, OptionalDouble.empty());
 	}
 	*/
     private ItemImpl(String name, Double manufacturingCost, Double sellPrice, Integer reorderPoint, Integer reorderAmount,

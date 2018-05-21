@@ -8,6 +8,12 @@ import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Optional;
 
+/**
+ * Implementation for the {@link Store} interface.
+ * 
+ * @author Liam Dale
+ *
+ */
 public class StoreImpl implements Store {
 
     private String name;

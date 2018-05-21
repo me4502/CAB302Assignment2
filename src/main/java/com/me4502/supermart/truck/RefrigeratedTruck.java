@@ -14,6 +14,11 @@ public interface RefrigeratedTruck extends Truck {
      */
     double getStorageTemperature();
 
+    /**
+     * Builder class to {@link RefrigeratedTruck} instances.
+     *
+     * @author Liam Dale
+     */
     interface RefrigeratedBuilder extends Truck.Builder<RefrigeratedTruck, RefrigeratedBuilder> {
 
     }
