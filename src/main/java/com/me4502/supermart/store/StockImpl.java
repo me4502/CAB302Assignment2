@@ -53,13 +53,19 @@ public class StockImpl implements Stock {
 	public static class StockBuilder implements Stock.Builder {
 		private HashMap<Item, Integer> stock = new HashMap<Item, Integer>();
 		public Builder addStockedItem(Item item, int quantity) {
-			if (item == null || quantity  < 1) {
-    			throw new IllegalArgumentException("Item cannot be null and must be positive");
+			if (item == null) {
+    			throw new IllegalArgumentException("Item cannot be null");
     		}
 			if (stock.containsKey(item)) {
+				if (stock.get(item) < -quantity && quantity < 0) {
+					throw new IllegalArgumentException("Cannot remove this many items");
+				}
 				stock.put(item, new Integer(stock.get(item) + quantity));
 			}
 			else {
+				if (quantity < 0) {
+					throw new IllegalArgumentException("Create an item with a negative quantity");
+				}
 				stock.put(item, new Integer(quantity));
 			}
 			return this;
