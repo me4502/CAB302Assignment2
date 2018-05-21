@@ -78,7 +78,7 @@ public class RefrigeratedTruckTest {
     @Test
     public void testValidBuild() {
         RefrigeratedTruck RefrigeratedTruck = buildTruck();
-        assertEquals("refrigerated", RefrigeratedTruck.getType());
+        assertEquals("Refrigerated", RefrigeratedTruck.getType());
         assertEquals(MAX_CAPACITY, RefrigeratedTruck.getCargoCapacity());
         assertEquals(validCost, RefrigeratedTruck.getCost());
         assertEquals(validStock, RefrigeratedTruck.getCargo());

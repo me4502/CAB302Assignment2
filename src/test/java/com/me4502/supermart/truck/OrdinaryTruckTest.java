@@ -69,7 +69,7 @@ public class OrdinaryTruckTest {
     @Test
     public void testValidBuild() {
         OrdinaryTruck OrdinaryTruck = buildTruck();
-        assertEquals("ordinary", OrdinaryTruck.getType());
+        assertEquals("Ordinary", OrdinaryTruck.getType());
         assertEquals(MAX_CAPACITY, OrdinaryTruck.getCargoCapacity());
         assertEquals(validCost, OrdinaryTruck.getCost());
         assertEquals(validStock, OrdinaryTruck.getCargo());
