@@ -49,7 +49,6 @@ public class SuperMartGui {
         JTabbedPane tabPane = new JTabbedPane();
         tabPane.addTab("Info", createInfoPane());
         tabPane.addTab("Inventory", createInventoryPane());
-        tabPane.addTab("Sales Log", createSalesLogPane());
         tabPane.addTab("Manifest", createManifestPane());
         this.frame.add(tabPane);
 
@@ -91,7 +90,22 @@ public class SuperMartGui {
                 JOptionPane.showMessageDialog(frame, "Please select a file to load inventory!");
             }
         });
-        inventoryPane.add(loadInventoryButton);
+        JButton loadSalesLogButton = new JButton("Load Sales Log");
+        loadSalesLogButton.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
+            int returnVal = fileChooser.showOpenDialog(frame);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fileChooser.getSelectedFile();
+                // TODO Once CSV is implemented read in the file
+            } else {
+                JOptionPane.showMessageDialog(frame, "Please select a file to load sales log!");
+            }
+        });
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(loadInventoryButton);
+        buttonPanel.add(loadSalesLogButton);
+        inventoryPane.add(buttonPanel);
 
         return inventoryPane;
     }
@@ -123,37 +137,6 @@ public class SuperMartGui {
 
         // Set the model of the table
         inventoryTable.setModel(new ArrayTableModel(data, columns, false));
-    }
-
-    private JPanel createSalesLogPane() {
-        // Sales log pane
-        JPanel salesLogPane = new JPanel();
-        salesLogPane.setLayout(new BoxLayout(salesLogPane, BoxLayout.Y_AXIS));
-        JLabel salesLogPaneTitle = new JLabel("Sales Log");
-        salesLogPaneTitle.setFont(new Font("Default", Font.PLAIN, 18));
-        salesLogPane.add(salesLogPaneTitle);
-        JTable salesLogTable = new JTable();
-        fillSalesLogTable(salesLogTable);
-        salesLogPane.add(new JScrollPane(salesLogTable));
-        JButton loadSalesLogButton = new JButton("Load Sales Log");
-        loadSalesLogButton.addActionListener(e -> {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
-            int returnVal = fileChooser.showOpenDialog(frame);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fileChooser.getSelectedFile();
-                // TODO Once CSV is implemented read in the file
-            } else {
-                JOptionPane.showMessageDialog(frame, "Please select a file to load sales log!");
-            }
-        });
-        salesLogPane.add(loadSalesLogButton);
-
-        return salesLogPane;
-    }
-
-    private void fillSalesLogTable(JTable salesLogTable) {
-        // TODO
     }
 
     private JPanel createManifestPane() {
