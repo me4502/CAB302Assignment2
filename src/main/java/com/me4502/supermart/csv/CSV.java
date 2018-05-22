@@ -42,14 +42,19 @@ public class CSV {
     }
 
     public static void loadItemProperties(File file) throws IOException, CSVFormatException {
+    	Item tempItem;
+    	Stock.Builder stockBuilder = SuperMartApplication.getInstance().getStockBuilder();  	
         List<String[]> lines = readCSV(file);
         for (int i = 0; i < lines.size(); i++) {
             try {
-                StoreImpl.getInstance().addItem(itemBuilder(lines.get(i)).build());
+            	tempItem = itemBuilder(lines.get(i)).build();
+            	stockBuilder.addStockedItem(tempItem, 0);
+                StoreImpl.getInstance().addItem(tempItem);
             } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                 throw new CSVFormatException("Invalid format on line " + (i + 1));
             }
         }
+        StoreImpl.getInstance().setInventory(stockBuilder.build());
     }
 
     public static void loadSalesLog(File file) throws IOException, StockException, CSVFormatException {
@@ -76,7 +81,7 @@ public class CSV {
             stockBuilder.addStockedItem(itemPair.getLeft(), itemPair.getRight());
         }
         // Getting the total sell value of the stock while continuing to create the new stock
-        double totalValue = 0;
+        double totalValue = 0; 
         for (ImmutablePair<Item, Integer> itemPair : soldStock.getStockedItemQuantities()) {
             if (StoreImpl.getInstance().getItem(itemPair.getLeft().getName()).isPresent()) {
                 totalValue += itemPair.getLeft().getSellPrice() * itemPair.getRight();
