@@ -40,7 +40,7 @@ public class ItemImpl implements Item {
 
     @Override
     public double getManufacturingCost() {
-        return this.manufacturingCost;
+        return this.manufacturingCost; 
     }
 
     @Override
@@ -66,6 +66,19 @@ public class ItemImpl implements Item {
     @Override
     public boolean isTemperatureControlled() {
         return this.idealTemperature.isPresent();
+    }
+    
+    @Override 
+    public boolean equals(Object obj) {
+    	if (obj instanceof Item) {
+    		return this.name.equals(((Item) obj).getName());
+    	}
+    	return false;
+    }
+    
+    @Override
+    public int hashCode() {
+    	return this.name.hashCode();
     }
 
     /**
