@@ -12,7 +12,6 @@ import com.me4502.supermart.store.Stock;
  */
 public class OrdinaryTruckImpl extends AbstractTruck implements OrdinaryTruck {
 
-    private static final int CAPACITY = 1000;
     private static final String TYPE = "Ordinary";
 
     private OrdinaryTruckImpl(Stock cargo) {
@@ -30,11 +29,6 @@ public class OrdinaryTruckImpl extends AbstractTruck implements OrdinaryTruck {
         return 750 + (0.25 * getCargo().getTotalAmount());
     }
 
-    @Override
-    public int getCargoCapacity() {
-        return CAPACITY;
-    }
-
     /**
      * {@inheritDoc}
      *
@@ -46,7 +40,7 @@ public class OrdinaryTruckImpl extends AbstractTruck implements OrdinaryTruck {
 
         @Override
         public OrdinaryBuilder cargo(Stock cargo) {
-            if (cargo.getTotalAmount() > CAPACITY) {
+            if (cargo.getTotalAmount() > OrdinaryTruck.getCapacity()) {
                 throw new IllegalStateException("Cargo exceeds capacity");
             }
             if (cargo.getStockedItems().stream().anyMatch(Item::isTemperatureControlled)) {

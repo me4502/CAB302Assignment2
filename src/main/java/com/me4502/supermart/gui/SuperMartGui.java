@@ -5,8 +5,10 @@ import com.me4502.supermart.csv.CSV;
 import com.me4502.supermart.exception.CSVFormatException;
 import com.me4502.supermart.exception.DeliveryException;
 import com.me4502.supermart.exception.StockException;
+import com.me4502.supermart.store.Stock;
 import com.me4502.supermart.store.Store;
 import com.me4502.supermart.store.StoreImpl;
+import com.me4502.supermart.truck.ManifestOptimiser;
 
 import java.awt.Font;
 import java.io.File;
@@ -36,6 +38,8 @@ public class SuperMartGui {
 
     // Form
     private JFrame frame;
+
+    private JTable manifestTable;
 
     /**
      * Creates a new instance of the GUI.
@@ -91,6 +95,7 @@ public class SuperMartGui {
                 File file = fileChooser.getSelectedFile();
                 try {
                     CSV.loadItemProperties(file);
+                    optimiseManifests();
                 } catch (IOException e1) {
                     JOptionPane.showMessageDialog(frame, "Failed to load the file: " + e1.getMessage());
                     e1.printStackTrace();
@@ -109,6 +114,7 @@ public class SuperMartGui {
                 File file = fileChooser.getSelectedFile();
                 try {
                     CSV.loadSalesLog(file);
+                    optimiseManifests();
                 } catch (IOException e1) {
                     JOptionPane.showMessageDialog(frame, "Failed to load the file: " + e1.getMessage());
                     e1.printStackTrace();
@@ -161,9 +167,9 @@ public class SuperMartGui {
         JLabel manifestPaneTitle = new JLabel("Manifest");
         manifestPaneTitle.setFont(new Font("Default", Font.PLAIN, 18));
         manifestPane.add(manifestPaneTitle);
-        JTable manifestTable = new JTable();
-        fillManifestTable(manifestTable);
-        manifestPane.add(new JScrollPane(manifestTable));
+        this.manifestTable = new JTable();
+        fillManifestTable(this.manifestTable);
+        manifestPane.add(new JScrollPane(this.manifestTable));
         JButton loadManifestButton = new JButton("Load Manifests");
         loadManifestButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
@@ -179,7 +185,7 @@ public class SuperMartGui {
                 } catch (CSVFormatException | DeliveryException e1) {
                     JOptionPane.showMessageDialog(frame, e1.getMessage());
                 }
-                fillManifestTable(manifestTable);
+                fillManifestTable(this.manifestTable);
             }
         });
         JButton optimiseManifestButton = new JButton("Optimise Manifests");
@@ -190,6 +196,15 @@ public class SuperMartGui {
         buttonPanel.add(saveManifestButton);
         manifestPane.add(buttonPanel);
         return manifestPane;
+    }
+
+    private void optimiseManifests() {
+        Stock.Builder stockBuilder = SuperMartApplication.getInstance().getStockBuilder();
+        this.store.getInventory().getStockedItemQuantities().stream()
+                .filter(pair -> pair.getRight() <= pair.getLeft().getReorderPoint())
+                .forEach(pair -> stockBuilder.addStockedItem(pair.getLeft(), pair.getLeft().getReorderAmount()));
+        this.store.setManifest(new ManifestOptimiser(stockBuilder.build()).getManifest());
+        fillManifestTable(this.manifestTable);
     }
 
     private void fillManifestTable(JTable manifestTable) {

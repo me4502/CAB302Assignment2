@@ -15,6 +15,20 @@ public interface RefrigeratedTruck extends Truck {
     double getStorageTemperature();
 
     /**
+     * Gets the capacity of this type of Truck.
+     *
+     * @return The capacity
+     */
+    static int getCapacity() {
+        return 800;
+    }
+
+    @Override
+    default int getCargoCapacity() {
+        return getCapacity();
+    }
+
+    /**
      * Builder class to {@link RefrigeratedTruck} instances.
      *
      * @author Liam Dale

@@ -14,7 +14,6 @@ import java.util.OptionalDouble;
  */
 public class RefrigeratedTruckImpl extends AbstractTruck implements RefrigeratedTruck {
 
-    private static final int CAPACITY = 800;
     private static final double MIN_TEMP = -20;
     private static final double MAX_TEMP = 10;
     private static final String TYPE = "Refrigerated";
@@ -45,11 +44,6 @@ public class RefrigeratedTruckImpl extends AbstractTruck implements Refrigerated
         return 900 + (200 * Math.pow(0.7, getStorageTemperature() / 5));
     }
 
-    @Override
-    public int getCargoCapacity() {
-        return CAPACITY;
-    }
-
     /**
      * {@inheritDoc}
      *
@@ -61,7 +55,7 @@ public class RefrigeratedTruckImpl extends AbstractTruck implements Refrigerated
 
         @Override
         public RefrigeratedBuilder cargo(Stock cargo) {
-            if (cargo.getTotalAmount() > CAPACITY) {
+            if (cargo.getTotalAmount() > RefrigeratedTruck.getCapacity()) {
                 throw new IllegalStateException("Cargo exceeds capacity");
             }
             this.cargo = cargo;
