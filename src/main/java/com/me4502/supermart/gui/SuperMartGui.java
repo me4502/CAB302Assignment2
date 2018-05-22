@@ -3,6 +3,7 @@ package com.me4502.supermart.gui;
 import com.me4502.supermart.SuperMartApplication;
 import com.me4502.supermart.csv.CSV;
 import com.me4502.supermart.exception.CSVFormatException;
+import com.me4502.supermart.exception.DeliveryException;
 import com.me4502.supermart.exception.StockException;
 import com.me4502.supermart.store.Store;
 import com.me4502.supermart.store.StoreImpl;
@@ -175,7 +176,7 @@ public class SuperMartGui {
                 } catch (IOException e1) {
                     JOptionPane.showMessageDialog(frame, "Failed to load the file: " + e1.getMessage());
                     e1.printStackTrace();
-                } catch (CSVFormatException | StockException e1) {
+                } catch (CSVFormatException | DeliveryException e1) {
                     JOptionPane.showMessageDialog(frame, e1.getMessage());
                 }
                 fillManifestTable(manifestTable);

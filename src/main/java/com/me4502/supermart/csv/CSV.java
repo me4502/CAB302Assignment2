@@ -2,6 +2,7 @@ package com.me4502.supermart.csv;
 
 import com.me4502.supermart.SuperMartApplication;
 import com.me4502.supermart.exception.CSVFormatException;
+import com.me4502.supermart.exception.DeliveryException;
 import com.me4502.supermart.exception.StockException;
 import com.me4502.supermart.store.Item;
 import com.me4502.supermart.store.Stock;
@@ -96,7 +97,7 @@ public class CSV {
         StoreImpl.getInstance().setCapital(StoreImpl.getInstance().getCapital() + totalValue);
     }
 
-    public static void loadManifest(File file) throws IOException, CSVFormatException, StockException {
+    public static void loadManifest(File file) throws IOException, CSVFormatException, DeliveryException {
         Stock currentStock = StoreImpl.getInstance().getInventory();
 
         // Create builders
@@ -146,7 +147,7 @@ public class CSV {
                     totalValue += itemPair.getLeft().getManufacturingCost() * itemPair.getRight();
                     stockBuilder.addStockedItem(itemPair.getLeft(), itemPair.getRight());
                 } else {
-                    throw new StockException("Store doesn't stock " + itemPair.getLeft().getName() + ", but manifest log contains it.");
+                    throw new DeliveryException("Store doesn't stock " + itemPair.getLeft().getName() + ", but manifest log contains it.");
                 }
             }
         }
