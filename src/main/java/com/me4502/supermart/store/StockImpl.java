@@ -81,9 +81,9 @@ public class StockImpl implements Stock {
                 stock.put(item, stock.get(item) + quantity);
             } else {
                 if (quantity < 0) {
-                    throw new IllegalArgumentException("Create an item with a negative quantity");
+                    throw new IllegalArgumentException("Cannot create an item with a negative quantity");
                 }
-                stock.put(item, quantity);
+                stock.put(item, quantity); 
             }
             return this;
         }
