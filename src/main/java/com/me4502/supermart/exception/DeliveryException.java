@@ -1,7 +1,7 @@
 package com.me4502.supermart.exception;
 
 /**
- * TODO
+ * Indicates that there is an issue with the delivery in some way.
  *
  * @author Madeline Miller
  */

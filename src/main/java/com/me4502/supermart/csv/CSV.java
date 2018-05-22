@@ -1,4 +1,4 @@
-package com.me4502.csv;
+package com.me4502.supermart.csv;
 // Reading
 import java.io.FileReader;
 
@@ -10,6 +10,7 @@ import java.io.FileWriter;
 
 import com.me4502.supermart.SuperMartApplication;
 import com.me4502.supermart.exception.CSVFormatException;
+import com.me4502.supermart.exception.StockException;
 import com.me4502.supermart.store.Item;
 import com.me4502.supermart.store.Stock;
 import com.me4502.supermart.store.StoreImpl;
@@ -23,6 +24,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import java.util.ArrayList;
 // Exceptions
 import java.io.IOException;
+import java.util.List;
 
 
 /**
@@ -48,20 +50,31 @@ public class CSV {
 		return builder;
 	}
 	
-	public static void loadItemProperties(File file) throws IOException {
-		for (String[] line : readCSV(file)) {
-			StoreImpl.getInstance().addItem(itemBuilder(line).build());
-		};
+	public static void loadItemProperties(File file) throws IOException, CSVFormatException {
+		List<String[]> lines = readCSV(file);
+		for (int i = 0; i < lines.size(); i++) {
+			try {
+				StoreImpl.getInstance().addItem(itemBuilder(lines.get(i)).build());
+			} catch (NumberFormatException e) {
+				throw new CSVFormatException("Invalid format on line " + (i + 1));
+			}
+		}
 	}
 	
-	public static void loadSalesLog(File file) throws IOException{
+	public static void loadSalesLog(File file) throws IOException, StockException, CSVFormatException {
 		Stock currentStock = StoreImpl.getInstance().getInventory();
 		Stock.Builder stockBuilder = SuperMartApplication.getInstance().getStockBuilder();
 		
 		// Build the sold stock
-		for (String[] line : readCSV(file)) {
-			stockBuilder.addStockedItem(StoreImpl.getInstance().getItem(line[0]).get(), Integer.parseInt(line[1]));
-		}
+        List<String[]> lines = readCSV(file);
+        for (int i = 0; i < lines.size(); i++) {
+            try {
+                stockBuilder.addStockedItem(StoreImpl.getInstance().getItem(lines.get(i)[0]).get(), Integer.parseInt(lines.get(i)[1]));
+            } catch (NumberFormatException e) {
+                throw new CSVFormatException("Invalid format on line " + (i + 1));
+            }
+        }
+
 		Stock soldStock = stockBuilder.build();
 		stockBuilder.reset();
 		
@@ -75,9 +88,8 @@ public class CSV {
 			if (StoreImpl.getInstance().getItem(itemPair.getLeft().getName()).isPresent()) {
 	    		totalValue += itemPair.getLeft().getSellPrice() * itemPair.getRight();
 				stockBuilder.addStockedItem(itemPair.getLeft(), -itemPair.getRight());
-			}
-			else {
-				throw new CSVFormatException();
+			} else {
+				throw new StockException("Store doesn't stock " + itemPair.getLeft().getName() + ", but sales log contains it.");
 			}
     	}
 		
@@ -86,7 +98,7 @@ public class CSV {
 		StoreImpl.getInstance().setCapital(StoreImpl.getInstance().getCapital() + totalValue);
 	}
 	
-	public static void loadManifest(File file) throws IOException {
+	public static void loadManifest(File file) throws IOException, CSVFormatException, StockException {
 		Stock currentStock = StoreImpl.getInstance().getInventory();
 		
 		// Create builders
@@ -95,7 +107,7 @@ public class CSV {
 		RefrigeratedTruck.RefrigeratedBuilder refrigeratedBuilder = SuperMartApplication.getInstance().getRefrigeratedTruckBuilder();
 		
 		// Create a list of trucks 
-		ArrayList<Truck> truckList = new ArrayList<Truck>();
+		ArrayList<Truck> truckList = new ArrayList<>();
 		
 		// Iterate backwards over csv to fill the list of trucks
 		ArrayList<String[]> lines = readCSV(file);
@@ -103,24 +115,23 @@ public class CSV {
 			String[] line = lines.get(counter);
 			if (line.length == 2) {
 				stockBuilder.addStockedItem(StoreImpl.getInstance().getItem(line[0]).get(), Integer.parseInt(line[1]));				
-			}
-			else if (line.length == 1) {
-				if (line[0] == ">Ordinary") {
-					truckList.add(ordinaryBuilder.cargo(stockBuilder.build()).build());
-					stockBuilder.reset();
-					ordinaryBuilder.reset();
-				}
-				else if (line[0] == ">Refrigerated") {
-					truckList.add(refrigeratedBuilder.cargo(stockBuilder.build()).build());
-					stockBuilder.reset();
-					refrigeratedBuilder.reset();
-				}
-				else {
-					throw new CSVFormatException();
+			} else if (line.length == 1) {
+				switch (line[0]) {
+					case ">Ordinary":
+						truckList.add(ordinaryBuilder.cargo(stockBuilder.build()).build());
+						stockBuilder.reset();
+						ordinaryBuilder.reset();
+						break;
+					case ">Refrigerated":
+						truckList.add(refrigeratedBuilder.cargo(stockBuilder.build()).build());
+						stockBuilder.reset();
+						refrigeratedBuilder.reset();
+						break;
+					default:
+						throw new CSVFormatException("Unknown truck type " + line[0]);
 				}	
-			}
-			else {
-				throw new CSVFormatException();
+			} else {
+				throw new CSVFormatException("Unknown format on line " + (counter + 1));
 			}
 		}
 		
@@ -136,9 +147,8 @@ public class CSV {
 				if (StoreImpl.getInstance().getItem(itemPair.getLeft().getName()).isPresent()) {
 					totalValue += itemPair.getLeft().getManufacturingCost() * itemPair.getRight();
 					stockBuilder.addStockedItem(itemPair.getLeft(), itemPair.getRight());
-				}
-				else {
-					throw new CSVFormatException();
+				} else {
+                    throw new StockException("Store doesn't stock " + itemPair.getLeft().getName() + ", but manifest log contains it.");
 				}
 			}
 		}
@@ -161,8 +171,8 @@ public class CSV {
 	}	
 	
 	private static ArrayList<String[]> readCSV(File file) throws IOException {
-		ArrayList<String[]> linesList = new ArrayList<String[]>();
-        String line = null;
+		ArrayList<String[]> linesList = new ArrayList<>();
+        String line;
         FileReader fileReader = new FileReader(file.getAbsolutePath());  
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         while((line = bufferedReader.readLine()) != null) {
