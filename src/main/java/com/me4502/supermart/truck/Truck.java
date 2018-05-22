@@ -8,34 +8,34 @@ import com.me4502.supermart.store.Stock;
  * @author Liam Dale
  */
 public interface Truck {
-	
-	/**
+
+    /**
      * Gets the name of the truck type.
      *
      * @return The truck type
      */
-	String getType();
-	
+    String getType();
+
     /**
      * Gets the cost of a truck.
      *
      * @return The cost
      */
-	double getCost();
-	
+    double getCost();
+
     /**
      * Gets the cargo capacity of a truck.
      *
      * @return The cargo capacity
      */
-	int getCargoCapacity();
-	
+    int getCargoCapacity();
+
     /**
      * Gets the cargo in a truck.
      *
      * @return The cargo
      */
-	Stock getCargo();
+    Stock getCargo();
 
     /**
      * The base builder for Truck classes.
@@ -43,7 +43,7 @@ public interface Truck {
      * @param <T> The {@link Truck} type
      * @param <B> The {@link Builder} type
      */
-	interface Builder<T extends Truck, B extends Builder> {
+    interface Builder<T extends Truck, B extends Builder> {
 
         /**
          * Sets the cargo of the {@link Truck}.
@@ -63,12 +63,12 @@ public interface Truck {
          * @throws IllegalStateException If a value has not been filled in
          */
         T build();
-        
+
         /**
          * Resets the state of this builder.
          *
          * @return The builder, for chaining
          */
         B reset();
-    }	
+    }
 }

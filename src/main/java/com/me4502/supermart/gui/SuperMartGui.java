@@ -112,7 +112,7 @@ public class SuperMartGui {
 
     private void fillInventoryTable(JTable inventoryTable) {
         // Create column names
-        String[] columns = new String[] {
+        String[] columns = new String[]{
                 "Item",
                 "Quantity",
                 "Manufacturing cost ($)",

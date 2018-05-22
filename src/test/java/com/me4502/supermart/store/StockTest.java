@@ -1,5 +1,13 @@
 package com.me4502.supermart.store;
 
+import static com.me4502.supermart.SuperMartApplication.getInstance;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import com.google.common.collect.Lists;
 import com.me4502.supermart.SuperMartApplication;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -10,14 +18,6 @@ import org.junit.Test;
 
 import java.util.List;
 import java.util.OptionalDouble;
-
-import static com.me4502.supermart.SuperMartApplication.getInstance;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class StockTest {
 
@@ -114,12 +114,12 @@ public class StockTest {
         assertTrue(getInstance().getStockBuilder().build().getStockedItems().isEmpty());
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testNullItemsFail() {
         getInstance().getStockBuilder().addStockedItem(null, 1).build();
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testNegativeItemsFail() {
         getInstance().getStockBuilder().addStockedItem(mock(Item.class), -1).build();
     }

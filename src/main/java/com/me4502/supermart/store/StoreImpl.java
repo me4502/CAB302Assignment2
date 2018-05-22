@@ -1,16 +1,18 @@
 package com.me4502.supermart.store;
 
+import com.google.common.collect.ImmutableSet;
+import com.me4502.supermart.SuperMartApplication;
+
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Optional;
 
-import com.google.common.collect.ImmutableSet;
-
 public class StoreImpl implements Store {
-	String name;
-	double capital;
-	Stock inventory;
-	HashMap<String, Item> stockableItems = new HashMap<String, Item>();
+
+    private String name;
+    private double capital;
+    private Stock inventory;
+    private HashMap<String, Item> stockableItems = new HashMap<>();
 
     private static StoreImpl instance;
 
@@ -20,7 +22,7 @@ public class StoreImpl implements Store {
         }
         this.name = name;
         this.capital = 100000;
-        this.inventory = new StockImpl(ImmutableSet.of());
+        this.inventory = SuperMartApplication.getInstance().getStockBuilder().build();
         instance = this;
     }
 
@@ -57,7 +59,7 @@ public class StoreImpl implements Store {
 
     @Override
     public String getFormattedCapital() {
-    	NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
         return (capital > 0) ? currencyFormatter.format(this.capital) : "-" + currencyFormatter.format(this.capital * -1);
     }
 
@@ -68,17 +70,17 @@ public class StoreImpl implements Store {
 
     @Override
     public void setInventory(Stock inventory) {
-    	if (inventory == null) {
-    		throw new IllegalArgumentException("Inventory can't be null");
-    	}
+        if (inventory == null) {
+            throw new IllegalArgumentException("Inventory can't be null");
+        }
         this.inventory = inventory;
     }
 
     @Override
     public void addItem(Item item) {
-    	if (!stockableItems.containsKey(item.getName())) {
-    		stockableItems.put(item.getName(), item);
-    	}
+        if (!stockableItems.containsKey(item.getName())) {
+            stockableItems.put(item.getName(), item);
+        }
     }
 
     @Override

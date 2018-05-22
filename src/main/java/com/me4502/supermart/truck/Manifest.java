@@ -1,4 +1,5 @@
 package com.me4502.supermart.truck;
+
 import com.google.common.collect.ImmutableSet;
 
 /**
@@ -7,9 +8,11 @@ import com.google.common.collect.ImmutableSet;
  * @author Liam Dale
  */
 public interface Manifest {
+
     ImmutableSet<Truck> getTrucks();
 
     interface Builder {
+
         Builder addTruck(Truck truck);
 
         Manifest build();

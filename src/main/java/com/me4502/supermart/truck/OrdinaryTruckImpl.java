@@ -41,6 +41,7 @@ public class OrdinaryTruckImpl extends AbstractTruck implements OrdinaryTruck {
      * @author Madeline Miller
      */
     public static class OrdinaryTruckBuilderImpl implements OrdinaryTruck.OrdinaryBuilder {
+
         private Stock cargo;
 
         @Override

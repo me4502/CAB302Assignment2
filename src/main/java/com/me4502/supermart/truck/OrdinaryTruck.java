@@ -6,6 +6,8 @@ package com.me4502.supermart.truck;
  * @author Liam Dale
  */
 public interface OrdinaryTruck extends Truck {
-	
-	interface OrdinaryBuilder extends Truck.Builder<OrdinaryTruck, OrdinaryBuilder> {}
+
+    interface OrdinaryBuilder extends Truck.Builder<OrdinaryTruck, OrdinaryBuilder> {
+
+    }
 }

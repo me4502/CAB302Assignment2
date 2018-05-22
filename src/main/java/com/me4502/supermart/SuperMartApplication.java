@@ -1,12 +1,11 @@
 package com.me4502.supermart;
 
-import com.me4502.supermart.truck.ManifestImpl;
-
 import com.me4502.supermart.store.Item;
 import com.me4502.supermart.store.ItemImpl;
 import com.me4502.supermart.store.Stock;
 import com.me4502.supermart.store.StockImpl;
 import com.me4502.supermart.truck.Manifest;
+import com.me4502.supermart.truck.ManifestImpl;
 import com.me4502.supermart.truck.OrdinaryTruck;
 import com.me4502.supermart.truck.OrdinaryTruckImpl;
 import com.me4502.supermart.truck.RefrigeratedTruck;
@@ -64,7 +63,7 @@ public class SuperMartApplication {
     public Stock.Builder getStockBuilder() {
         return new StockImpl.StockBuilder();
     }
-    
+
     /**
      * Get the builder for the {@link OrdinaryTruck} class.
      *
@@ -73,7 +72,7 @@ public class SuperMartApplication {
     public OrdinaryTruck.OrdinaryBuilder getOrdinaryTruckBuilder() {
         return new OrdinaryTruckImpl.OrdinaryTruckBuilderImpl();
     }
-    
+
     /**
      * Get the builder for the {@link RefrigeratedTruck} class.
      *
@@ -82,14 +81,14 @@ public class SuperMartApplication {
     public RefrigeratedTruck.RefrigeratedBuilder getRefrigeratedTruckBuilder() {
         return new RefrigeratedTruckImpl.RefrigeratedTruckBuilderImpl();
     }
-    
-    
+
+
     /**
      * Get the builder for the {@link Manifest} class.
      *
      * @return The manifest builder
      */
     public Manifest.Builder getManifestBuilder() {
-    	return new ManifestImpl.ManifestBuilderImpl();
+        return new ManifestImpl.ManifestBuilderImpl();
     }
 }

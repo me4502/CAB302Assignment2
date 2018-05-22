@@ -8,6 +8,7 @@ import com.me4502.supermart.store.Stock;
  * @author Madeline Miller
  */
 public abstract class AbstractTruck implements Truck {
+
     private Stock cargo;
 
     AbstractTruck(Stock cargo) {

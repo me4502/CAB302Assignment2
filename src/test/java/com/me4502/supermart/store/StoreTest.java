@@ -33,7 +33,7 @@ public class StoreTest {
         assertNotNull(instance);
     }
 
-    @Test(expected=IllegalStateException.class)
+    @Test(expected = IllegalStateException.class)
     public void testRecreateStoreFails() {
         new StoreImpl("Test Store");
     }
@@ -120,7 +120,7 @@ public class StoreTest {
         assertEquals(mockStock, instance.getInventory());
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testSettingNullStockFails() {
         Store instance = StoreImpl.getInstance();
         instance.setInventory(null);

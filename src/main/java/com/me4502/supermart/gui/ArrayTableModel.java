@@ -9,6 +9,7 @@ import javax.swing.table.TableModel;
  * @author Madeline Miller
  */
 public class ArrayTableModel extends AbstractTableModel {
+
     private Object[][] data;
     private String[] columns;
     private boolean editable;

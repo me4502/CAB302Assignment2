@@ -60,41 +60,41 @@ public class ItemTest {
         buildTestItem2();
     }
 
-    @Test(expected=IllegalStateException.class)
+    @Test(expected = IllegalStateException.class)
     public void testInvalidItemCantBeBuilt() {
         Item.Builder builder = SuperMartApplication.getInstance().getItemBuilder();
         builder.build();
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testInvalidManufacturingCost() {
         // Can't have a negative manufacturing cost
         SuperMartApplication.getInstance().getItemBuilder()
                 .manufacturingCost(-0.1);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testInvalidSellPrice() {
         // Can't have a negative sell price
         SuperMartApplication.getInstance().getItemBuilder()
                 .sellPrice(-0.1);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testInvalidReorderPoint() {
         // Can't have a negative reorder point
         SuperMartApplication.getInstance().getItemBuilder()
                 .reorderPoint(-1);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testInvalidReorderAmount() {
         // Can't have a negative reorder amount
         SuperMartApplication.getInstance().getItemBuilder()
                 .reorderAmount(-1);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testInvalidTemperature() {
         // Can't have a temperature below -20
         SuperMartApplication.getInstance().getItemBuilder()
@@ -132,7 +132,7 @@ public class ItemTest {
         assertFalse(buildTestItem2().isTemperatureControlled());
     }
 
-    @Test(expected=IllegalStateException.class)
+    @Test(expected = IllegalStateException.class)
     public void testResetWorks() {
         Item.Builder builder = testItemBuilder().reset();
         builder.build();

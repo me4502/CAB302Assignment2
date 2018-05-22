@@ -27,6 +27,7 @@ public class ManifestImpl implements Manifest {
      * @author Madeline Miller
      */
     public static class ManifestBuilderImpl implements Manifest.Builder {
+
         private ImmutableSet.Builder<Truck> trucksBuilder = new ImmutableSet.Builder<>();
 
         @Override

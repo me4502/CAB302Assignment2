@@ -6,12 +6,15 @@ package com.me4502.supermart.truck;
  * @author Liam Dale
  */
 public interface RefrigeratedTruck extends Truck {
+
     /**
      * Gets the temperature which the truck must store items.
      *
      * @return The storage temperature
      */
-	double getStorageTemperature();
-	
-	interface RefrigeratedBuilder extends Truck.Builder<RefrigeratedTruck, RefrigeratedBuilder> {}
+    double getStorageTemperature();
+
+    interface RefrigeratedBuilder extends Truck.Builder<RefrigeratedTruck, RefrigeratedBuilder> {
+
+    }
 }
