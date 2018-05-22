@@ -1,11 +1,15 @@
 package com.me4502.supermart.gui;
 
 import com.me4502.supermart.SuperMartApplication;
+import com.me4502.supermart.csv.CSV;
+import com.me4502.supermart.exception.CSVFormatException;
+import com.me4502.supermart.exception.StockException;
 import com.me4502.supermart.store.Store;
 import com.me4502.supermart.store.StoreImpl;
 
 import java.awt.Font;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -27,7 +31,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class SuperMartGui {
 
-    private SuperMartApplication application;
     private Store store;
 
     // Form
@@ -38,7 +41,7 @@ public class SuperMartGui {
      */
     private SuperMartGui() {
         // Create an application and store
-        this.application = new SuperMartApplication();
+        new SuperMartApplication();
         this.store = new StoreImpl("SuperMart");
 
         // Setup form
@@ -78,16 +81,22 @@ public class SuperMartGui {
         JTable inventoryTable = new JTable();
         fillInventoryTable(inventoryTable);
         inventoryPane.add(new JScrollPane(inventoryTable));
-        JButton loadInventoryButton = new JButton("Load Inventory");
+        JButton loadInventoryButton = new JButton("Load Item Properties");
         loadInventoryButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
             int returnVal = fileChooser.showOpenDialog(frame);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fileChooser.getSelectedFile();
-                // TODO Once CSV is implemented read in the file
-            } else {
-                JOptionPane.showMessageDialog(frame, "Please select a file to load inventory!");
+                try {
+                    CSV.loadItemProperties(file);
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(frame, "Failed to load the file: " + e1.getMessage());
+                    e1.printStackTrace();
+                } catch (CSVFormatException e1) {
+                    JOptionPane.showMessageDialog(frame, e1.getMessage());
+                }
+                fillInventoryTable(inventoryTable);
             }
         });
         JButton loadSalesLogButton = new JButton("Load Sales Log");
@@ -97,9 +106,15 @@ public class SuperMartGui {
             int returnVal = fileChooser.showOpenDialog(frame);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fileChooser.getSelectedFile();
-                // TODO Once CSV is implemented read in the file
-            } else {
-                JOptionPane.showMessageDialog(frame, "Please select a file to load sales log!");
+                try {
+                    CSV.loadSalesLog(file);
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(frame, "Failed to load the file: " + e1.getMessage());
+                    e1.printStackTrace();
+                } catch (CSVFormatException | StockException e1) {
+                    JOptionPane.showMessageDialog(frame, e1.getMessage());
+                }
+                fillInventoryTable(inventoryTable);
             }
         });
         JPanel buttonPanel = new JPanel();
@@ -123,15 +138,15 @@ public class SuperMartGui {
         };
 
         // Transform the Stock into a data frame for the table model
-        Object[][] data = this.store.getInventory().getStockedItemQuantities().stream()
-                .map(pair -> new Object[]{
-                        pair.getLeft().getName(),
-                        pair.getRight(),
-                        pair.getLeft().getManufacturingCost(),
-                        pair.getLeft().getSellPrice(),
-                        pair.getLeft().getReorderPoint(),
-                        pair.getLeft().getReorderAmount(),
-                        pair.getLeft().getIdealTemperature().orElse(0.0) // TODO Make this correct
+        Object[][] data = this.store.getItems().stream()
+                .map(item -> new Object[]{
+                        item.getName(),
+                        this.store.getInventory().getItemQuantity(item).orElse(0),
+                        item.getManufacturingCost(),
+                        item.getSellPrice(),
+                        item.getReorderPoint(),
+                        item.getReorderAmount(),
+                        item.getIdealTemperature().isPresent() ? item.getIdealTemperature().getAsDouble() : "Dry"
                 })
                 .toArray(Object[][]::new);
 
@@ -155,9 +170,15 @@ public class SuperMartGui {
             int returnVal = fileChooser.showOpenDialog(frame);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fileChooser.getSelectedFile();
-                // TODO Once CSV is implemented read in the file
-            } else {
-                JOptionPane.showMessageDialog(frame, "Please select a file to load manifests!");
+                try {
+                    CSV.loadManifest(file);
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(frame, "Failed to load the file: " + e1.getMessage());
+                    e1.printStackTrace();
+                } catch (CSVFormatException | StockException e1) {
+                    JOptionPane.showMessageDialog(frame, e1.getMessage());
+                }
+                fillManifestTable(manifestTable);
             }
         });
         JButton optimiseManifestButton = new JButton("Optimise Manifests");
@@ -171,7 +192,26 @@ public class SuperMartGui {
     }
 
     private void fillManifestTable(JTable manifestTable) {
-        // TODO
+        // Create column names
+        String[] columns = new String[]{
+                "Type",
+                "Cargo Capacity",
+                "Cost ($)",
+                "Stored Cargo"
+        };
+
+        // Transform the Manifest into a data frame for the table model
+        Object[][] data = this.store.getManifest().getTrucks().stream()
+                .map(truck -> new Object[]{
+                        truck.getType(),
+                        truck.getCargoCapacity(),
+                        truck.getCost(),
+                        truck.getCargo().getTotalAmount()
+                })
+                .toArray(Object[][]::new);
+
+        // Set the model on the table
+        manifestTable.setModel(new ArrayTableModel(data, columns, false));
     }
 
     public static void main(String[] args) {

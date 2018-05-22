@@ -2,6 +2,7 @@ package com.me4502.supermart.store;
 
 import com.google.common.collect.ImmutableSet;
 import com.me4502.supermart.SuperMartApplication;
+import com.me4502.supermart.truck.Manifest;
 
 import java.text.NumberFormat;
 import java.util.HashMap;
@@ -91,5 +92,15 @@ public class StoreImpl implements Store {
     @Override
     public ImmutableSet<Item> getItems() {
         return ImmutableSet.copyOf(stockableItems.values());
+    }
+
+    @Override
+    public Manifest getManifest() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setManifest(Manifest manifest) {
+        throw new UnsupportedOperationException();
     }
 }

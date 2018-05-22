@@ -1,6 +1,7 @@
 package com.me4502.supermart.store;
 
 import com.google.common.collect.ImmutableSet;
+import com.me4502.supermart.truck.Manifest;
 
 import java.util.Optional;
 
@@ -85,4 +86,18 @@ public interface Store {
      * @return An immutable set of items
      */
     ImmutableSet<Item> getItems();
+
+    /**
+     * Gets the manifest of this store.
+     *
+     * @return The manifest
+     */
+    Manifest getManifest();
+
+    /**
+     * Sets the manifest of this store.
+     *
+     * @param manifest The manifest
+     */
+    void setManifest(Manifest manifest);
 }

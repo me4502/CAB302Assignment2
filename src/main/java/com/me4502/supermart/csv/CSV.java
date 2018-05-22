@@ -19,6 +19,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Used for parsing different csv file formats, reads and writes
@@ -45,7 +46,7 @@ public class CSV {
         for (int i = 0; i < lines.size(); i++) {
             try {
                 StoreImpl.getInstance().addItem(itemBuilder(lines.get(i)).build());
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                 throw new CSVFormatException("Invalid format on line " + (i + 1));
             }
         }
@@ -60,8 +61,10 @@ public class CSV {
         for (int i = 0; i < lines.size(); i++) {
             try {
                 stockBuilder.addStockedItem(StoreImpl.getInstance().getItem(lines.get(i)[0]).get(), Integer.parseInt(lines.get(i)[1]));
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                 throw new CSVFormatException("Invalid format on line " + (i + 1));
+            } catch (NoSuchElementException e) {
+                throw new StockException("Store doesn't stock " + lines.get(i)[0] + ", but sales log contains it.");
             }
         }
 

@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableSet;
 import com.me4502.supermart.SuperMartApplication;
+import com.me4502.supermart.truck.Manifest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -171,5 +172,26 @@ public class StoreTest {
         when(mockItem.getName()).thenReturn("Test Item");
         instance.addItem(mockItem);
         assertEquals(1, instance.getItems().size());
+    }
+
+    @Test
+    public void testDefaultEmptyManifest() {
+        Store instance = StoreImpl.getInstance();
+        assertNotNull(instance.getManifest());
+        assertTrue(instance.getManifest().getTrucks().isEmpty());
+    }
+
+    @Test
+    public void testSettingManifest() {
+        Store instance = StoreImpl.getInstance();
+        Manifest mockManifest = mock(Manifest.class);
+        instance.setManifest(mockManifest);
+        assertEquals(mockManifest, instance.getManifest());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSettingNullManifestFails() {
+        Store instance = StoreImpl.getInstance();
+        instance.setManifest(null);
     }
 }
