@@ -101,6 +101,13 @@ public class ItemTest {
                 .idealTemperature(-21);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testTooHighTemperature() {
+        // Can't have a temperature above 10
+        SuperMartApplication.getInstance().getItemBuilder()
+                .idealTemperature(11);
+    }
+
     @Test
     public void testItemBuiltCorrectly() {
         Item item = buildTestItem();
@@ -124,6 +131,56 @@ public class ItemTest {
         assertEquals(19, item.getReorderAmount());
         assertEquals(84, item.getReorderPoint());
         assertEquals(0.0, item.getSellPrice());
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testMissingNameFails() {
+        SuperMartApplication.getInstance().getItemBuilder()
+                .manufacturingCost(1.0)
+                .sellPrice(1.0)
+                .reorderPoint(1)
+                .reorderAmount(1)
+                .build();
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testMissingManufacturingCostFails() {
+        SuperMartApplication.getInstance().getItemBuilder()
+                .name("Test")
+                .sellPrice(1.0)
+                .reorderPoint(1)
+                .reorderAmount(1)
+                .build();
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testMissingSellPriceFails() {
+        SuperMartApplication.getInstance().getItemBuilder()
+                .name("Test")
+                .manufacturingCost(1.0)
+                .reorderPoint(1)
+                .reorderAmount(1)
+                .build();
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testMissingReorderPointFails() {
+        SuperMartApplication.getInstance().getItemBuilder()
+                .name("Test")
+                .sellPrice(1.0)
+                .manufacturingCost(1.0)
+                .reorderAmount(1)
+                .build();
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testMissingReorderAmountFails() {
+        SuperMartApplication.getInstance().getItemBuilder()
+                .name("Test")
+                .sellPrice(1.0)
+                .reorderPoint(1)
+                .manufacturingCost(1.0)
+                .build();
     }
 
     @Test

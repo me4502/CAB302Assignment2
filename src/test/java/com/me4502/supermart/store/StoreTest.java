@@ -148,6 +148,16 @@ public class StoreTest {
     }
 
     @Test
+    public void testAddingDuplicateItemsDontAdd() {
+        Store instance = StoreImpl.getInstance();
+        Item mockItem = mock(Item.class);
+        when(mockItem.getName()).thenReturn("Test Item");
+        instance.addItem(mockItem);
+        instance.addItem(mockItem);
+        assertEquals(1, instance.getItems().size());
+    }
+
+    @Test
     public void testGettingOtherItemIsEmpty() {
         Store instance = StoreImpl.getInstance();
         assertFalse(instance.getItem("Empty").isPresent());

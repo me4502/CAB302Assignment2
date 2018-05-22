@@ -52,11 +52,14 @@ public class ManifestTest {
         return RefrigeratedTruck;
     }
 
+    private Truck ordinaryTruck = getOrdinaryTruck();
+    private Truck refrigeratedTruck = getRefrigeratedTruck();
+
     // Make a list of them
     private List<Truck> getTruckList() {
         return Lists.newArrayList(
-                getOrdinaryTruck(),
-                getRefrigeratedTruck()
+                ordinaryTruck,
+                refrigeratedTruck
         );
     }
 
