@@ -20,6 +20,7 @@ public class StoreImpl implements Store {
     private double capital;
     private Stock inventory;
     private HashMap<String, Item> stockableItems = new HashMap<>();
+    private Manifest manifest;
 
     private static StoreImpl instance;
 
@@ -30,6 +31,7 @@ public class StoreImpl implements Store {
         this.name = name;
         this.capital = 100000;
         this.inventory = SuperMartApplication.getInstance().getStockBuilder().build();
+        this.manifest = SuperMartApplication.getInstance().getManifestBuilder().build();
         instance = this;
     }
 
@@ -102,11 +104,14 @@ public class StoreImpl implements Store {
 
     @Override
     public Manifest getManifest() {
-        throw new UnsupportedOperationException();
+        return manifest;
     }
 
     @Override
     public void setManifest(Manifest manifest) {
-        throw new UnsupportedOperationException();
+    	if (manifest == null) {
+    		throw new IllegalArgumentException("Manifest can't be null");
+    	}
+        this.manifest = manifest;
     }
 }
