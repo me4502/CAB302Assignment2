@@ -97,6 +97,8 @@ public interface Store {
     /**
      * Sets the manifest of this store.
      *
+     * This should also update the capital and inventory.
+     *
      * @param manifest The manifest
      */
     void setManifest(Manifest manifest);
