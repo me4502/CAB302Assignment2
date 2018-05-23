@@ -191,6 +191,7 @@ public class StoreTest {
 
         Item mockitem = mock(Item.class);
         when(mockitem.getName()).thenReturn("Test");
+        instance.addItem(mockitem);
 
         Stock mockStockTruck = mock(Stock.class);
         when(mockStockTruck.getStockedItemQuantities()).thenReturn(ImmutableSet.of(new ImmutablePair<>(mockitem, 1)));
