@@ -98,15 +98,13 @@ public class CSV {
     }
 
     public static void loadManifest(File file) throws IOException, CSVFormatException, DeliveryException {
-        Stock currentStock = StoreImpl.getInstance().getInventory();
-
         // Create builders
         Stock.Builder stockBuilder = SuperMartApplication.getInstance().getStockBuilder();
         OrdinaryTruck.OrdinaryBuilder ordinaryBuilder = SuperMartApplication.getInstance().getOrdinaryTruckBuilder();
         RefrigeratedTruck.RefrigeratedBuilder refrigeratedBuilder = SuperMartApplication.getInstance().getRefrigeratedTruckBuilder();
 
         // Create a list of trucks
-        ArrayList<Truck> truckList = new ArrayList<>();
+        Manifest.Builder manifestBuilder = SuperMartApplication.getInstance().getManifestBuilder();
 
         // Iterate backwards over csv to fill the list of trucks
         ArrayList<String[]> lines = readCSV(file);
@@ -117,12 +115,12 @@ public class CSV {
             } else if (line.length == 1) {
                 switch (line[0]) {
                     case ">Ordinary":
-                        truckList.add(ordinaryBuilder.cargo(stockBuilder.build()).build());
+                        manifestBuilder.addTruck(ordinaryBuilder.cargo(stockBuilder.build()).build());
                         stockBuilder.reset();
                         ordinaryBuilder.reset();
                         break;
                     case ">Refrigerated":
-                        truckList.add(refrigeratedBuilder.cargo(stockBuilder.build()).build());
+                        manifestBuilder.addTruck(refrigeratedBuilder.cargo(stockBuilder.build()).build());
                         stockBuilder.reset();
                         refrigeratedBuilder.reset();
                         break;
@@ -134,27 +132,7 @@ public class CSV {
             }
         }
 
-        // Create the new stock
-        for (ImmutablePair<Item, Integer> itemPair : currentStock.getStockedItemQuantities()) {
-            stockBuilder.addStockedItem(itemPair.getLeft(), itemPair.getRight());
-        }
-        // Find the value of the manifest while continuing to create the new stock
-        double totalValue = 0;
-        for (Truck truck : truckList) {
-            totalValue += truck.getCost();
-            for (ImmutablePair<Item, Integer> itemPair : truck.getCargo().getStockedItemQuantities()) {
-                if (StoreImpl.getInstance().getItem(itemPair.getLeft().getName()).isPresent()) {
-                    totalValue += itemPair.getLeft().getManufacturingCost() * itemPair.getRight();
-                    stockBuilder.addStockedItem(itemPair.getLeft(), itemPair.getRight());
-                } else {
-                    throw new DeliveryException("Store doesn't stock " + itemPair.getLeft().getName() + ", but manifest log contains it.");
-                }
-            }
-        }
-
-        // Update the stock and the store capital
-        StoreImpl.getInstance().setInventory(stockBuilder.build());
-        StoreImpl.getInstance().setCapital(StoreImpl.getInstance().getCapital() - totalValue);
+        StoreImpl.getInstance().setManifest(manifestBuilder.build());
     }
 
     // Initial tester

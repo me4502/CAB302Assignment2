@@ -1,6 +1,7 @@
 package com.me4502.supermart.store;
 
 import com.google.common.collect.ImmutableSet;
+import com.me4502.supermart.exception.DeliveryException;
 import com.me4502.supermart.truck.Manifest;
 
 import java.util.Optional;
@@ -100,6 +101,7 @@ public interface Store {
      * This should also update the capital and inventory.
      *
      * @param manifest The manifest
+     * @throws DeliveryException Thrown when the delivery isn't possible
      */
-    void setManifest(Manifest manifest);
+    void setManifest(Manifest manifest) throws DeliveryException;
 }

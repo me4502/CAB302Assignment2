@@ -2,7 +2,10 @@ package com.me4502.supermart.store;
 
 import com.google.common.collect.ImmutableSet;
 import com.me4502.supermart.SuperMartApplication;
+import com.me4502.supermart.exception.DeliveryException;
 import com.me4502.supermart.truck.Manifest;
+import com.me4502.supermart.truck.Truck;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.text.NumberFormat;
 import java.util.HashMap;
@@ -108,10 +111,36 @@ public class StoreImpl implements Store {
     }
 
     @Override
-    public void setManifest(Manifest manifest) {
+    public void setManifest(Manifest manifest) throws DeliveryException {
     	if (manifest == null) {
     		throw new IllegalArgumentException("Manifest can't be null");
     	}
+
+    	Stock.Builder stockBuilder = SuperMartApplication.getInstance().getStockBuilder();
+
+        // Create the new stock
+        for (ImmutablePair<Item, Integer> itemPair : getInventory().getStockedItemQuantities()) {
+            stockBuilder.addStockedItem(itemPair.getLeft(), itemPair.getRight());
+        }
+
+        // Find the value of the manifest while continuing to create the new stock
+        double totalValue = 0;
+        for (Truck truck : manifest.getTrucks()) {
+            totalValue += truck.getCost();
+            for (ImmutablePair<Item, Integer> itemPair : truck.getCargo().getStockedItemQuantities()) {
+                if (StoreImpl.getInstance().getItem(itemPair.getLeft().getName()).isPresent()) {
+                    totalValue += itemPair.getLeft().getManufacturingCost() * itemPair.getRight();
+                    stockBuilder.addStockedItem(itemPair.getLeft(), itemPair.getRight());
+                } else {
+                    throw new DeliveryException("Store doesn't stock " + itemPair.getLeft().getName() + ", but manifest log contains it.");
+                }
+            }
+        }
+
+        // Update the stock and the store capital
+        setInventory(stockBuilder.build());
+        setCapital(StoreImpl.getInstance().getCapital() - totalValue);
+
         this.manifest = manifest;
     }
 }

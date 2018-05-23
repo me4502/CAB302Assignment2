@@ -99,7 +99,7 @@ public class SuperMartGui {
                 } catch (IOException e1) {
                     JOptionPane.showMessageDialog(frame, "Failed to load the file: " + e1.getMessage());
                     e1.printStackTrace();
-                } catch (CSVFormatException e1) {
+                } catch (CSVFormatException | DeliveryException e1) {
                     JOptionPane.showMessageDialog(frame, e1.getMessage());
                 }
                 fillInventoryTable(inventoryTable);
@@ -118,7 +118,7 @@ public class SuperMartGui {
                 } catch (IOException e1) {
                     JOptionPane.showMessageDialog(frame, "Failed to load the file: " + e1.getMessage());
                     e1.printStackTrace();
-                } catch (CSVFormatException | StockException e1) {
+                } catch (CSVFormatException | StockException | DeliveryException e1) {
                     JOptionPane.showMessageDialog(frame, e1.getMessage());
                 }
                 fillInventoryTable(inventoryTable);
@@ -198,7 +198,7 @@ public class SuperMartGui {
         return manifestPane;
     }
 
-    private void optimiseManifests() {
+    private void optimiseManifests() throws DeliveryException {
         Stock.Builder stockBuilder = SuperMartApplication.getInstance().getStockBuilder();
         this.store.getInventory().getStockedItemQuantities().stream()
                 .filter(pair -> pair.getRight() <= pair.getLeft().getReorderPoint())
