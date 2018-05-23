@@ -39,6 +39,7 @@ public class SuperMartGui {
     // Form
     private JFrame frame;
 
+    private JLabel capitalLabel;
     private JTable manifestTable;
 
     /**
@@ -71,10 +72,16 @@ public class SuperMartGui {
         JLabel infoPaneTitle = new JLabel("Store Inventory Management System", SwingConstants.CENTER);
         infoPaneTitle.setFont(new Font("Default", Font.PLAIN, 18));
         infoPane.add(infoPaneTitle);
+        this.capitalLabel = new JLabel();
+        setCapitalLabel();
         infoPane.add(new JLabel("Store: " + StoreImpl.getInstance().getName()));
-        infoPane.add(new JLabel("Capital: " + StoreImpl.getInstance().getFormattedCapital()));
+        infoPane.add(this.capitalLabel);
 
         return infoPane;
+    }
+
+    private void setCapitalLabel() {
+        this.capitalLabel.setText("Capital: " + StoreImpl.getInstance().getFormattedCapital());
     }
 
     private JPanel createInventoryPane() {
@@ -96,6 +103,7 @@ public class SuperMartGui {
                 try {
                     CSV.loadItemProperties(file);
                     optimiseManifests();
+                    setCapitalLabel();
                 } catch (IOException e1) {
                     JOptionPane.showMessageDialog(frame, "Failed to load the file: " + e1.getMessage());
                     e1.printStackTrace();
@@ -115,6 +123,7 @@ public class SuperMartGui {
                 try {
                     CSV.loadSalesLog(file);
                     optimiseManifests();
+                    setCapitalLabel();
                 } catch (IOException e1) {
                     JOptionPane.showMessageDialog(frame, "Failed to load the file: " + e1.getMessage());
                     e1.printStackTrace();
@@ -188,11 +197,9 @@ public class SuperMartGui {
                 fillManifestTable(this.manifestTable);
             }
         });
-        JButton optimiseManifestButton = new JButton("Optimise Manifests");
         JButton saveManifestButton = new JButton("Save Manifests");
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(loadManifestButton);
-        buttonPanel.add(optimiseManifestButton);
         buttonPanel.add(saveManifestButton);
         manifestPane.add(buttonPanel);
         return manifestPane;
