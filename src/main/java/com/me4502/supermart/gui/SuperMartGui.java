@@ -188,6 +188,7 @@ public class SuperMartGui {
                 File file = fileChooser.getSelectedFile();
                 try {
                     CSV.loadManifest(file);
+                    setCapitalLabel();
                 } catch (IOException e1) {
                     JOptionPane.showMessageDialog(frame, "Failed to load the file: " + e1.getMessage());
                     e1.printStackTrace();
@@ -198,6 +199,20 @@ public class SuperMartGui {
             }
         });
         JButton saveManifestButton = new JButton("Save Manifests");
+        saveManifestButton.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
+            int returnVal = fileChooser.showSaveDialog(frame);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fileChooser.getSelectedFile();
+                try {
+                    CSV.exportManifest(file, StoreImpl.getInstance().getManifest());
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(frame, "Failed to save the file: " + e1.getMessage());
+                    e1.printStackTrace();
+                }
+            }
+        });
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(loadManifestButton);
         buttonPanel.add(saveManifestButton);
