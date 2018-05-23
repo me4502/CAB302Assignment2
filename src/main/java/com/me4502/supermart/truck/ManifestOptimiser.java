@@ -1,17 +1,12 @@
 package com.me4502.supermart.truck;
 
-import com.google.common.collect.ImmutableSet;
 import com.me4502.supermart.SuperMartApplication;
 import com.me4502.supermart.store.Item;
 import com.me4502.supermart.store.Stock;
-import org.apache.commons.lang3.tuple.MutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Optimises a manifest based on a requested cargo order.
@@ -37,35 +32,56 @@ public class ManifestOptimiser {
      * @return The truck set
      */
     public Manifest getManifest() {
-        Set<Pair<Item, Integer>> unplacedItems = cargo.getStockedItemQuantities()
-                .stream()
-                .map(pair -> new MutablePair<>(pair.getLeft(), pair.getRight()))
-                .collect(Collectors.toSet());
-        List<Item> coldItems = new ArrayList<>();
-        unplacedItems.stream()
-                .filter(pair -> pair.getLeft().isTemperatureControlled())
-                .sorted(Comparator.comparingDouble((Pair<Item, Integer> pair) -> pair.getLeft().getIdealTemperature().getAsDouble()).reversed())
-                .forEach(pair -> {
-                    for (int i = 0; i < pair.getRight(); i++) {
-                        coldItems.add(pair.getLeft());
-                    }
-                });
-        unplacedItems.removeIf(pair -> pair.getLeft().isTemperatureControlled());
-
-        ImmutableSet.Builder<Truck> truckSetBuilder = new ImmutableSet.Builder<>();
+        // Setup the builders
+        Manifest.Builder manifestBuilder = SuperMartApplication.getInstance().getManifestBuilder();
         Stock.Builder stockBuilder = SuperMartApplication.getInstance().getStockBuilder();
         RefrigeratedTruck.RefrigeratedBuilder refrigeratedBuilder = SuperMartApplication.getInstance().getRefrigeratedTruckBuilder();
-        while(!coldItems.isEmpty()) {
-            Stock stock = stockBuilder.build();
-            try {
-                Stock afterStock = stockBuilder.addStockedItem(coldItems.get(0), 1).build();
-                refrigeratedBuilder.cargo(afterStock);
-            } catch (IllegalArgumentException e) {
-                // This means it's full
-                stockBuilder.build();
+        OrdinaryTruck.OrdinaryBuilder ordinaryBuilder = SuperMartApplication.getInstance().getOrdinaryTruckBuilder();
+
+        List<Item> coldItems = new ArrayList<>();
+        List<Item> warmItems = new ArrayList<>();
+
+        cargo.getStockedItemQuantities().forEach(pair -> {
+            for (int i = 0; i < pair.getRight(); i++) {
+                if (pair.getLeft().isTemperatureControlled()) {
+                    coldItems.add(pair.getLeft());
+                } else {
+                    warmItems.add(pair.getLeft());
+                }
             }
+        });
+
+        coldItems.sort(Comparator.comparingDouble(item -> item.getIdealTemperature().getAsDouble()));
+
+        while(!coldItems.isEmpty()) {
+            stockBuilder.reset();
+            refrigeratedBuilder.reset();
+            int size = 0;
+            while (size < RefrigeratedTruck.getCapacity() && !coldItems.isEmpty()) {
+                size ++;
+                stockBuilder.addStockedItem(coldItems.get(0), 1);
+                coldItems.remove(0);
+            }
+            while (size < RefrigeratedTruck.getCapacity() && !warmItems.isEmpty()) {
+                size ++;
+                stockBuilder.addStockedItem(warmItems.get(0), 1);
+                warmItems.remove(0);
+            }
+            manifestBuilder.addTruck(refrigeratedBuilder.cargo(stockBuilder.build()).build());
         }
 
-        return SuperMartApplication.getInstance().getManifestBuilder().build();
+        while (!warmItems.isEmpty()) {
+            stockBuilder.reset();
+            ordinaryBuilder.reset();
+            int size = 0;
+            while (size < OrdinaryTruck.getCapacity() && !warmItems.isEmpty()) {
+                size ++;
+                stockBuilder.addStockedItem(warmItems.get(0), 1);
+                warmItems.remove(0);
+            }
+            manifestBuilder.addTruck(ordinaryBuilder.cargo(stockBuilder.build()).build());
+        }
+
+        return manifestBuilder.build();
     }
 }

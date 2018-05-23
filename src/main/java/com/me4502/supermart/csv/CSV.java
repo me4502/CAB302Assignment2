@@ -33,8 +33,8 @@ public class CSV {
         Item.Builder builder = SuperMartApplication.getInstance().getItemBuilder()
                 .name(line[0])
                 .manufacturingCost(Double.parseDouble(line[1]))
-                .reorderAmount(Integer.parseInt(line[2]))
-                .reorderPoint(Integer.parseInt(line[3]))
+                .reorderPoint(Integer.parseInt(line[2]))
+                .reorderAmount(Integer.parseInt(line[3]))
                 .sellPrice(Double.parseDouble(line[4]));
         if (line.length == 6) {
             builder.idealTemperature(Double.parseDouble(line[5]));
