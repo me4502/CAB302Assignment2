@@ -63,6 +63,7 @@ public class SuperMartGui {
 
         this.frame.setVisible(true);
         this.frame.setSize(750, 500);
+        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     private JPanel createInfoPane() {

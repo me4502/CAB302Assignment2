@@ -82,11 +82,15 @@ public class CSV {
             stockBuilder.addStockedItem(itemPair.getLeft(), itemPair.getRight());
         }
         // Getting the total sell value of the stock while continuing to create the new stock
-        double totalValue = 0; 
+        double totalValue = 0;
         for (ImmutablePair<Item, Integer> itemPair : soldStock.getStockedItemQuantities()) {
             if (StoreImpl.getInstance().getItem(itemPair.getLeft().getName()).isPresent()) {
                 totalValue += itemPair.getLeft().getSellPrice() * itemPair.getRight();
-                stockBuilder.addStockedItem(itemPair.getLeft(), -itemPair.getRight());
+                try {
+                    stockBuilder.addStockedItem(itemPair.getLeft(), -itemPair.getRight());
+                } catch (IllegalArgumentException e) {
+                    throw new StockException(e.getMessage());
+                }
             } else {
                 throw new StockException("Store doesn't stock " + itemPair.getLeft().getName() + ", but sales log contains it.");
             }
