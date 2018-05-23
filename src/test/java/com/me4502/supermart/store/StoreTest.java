@@ -4,11 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableSet;
 import com.me4502.supermart.SuperMartApplication;
+import com.me4502.supermart.exception.DeliveryException;
 import com.me4502.supermart.truck.Manifest;
 import com.me4502.supermart.truck.Truck;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -194,7 +196,7 @@ public class StoreTest {
         when(mockStockTruck.getStockedItemQuantities()).thenReturn(ImmutableSet.of(new ImmutablePair<>(mockitem, 1)));
 
         Stock mockStockStore = mock(Stock.class);
-        when(mockStockTruck.getStockedItemQuantities()).thenReturn(ImmutableSet.of(new ImmutablePair<>(mockitem, 0)));
+        when(mockStockStore.getStockedItemQuantities()).thenReturn(ImmutableSet.of(new ImmutablePair<>(mockitem, 0)));
         instance.setInventory(mockStockStore);
 
         Truck mockTruck = mock(Truck.class);
@@ -205,7 +207,12 @@ public class StoreTest {
         when(mockManifest.getTrucks()).thenReturn(ImmutableSet.of(mockTruck));
 
         instance.setCapital(1000.0);
-        instance.setManifest(mockManifest);
+        try {
+            instance.setManifest(mockManifest);
+        } catch (DeliveryException e) {
+            e.printStackTrace();
+            fail();
+        }
         assertEquals(mockManifest, instance.getManifest());
         assertEquals(0.0, instance.getCapital(), 0.001);
         assertEquals(1, instance.getInventory().getItemQuantity(mockitem).orElse(0));
@@ -214,6 +221,11 @@ public class StoreTest {
     @Test(expected = IllegalArgumentException.class)
     public void testSettingNullManifestFails() {
         Store instance = StoreImpl.getInstance();
-        instance.setManifest(null);
+        try {
+            instance.setManifest(null);
+        } catch (DeliveryException e) {
+            e.printStackTrace();
+            fail();
+        }
     }
 }
