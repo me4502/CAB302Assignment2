@@ -13,10 +13,11 @@ import java.util.Optional;
 
 /**
  * Implementation for the {@link Store} interface.
- * 
+ *
  * @author Liam Dale
  */
 public class StoreImpl implements Store {
+
     private String name;
     private double capital;
     private Stock inventory;
@@ -26,7 +27,7 @@ public class StoreImpl implements Store {
 
     /**
      * Create the singleton instance
-     * 
+     *
      * @param name The name of this store
      */
     public StoreImpl(String name) {
@@ -114,42 +115,42 @@ public class StoreImpl implements Store {
 
     @Override
     public void setManifest(Manifest manifest, boolean update) throws DeliveryException {
-    	// Manifest is not nullable
-    	if (manifest == null) {
-			throw new IllegalArgumentException("Manifest can't be null");
-		}
-    	
-    	// If the inventory and capital need to be updated
-    	if (update) {
-    		// Create a builder for the new inventory
-			Stock.Builder stockBuilder = SuperMartApplication.getInstance().getStockBuilder();
-		
-		    // Create the new stock, based off what is currently there
-		    for (ImmutablePair<Item, Integer> itemPair : getInventory().getStockedItemQuantities()) {
-		        stockBuilder.addStockedItem(itemPair.getLeft(), itemPair.getRight());
-		    }
-		
-		    // Find the value of the manifest while continuing to add to the new inventory
-		    double totalValue = 0;
-		    for (Truck truck : manifest.getTrucks()) {
-		    	// Sum value of trucks
-		        totalValue += truck.getCost();
-		        // Sum value of item manufacturing costs and add items -- ensure that they're stockable 
-		        for (ImmutablePair<Item, Integer> itemPair : truck.getCargo().getStockedItemQuantities()) {
-		            if (StoreImpl.getInstance().getItem(itemPair.getLeft().getName()).isPresent()) {
-		                totalValue += itemPair.getLeft().getManufacturingCost() * itemPair.getRight();
-		                stockBuilder.addStockedItem(itemPair.getLeft(), itemPair.getRight());
-		            } else {
-		                throw new DeliveryException("Store doesn't stock " + itemPair.getLeft().getName() + ", but manifest log contains it.");
-		            }
-		        }
-		    }
-		
-		    // Update the inventory and the store capital
-		    setInventory(stockBuilder.build());
-		    setCapital(StoreImpl.getInstance().getCapital() - totalValue);
-    	}
-    	
+        // Manifest is not nullable
+        if (manifest == null) {
+            throw new IllegalArgumentException("Manifest can't be null");
+        }
+
+        // If the inventory and capital need to be updated
+        if (update) {
+            // Create a builder for the new inventory
+            Stock.Builder stockBuilder = SuperMartApplication.getInstance().getStockBuilder();
+
+            // Create the new stock, based off what is currently there
+            for (ImmutablePair<Item, Integer> itemPair : getInventory().getStockedItemQuantities()) {
+                stockBuilder.addStockedItem(itemPair.getLeft(), itemPair.getRight());
+            }
+
+            // Find the value of the manifest while continuing to add to the new inventory
+            double totalValue = 0;
+            for (Truck truck : manifest.getTrucks()) {
+                // Sum value of trucks
+                totalValue += truck.getCost();
+                // Sum value of item manufacturing costs and add items -- ensure that they're stockable
+                for (ImmutablePair<Item, Integer> itemPair : truck.getCargo().getStockedItemQuantities()) {
+                    if (StoreImpl.getInstance().getItem(itemPair.getLeft().getName()).isPresent()) {
+                        totalValue += itemPair.getLeft().getManufacturingCost() * itemPair.getRight();
+                        stockBuilder.addStockedItem(itemPair.getLeft(), itemPair.getRight());
+                    } else {
+                        throw new DeliveryException("Store doesn't stock " + itemPair.getLeft().getName() + ", but manifest log contains it.");
+                    }
+                }
+            }
+
+            // Update the inventory and the store capital
+            setInventory(stockBuilder.build());
+            setCapital(StoreImpl.getInstance().getCapital() - totalValue);
+        }
+
         this.manifest = manifest;
     }
 }

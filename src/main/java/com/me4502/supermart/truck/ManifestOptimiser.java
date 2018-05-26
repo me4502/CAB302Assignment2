@@ -53,17 +53,17 @@ public class ManifestOptimiser {
 
         coldItems.sort(Comparator.comparingDouble(item -> item.getIdealTemperature().getAsDouble()));
 
-        while(!coldItems.isEmpty()) {
+        while (!coldItems.isEmpty()) {
             stockBuilder.reset();
             refrigeratedBuilder.reset();
             int size = 0;
             while (size < RefrigeratedTruck.getCapacity() && !coldItems.isEmpty()) {
-                size ++;
+                size++;
                 stockBuilder.addStockedItem(coldItems.get(0), 1);
                 coldItems.remove(0);
             }
             while (size < RefrigeratedTruck.getCapacity() && !warmItems.isEmpty()) {
-                size ++;
+                size++;
                 stockBuilder.addStockedItem(warmItems.get(0), 1);
                 warmItems.remove(0);
             }
@@ -75,7 +75,7 @@ public class ManifestOptimiser {
             ordinaryBuilder.reset();
             int size = 0;
             while (size < OrdinaryTruck.getCapacity() && !warmItems.isEmpty()) {
-                size ++;
+                size++;
                 stockBuilder.addStockedItem(warmItems.get(0), 1);
                 warmItems.remove(0);
             }

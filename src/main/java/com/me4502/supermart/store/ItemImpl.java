@@ -40,7 +40,7 @@ public class ItemImpl implements Item {
 
     @Override
     public double getManufacturingCost() {
-        return this.manufacturingCost; 
+        return this.manufacturingCost;
     }
 
     @Override
@@ -67,18 +67,18 @@ public class ItemImpl implements Item {
     public boolean isTemperatureControlled() {
         return this.idealTemperature.isPresent();
     }
-    
-    @Override 
+
+    @Override
     public boolean equals(Object obj) {
-    	if (obj instanceof Item) {
-    		return this.name.equals(((Item) obj).getName());
-    	}
-    	return false;
+        if (obj instanceof Item) {
+            return this.name.equals(((Item) obj).getName());
+        }
+        return false;
     }
-    
+
     @Override
     public int hashCode() {
-    	return this.name.hashCode();
+        return this.name.hashCode();
     }
 
     /**
@@ -152,7 +152,8 @@ public class ItemImpl implements Item {
 
         @Override
         public Item build() {
-            if (this.name == null || this.manufacturingCost == null || this.sellPrice == null || this.reorderPoint == null || this.reorderAmount == null) {
+            if (this.name == null || this.manufacturingCost == null || this.sellPrice == null || this.reorderPoint == null
+                    || this.reorderAmount == null) {
                 throw new IllegalStateException("Need to set all parameters besides idealTemperature");
             }
             return new ItemImpl(this.name, this.manufacturingCost, this.sellPrice, this.reorderPoint, this.reorderAmount, this.idealTemperature);

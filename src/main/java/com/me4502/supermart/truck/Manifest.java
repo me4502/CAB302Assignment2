@@ -1,6 +1,7 @@
 package com.me4502.supermart.truck;
 
 import com.google.common.collect.ImmutableSet;
+
 /**
  * An interface for manifests 
  *
@@ -8,7 +9,7 @@ import com.google.common.collect.ImmutableSet;
  */
 public interface Manifest {
 
-	/**
+    /**
      * Gets the set of trucks in the manifest.
      *
      * @return The set of trucks
@@ -22,7 +23,7 @@ public interface Manifest {
      */
     interface Builder {
 
-    	/**
+        /**
          * Adds a truck {@link Manifest}.
          *
          * @param truck The truck

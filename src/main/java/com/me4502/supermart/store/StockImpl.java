@@ -8,9 +8,9 @@ import java.util.HashSet;
 import java.util.OptionalInt;
 
 /**
- * 
+ *
  * Implementation for {@link Stock}.
- * 
+ *
  * @author Liam Dale
  *
  */
