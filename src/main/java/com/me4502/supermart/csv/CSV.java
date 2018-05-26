@@ -29,6 +29,13 @@ import java.util.NoSuchElementException;
  */
 public class CSV {
 
+	/**
+	 * 
+	 * Return an item builder base off a string array from csv
+	 * 
+	 * @param line
+	 * @return
+	 */
     private static Item.Builder itemBuilder(String[] line) {
         Item.Builder builder = SuperMartApplication.getInstance().getItemBuilder()
                 .name(line[0])
@@ -42,27 +49,56 @@ public class CSV {
         return builder;
     }
 
+    /**
+     * 
+     * Load item properties and set created items with quantity of zero in inventory
+     * 
+     * @param file
+     * @throws IOException
+     * @throws CSVFormatException
+     */
     public static void loadItemProperties(File file) throws IOException, CSVFormatException {
     	Item tempItem;
-    	Stock.Builder stockBuilder = SuperMartApplication.getInstance().getStockBuilder();  	
+    	Stock.Builder stockBuilder = SuperMartApplication.getInstance().getStockBuilder();  
+    		
+    	// Create the new stock, based off the current inventory -- necessary to not reset if properties reloaded
+        for (ImmutablePair<Item, Integer> itemPair : StoreImpl.getInstance().getInventory().getStockedItemQuantities()) {
+            stockBuilder.addStockedItem(itemPair.getLeft(), itemPair.getRight());
+        }
+    	
+        // Add any new properties
         List<String[]> lines = readCSV(file);
         for (int i = 0; i < lines.size(); i++) {
             try {
+            	// Build the item
             	tempItem = itemBuilder(lines.get(i)).build();
-            	stockBuilder.addStockedItem(tempItem, 0);
-                StoreImpl.getInstance().addItem(tempItem);
+            	// If the item is not in the list of stockables, add it to stockables and inventory with zero quantity 
+            	if (!(StoreImpl.getInstance().getItem(tempItem.getName()).isPresent())) {
+	                StoreImpl.getInstance().addItem(tempItem);
+	            	stockBuilder.addStockedItem(tempItem, 0);
+            	}
             } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                 throw new CSVFormatException("Invalid format on line " + (i + 1));
             }
         }
+        // Set items in inventory, with zero quantity
         StoreImpl.getInstance().setInventory(stockBuilder.build());
     }
 
+    
+    /**
+     * 
+     * Load a sales log, update the store capital and inventory appropriately
+     * 
+     * @param file
+     * @throws IOException
+     * @throws StockException
+     * @throws CSVFormatException
+     */
     public static void loadSalesLog(File file) throws IOException, StockException, CSVFormatException {
-        Stock currentStock = StoreImpl.getInstance().getInventory();
         Stock.Builder stockBuilder = SuperMartApplication.getInstance().getStockBuilder();
 
-        // Build the sold stock
+        // Build the sold stock, and then reset the builder
         List<String[]> lines = readCSV(file);
         for (int i = 0; i < lines.size(); i++) {
             try {
@@ -73,12 +109,11 @@ public class CSV {
                 throw new StockException("Store doesn't stock " + lines.get(i)[0] + ", but sales log contains it.");
             }
         }
-
         Stock soldStock = stockBuilder.build();
         stockBuilder.reset();
 
-        // Create the new stock
-        for (ImmutablePair<Item, Integer> itemPair : currentStock.getStockedItemQuantities()) {
+        // Create the new stock, based off the current inventory
+        for (ImmutablePair<Item, Integer> itemPair : StoreImpl.getInstance().getInventory().getStockedItemQuantities()) {
             stockBuilder.addStockedItem(itemPair.getLeft(), itemPair.getRight());
         }
         // Getting the total sell value of the stock while continuing to create the new stock
@@ -100,7 +135,17 @@ public class CSV {
         StoreImpl.getInstance().setInventory(stockBuilder.build());
         StoreImpl.getInstance().setCapital(StoreImpl.getInstance().getCapital() + totalValue);
     }
-
+    
+    
+    /**
+     * 
+     * Load a manifest, update the store manifest
+     * 
+     * @param file
+     * @throws IOException
+     * @throws CSVFormatException
+     * @throws DeliveryException
+     */
     public static void loadManifest(File file) throws IOException, CSVFormatException, DeliveryException {
         // Create builders
         Stock.Builder stockBuilder = SuperMartApplication.getInstance().getStockBuilder();
@@ -111,12 +156,13 @@ public class CSV {
         Manifest.Builder manifestBuilder = SuperMartApplication.getInstance().getManifestBuilder();
 
         // Iterate backwards over csv to fill the list of trucks
-        ArrayList<String[]> lines = readCSV(file);
+        List<String[]> lines = readCSV(file);
         for (int counter = lines.size() - 1; counter >= 0; counter--) {
             String[] line = lines.get(counter);
             if (line.length == 2) {
                 stockBuilder.addStockedItem(StoreImpl.getInstance().getItem(line[0]).get(), Integer.parseInt(line[1]));
             } else if (line.length == 1) {
+            	// Build the relevant truck and add it to the manifest, after reset builders for next stock and truck pair
                 switch (line[0]) {
                     case ">Ordinary":
                         manifestBuilder.addTruck(ordinaryBuilder.cargo(stockBuilder.build()).build());
@@ -135,11 +181,26 @@ public class CSV {
                 throw new CSVFormatException("Unknown format on line " + (counter + 1));
             }
         }
+        
+        // Throw an exception if there are no trucks in the manifest -- empty manifest may be built
+        Manifest manifest = manifestBuilder.build();
+        if (manifest.getTrucks().isEmpty()) {
+        	throw new CSVFormatException("There are no trucks in this manifest");
+        }
 
-        StoreImpl.getInstance().setManifest(manifestBuilder.build(), true);
+        // Set the created manifest -- handle inventory and capital changes in storeImpl
+        StoreImpl.getInstance().setManifest(manifest, true);
     }
 
-    // Initial tester
+    
+    /**
+     * Exports a manifest to the file location in the relevant format
+     * 
+     * 
+     * @param file to write
+     * @param manifest to be written
+     * @throws IOException
+     */
     public static void exportManifest(File file, Manifest manifest) throws IOException {
         FileWriter writer = new FileWriter(file.getAbsolutePath());
         for (Truck truck : manifest.getTrucks()) {
@@ -151,6 +212,15 @@ public class CSV {
         writer.close();
     }
 
+    
+    /**
+     * 
+     * Reads a csv and returns its contents
+     * 
+     * @param file to be read
+     * @return list of lines in a csv
+     * @throws IOException
+     */
     private static ArrayList<String[]> readCSV(File file) throws IOException {
         ArrayList<String[]> linesList = new ArrayList<>();
         String line;
