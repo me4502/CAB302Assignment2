@@ -41,6 +41,7 @@ public class SuperMartGui {
     private JFrame frame;
 
     private JLabel capitalLabel;
+    private JLabel manifestPaneTitle;
 
     private JTable manifestTable;
     private JTable inventoryTable;
@@ -187,10 +188,10 @@ public class SuperMartGui {
     private JPanel createManifestPane() {
         JPanel manifestPane = new JPanel();
         manifestPane.setLayout(new BoxLayout(manifestPane, BoxLayout.Y_AXIS));
-        JLabel manifestPaneTitle = new JLabel("Manifest");
-        manifestPaneTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
-        manifestPaneTitle.setFont(new Font("Default", Font.PLAIN, 18));
-        manifestPane.add(manifestPaneTitle);
+        this.manifestPaneTitle = new JLabel("Manifest");
+        this.manifestPaneTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+        this.manifestPaneTitle.setFont(new Font("Default", Font.PLAIN, 18));
+        manifestPane.add(this.manifestPaneTitle);
         this.manifestTable = new JTable();
         fillManifestTable(this.manifestTable);
         manifestPane.add(new JScrollPane(this.manifestTable));
@@ -206,6 +207,7 @@ public class SuperMartGui {
                     CSV.loadManifest(file);
                     setCapitalLabel();
                     this.saveManifestButton.setEnabled(false);
+                    this.manifestPaneTitle.setText("Imported Manifest");
                 } catch (IOException e1) {
                     JOptionPane.showMessageDialog(this.frame, "Failed to load the file: " + e1.getMessage());
                     e1.printStackTrace();
@@ -245,6 +247,7 @@ public class SuperMartGui {
                 .filter(pair -> pair.getRight() <= pair.getLeft().getReorderPoint())
                 .forEach(pair -> stockBuilder.addStockedItem(pair.getLeft(), pair.getLeft().getReorderAmount()));
         this.store.setManifest(new ManifestOptimiser(stockBuilder.build()).getManifest(), false);
+        this.manifestPaneTitle.setText("Generated Manifest");
         fillManifestTable(this.manifestTable);
     }
 
