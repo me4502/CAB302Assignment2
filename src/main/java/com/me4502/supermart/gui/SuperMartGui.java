@@ -205,6 +205,7 @@ public class SuperMartGui {
                 try {
                     CSV.loadManifest(file);
                     setCapitalLabel();
+                    this.saveManifestButton.setEnabled(false);
                 } catch (IOException e1) {
                     JOptionPane.showMessageDialog(this.frame, "Failed to load the file: " + e1.getMessage());
                     e1.printStackTrace();
@@ -213,8 +214,6 @@ public class SuperMartGui {
                 }
                 fillManifestTable(this.manifestTable);
                 fillInventoryTable(this.inventoryTable);
-                setCapitalLabel();
-                this.saveManifestButton.setEnabled(false);
             }
         });
         this.saveManifestButton = new JButton("Save Manifests");
