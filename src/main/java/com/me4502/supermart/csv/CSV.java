@@ -170,7 +170,7 @@ public class CSV {
      * @throws CSVFormatException
      * @throws DeliveryException
      */
-    public static void loadManifest(File file) throws IOException, CSVFormatException, StockException, DeliveryException {
+    public static void loadManifest(File file) throws IOException, CSVFormatException, DeliveryException {
         // Create builders
         Stock.Builder stockBuilder = SuperMartApplication.getInstance().getStockBuilder();
         OrdinaryTruck.OrdinaryBuilder ordinaryBuilder = SuperMartApplication.getInstance().getOrdinaryTruckBuilder();
@@ -187,7 +187,7 @@ public class CSV {
             	if (StoreImpl.getInstance().getItem(line[0]).isPresent()) {
             		stockBuilder.addStockedItem(StoreImpl.getInstance().getItem(line[0]).get(), Integer.parseInt(line[1]));                    
                 } else {
-                    throw new StockException("Store doesn't stock " + line[0] + ", but sales log contains it.");
+                    throw new DeliveryException("Store doesn't stock " + line[0] + ", but sales log contains it.");
                 } 
             } else if (line.length == 1) {
             	// Build the relevant truck and add it to the manifest, after reset builders for next stock and truck pair

@@ -194,7 +194,7 @@ public class SuperMartGui {
                 } catch (IOException e1) {
                     JOptionPane.showMessageDialog(frame, "Failed to load the file: " + e1.getMessage());
                     e1.printStackTrace();
-                } catch (CSVFormatException | StockException | DeliveryException e1) {
+                } catch (CSVFormatException | DeliveryException e1) {
                     JOptionPane.showMessageDialog(frame, e1.getMessage());
                 }
                 fillManifestTable(this.manifestTable);
