@@ -3,6 +3,7 @@
 *.iml
 *.class
 bin/
+build/
 out/
 .DS_Store
 thumbs.db

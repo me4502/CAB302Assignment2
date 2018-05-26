@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id "com.github.johnrengelman.shadow" version "2.0.4"
 }
 
 group 'com.me4502'
@@ -17,3 +18,20 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile "org.mockito:mockito-core:1.+"
 }
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'SuperMart Application',
+                   'Implementation-Version': version,
+                   'Main-Class': 'com.me4502.supermart.gui.SuperMartGui'
+    }
+}
+
+shadowJar {
+    manifest {
+        inheritFrom project.tasks.jar.manifest
+    }
+    classifier = null
+}
+
+build.dependsOn(shadowJar)

@@ -250,7 +250,7 @@ public class StoreTest {
         }
         assertEquals(mockManifest, instance.getManifest());
         assertEquals(1000.0, instance.getCapital(), 0.001);
-        assertEquals(0, instance.getInventory().getItemQuantity(mockitem).orElse(0));
+        assertEquals(mockStockStore, instance.getInventory());
     }
 
     @Test(expected = IllegalArgumentException.class)
