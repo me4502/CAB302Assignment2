@@ -18,15 +18,19 @@ import java.util.Optional;
  *
  */
 public class StoreImpl implements Store {
-
     private String name;
     private double capital;
     private Stock inventory;
     private HashMap<String, Item> stockableItems = new HashMap<>();
     private Manifest manifest;
-
     private static StoreImpl instance;
 
+    /**
+     * 
+     * Create the singleton instance
+     * 
+     * @param name
+     */
     public StoreImpl(String name) {
         if (instance != null) {
             throw new IllegalStateException("This object has already been instantiated");
@@ -112,22 +116,27 @@ public class StoreImpl implements Store {
 
     @Override
     public void setManifest(Manifest manifest, boolean update) throws DeliveryException {
+    	// Manifest is not nullable
+    	if (manifest == null) {
+			throw new IllegalArgumentException("Manifest can't be null");
+		}
+    	
+    	// If the inventory and capital need to be updated
     	if (update) {
-			if (manifest == null) {
-				throw new IllegalArgumentException("Manifest can't be null");
-			}
-		
+    		// Create a builder for the new inventory
 			Stock.Builder stockBuilder = SuperMartApplication.getInstance().getStockBuilder();
 		
-		    // Create the new stock
+		    // Create the new stock, based off what is currently there
 		    for (ImmutablePair<Item, Integer> itemPair : getInventory().getStockedItemQuantities()) {
 		        stockBuilder.addStockedItem(itemPair.getLeft(), itemPair.getRight());
 		    }
 		
-		    // Find the value of the manifest while continuing to create the new stock
+		    // Find the value of the manifest while continuing to add to the new inventory
 		    double totalValue = 0;
 		    for (Truck truck : manifest.getTrucks()) {
+		    	// Sum value of trucks
 		        totalValue += truck.getCost();
+		        // Sum value of item manufacturing costs and add items -- ensure that they're stockable 
 		        for (ImmutablePair<Item, Integer> itemPair : truck.getCargo().getStockedItemQuantities()) {
 		            if (StoreImpl.getInstance().getItem(itemPair.getLeft().getName()).isPresent()) {
 		                totalValue += itemPair.getLeft().getManufacturingCost() * itemPair.getRight();
@@ -138,7 +147,7 @@ public class StoreImpl implements Store {
 		        }
 		    }
 		
-		    // Update the stock and the store capital
+		    // Update the inventory and the store capital
 		    setInventory(stockBuilder.build());
 		    setCapital(StoreImpl.getInstance().getCapital() - totalValue);
     	}
