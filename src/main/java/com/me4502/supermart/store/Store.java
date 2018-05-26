@@ -98,10 +98,11 @@ public interface Store {
     /**
      * Sets the manifest of this store.
      *
-     * This should also update the capital and inventory.
+     * This should also update the capital and inventory if specified.
      *
      * @param manifest The manifest
+     * @param update Whether to update the capital and inventory
      * @throws DeliveryException Thrown when the delivery isn't possible
      */
-    void setManifest(Manifest manifest) throws DeliveryException;
+    void setManifest(Manifest manifest, boolean update) throws DeliveryException;
 }

@@ -136,7 +136,7 @@ public class CSV {
             }
         }
 
-        StoreImpl.getInstance().setManifest(manifestBuilder.build());
+        StoreImpl.getInstance().setManifest(manifestBuilder.build(), true);
     }
 
     // Initial tester

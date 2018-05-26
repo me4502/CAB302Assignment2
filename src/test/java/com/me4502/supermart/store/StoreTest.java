@@ -209,7 +209,7 @@ public class StoreTest {
 
         instance.setCapital(1000.0);
         try {
-            instance.setManifest(mockManifest);
+            instance.setManifest(mockManifest, true);
         } catch (DeliveryException e) {
             e.printStackTrace();
             fail();
@@ -219,11 +219,45 @@ public class StoreTest {
         assertEquals(1, instance.getInventory().getItemQuantity(mockitem).orElse(0));
     }
 
+    @Test
+    public void testSettingManifestNoUpdate() {
+        Store instance = StoreImpl.getInstance();
+
+        Item mockitem = mock(Item.class);
+        when(mockitem.getName()).thenReturn("Test");
+        instance.addItem(mockitem);
+
+        Stock mockStockTruck = mock(Stock.class);
+        when(mockStockTruck.getStockedItemQuantities()).thenReturn(ImmutableSet.of(new ImmutablePair<>(mockitem, 1)));
+
+        Stock mockStockStore = mock(Stock.class);
+        when(mockStockStore.getStockedItemQuantities()).thenReturn(ImmutableSet.of(new ImmutablePair<>(mockitem, 0)));
+        instance.setInventory(mockStockStore);
+
+        Truck mockTruck = mock(Truck.class);
+        when(mockTruck.getCost()).thenReturn(1000.0);
+        when(mockTruck.getCargo()).thenReturn(mockStockTruck);
+
+        Manifest mockManifest = mock(Manifest.class);
+        when(mockManifest.getTrucks()).thenReturn(ImmutableSet.of(mockTruck));
+
+        instance.setCapital(1000.0);
+        try {
+            instance.setManifest(mockManifest, false);
+        } catch (DeliveryException e) {
+            e.printStackTrace();
+            fail();
+        }
+        assertEquals(mockManifest, instance.getManifest());
+        assertEquals(1000.0, instance.getCapital(), 0.001);
+        assertEquals(0, instance.getInventory().getItemQuantity(mockitem).orElse(0));
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void testSettingNullManifestFails() {
         Store instance = StoreImpl.getInstance();
         try {
-            instance.setManifest(null);
+            instance.setManifest(null, false);
         } catch (DeliveryException e) {
             e.printStackTrace();
             fail();

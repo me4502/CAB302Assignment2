@@ -111,7 +111,7 @@ public class StoreImpl implements Store {
     }
 
     @Override
-    public void setManifest(Manifest manifest) throws DeliveryException {
+    public void setManifest(Manifest manifest, boolean update) throws DeliveryException {
     	if (manifest == null) {
     		throw new IllegalArgumentException("Manifest can't be null");
     	}

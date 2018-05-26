@@ -226,7 +226,7 @@ public class SuperMartGui {
         this.store.getInventory().getStockedItemQuantities().stream()
                 .filter(pair -> pair.getRight() <= pair.getLeft().getReorderPoint())
                 .forEach(pair -> stockBuilder.addStockedItem(pair.getLeft(), pair.getLeft().getReorderAmount()));
-        this.store.setManifest(new ManifestOptimiser(stockBuilder.build()).getManifest());
+        this.store.setManifest(new ManifestOptimiser(stockBuilder.build()).getManifest(), false);
         fillManifestTable(this.manifestTable);
     }
 
