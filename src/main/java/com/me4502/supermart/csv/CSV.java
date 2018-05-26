@@ -19,6 +19,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -78,7 +79,17 @@ public class CSV {
 	            	stockBuilder.addStockedItem(tempItem, 0);
             	}
             } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                throw new CSVFormatException("Invalid format on line " + (i + 1));
+            	// Create a detailed message
+            	String message = "Invalid item formatting on line " + (i + 1) + ". \n\n"
+            					+ "Should be in the form:\n"
+            					+ "[item], [cost], [price], [reorder point], [reorder amount] OR\n"
+            					+ "[item], [cost], [price], [reorder point], [reorder amount], [temperature]\n\n"
+            					+ "But was presented as:\n";
+            	List<String> lineList = Arrays.asList(lines.get(i));
+            	for (String line : lineList) {
+            		message += (lineList.indexOf(line) != lineList.size() - 1) ? "[" + line + "], " : "[" + line + "]";
+            	}
+                throw new CSVFormatException(message);
             }
         }
         // Set items in inventory, with zero quantity
@@ -102,9 +113,21 @@ public class CSV {
         List<String[]> lines = readCSV(file);
         for (int i = 0; i < lines.size(); i++) {
             try {
+            	if (lines.get(i).length != 2) {
+            		throw new CSVFormatException(null);
+            	}
                 stockBuilder.addStockedItem(StoreImpl.getInstance().getItem(lines.get(i)[0]).get(), Integer.parseInt(lines.get(i)[1]));
-            } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                throw new CSVFormatException("Invalid format on line " + (i + 1));
+            } catch (NumberFormatException | CSVFormatException e) {
+            	// Create a detailed message
+            	String message = "Invalid sales log formatting on line " + (i + 1) + ". \n\n"
+            					+ "Should be in the form:\n"
+            					+ "[item], [quantity]\n\n"
+            					+ "But was presented as:\n";
+            	List<String> lineList = Arrays.asList(lines.get(i));
+            	for (String line : lineList) {
+            		message += (lineList.indexOf(line) != lineList.size() - 1) ? "[" + line + "], " : "[" + line + "]";
+            	}
+                throw new CSVFormatException(message);
             } catch (NoSuchElementException e) {
                 throw new StockException("Store doesn't stock " + lines.get(i)[0] + ", but sales log contains it.");
             }
@@ -116,6 +139,7 @@ public class CSV {
         for (ImmutablePair<Item, Integer> itemPair : StoreImpl.getInstance().getInventory().getStockedItemQuantities()) {
             stockBuilder.addStockedItem(itemPair.getLeft(), itemPair.getRight());
         }
+        
         // Getting the total sell value of the stock while continuing to create the new stock
         double totalValue = 0;
         for (ImmutablePair<Item, Integer> itemPair : soldStock.getStockedItemQuantities()) {
@@ -157,8 +181,8 @@ public class CSV {
 
         // Iterate backwards over csv to fill the list of trucks
         List<String[]> lines = readCSV(file);
-        for (int counter = lines.size() - 1; counter >= 0; counter--) {
-            String[] line = lines.get(counter);
+        for (int i = lines.size() - 1; i >= 0; i--) {
+            String[] line = lines.get(i);
             if (line.length == 2) {
                 stockBuilder.addStockedItem(StoreImpl.getInstance().getItem(line[0]).get(), Integer.parseInt(line[1]));
             } else if (line.length == 1) {
@@ -178,14 +202,24 @@ public class CSV {
                         throw new CSVFormatException("Unknown truck type " + line[0]);
                 }
             } else {
-                throw new CSVFormatException("Unknown format on line " + (counter + 1));
+            	// Create a detailed message
+            	String message = "Invalid sales log formatting on line " + (i + 1) + ". \n\n"
+            					+ "Should be in the form:\n"
+            					+ ">[truck type] OR\n"
+            					+ "[item], [quantity]\n\n"
+            					+ "But was presented as:\n";
+            	List<String> lineList = Arrays.asList(lines.get(i));
+            	for (String errorLine : lineList) {
+            		message += (lineList.indexOf(errorLine) != lineList.size() - 1) ? "[" + errorLine + "], " : "[" + errorLine + "]";
+            	}
+                throw new CSVFormatException(message); 
             }
         }
         
         // Throw an exception if there are no trucks in the manifest -- empty manifest may be built
         Manifest manifest = manifestBuilder.build();
         if (manifest.getTrucks().isEmpty()) {
-        	throw new CSVFormatException("There are no trucks in this manifest");
+        	throw new CSVFormatException("Cannot load a manifest without trucks.");
         }
 
         // Set the created manifest -- handle inventory and capital changes in storeImpl
