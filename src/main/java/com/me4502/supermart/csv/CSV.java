@@ -88,6 +88,8 @@ public class CSV {
                     message.append((lineList.indexOf(line) != lineList.size() - 1) ? "[" + line + "], " : "[" + line + "]");
                 }
                 throw new CSVFormatException(message.toString());
+            } catch (IllegalStateException | IllegalArgumentException e) {
+            	throw new CSVFormatException(e.getMessage());
             }
         }
         // Set items in inventory, with zero quantity
@@ -127,6 +129,8 @@ public class CSV {
                 throw new CSVFormatException(message.toString());
             } catch (NoSuchElementException e) {
                 throw new StockException("Store doesn't stock " + lines.get(i)[0] + ", but sales log contains it.");
+            } catch (IllegalStateException | IllegalArgumentException e) {
+            	throw new CSVFormatException(e.getMessage());
             }
         }
         Stock soldStock = stockBuilder.build();
@@ -180,10 +184,14 @@ public class CSV {
         for (int i = lines.size() - 1; i >= 0; i--) {
             String[] line = lines.get(i);
             if (line.length == 2) {
-                if (StoreImpl.getInstance().getItem(line[0]).isPresent()) {
-                    stockBuilder.addStockedItem(StoreImpl.getInstance().getItem(line[0]).get(), Integer.parseInt(line[1]));
-                } else {
-                    throw new DeliveryException("Store doesn't stock " + line[0] + ", but sales log contains it.");
+            	try {
+	                if (StoreImpl.getInstance().getItem(line[0]).isPresent()) {
+	                    stockBuilder.addStockedItem(StoreImpl.getInstance().getItem(line[0]).get(), Integer.parseInt(line[1]));
+	                } else {
+	                    throw new DeliveryException("Store doesn't stock " + line[0] + ", but sales log contains it.");
+	                }
+            	} catch (IllegalStateException | IllegalArgumentException e) {
+                	throw new CSVFormatException(e.getMessage());
                 }
             } else if (line.length == 1) {
                 // Build the relevant truck and add it to the manifest, after reset builders for next stock and truck pair

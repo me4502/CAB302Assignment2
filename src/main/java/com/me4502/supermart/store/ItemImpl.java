@@ -97,7 +97,9 @@ public class ItemImpl implements Item {
 
         @Override
         public Builder name(String name) {
-            //throw exception - based off what?
+            if (name.length() < 1) {
+            	throw new IllegalArgumentException("Name must not be empty");
+            }
             this.name = name;
             return this;
         }
