@@ -10,6 +10,7 @@ import com.me4502.supermart.store.Store;
 import com.me4502.supermart.store.StoreImpl;
 import com.me4502.supermart.truck.ManifestOptimiser;
 
+import java.awt.Component;
 import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
@@ -40,8 +41,12 @@ public class SuperMartGui {
     private JFrame frame;
 
     private JLabel capitalLabel;
+
     private JTable manifestTable;
     private JTable inventoryTable;
+
+    private JButton loadManifestButton;
+    private JButton saveManifestButton;
 
     /**
      * Creates a new instance of the GUI.
@@ -90,12 +95,14 @@ public class SuperMartGui {
         JPanel inventoryPane = new JPanel();
         inventoryPane.setLayout(new BoxLayout(inventoryPane, BoxLayout.Y_AXIS));
         JLabel inventoryPaneTitle = new JLabel("Stored Inventory");
+        inventoryPaneTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         inventoryPaneTitle.setFont(new Font("Default", Font.PLAIN, 18));
         inventoryPane.add(inventoryPaneTitle);
         this.inventoryTable = new JTable();
         fillInventoryTable(this.inventoryTable);
         inventoryPane.add(new JScrollPane(this.inventoryTable));
         JButton loadInventoryButton = new JButton("Load Item Properties");
+        JButton loadSalesLogButton = new JButton("Load Sales Log");
         loadInventoryButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
@@ -106,6 +113,10 @@ public class SuperMartGui {
                     CSV.loadItemProperties(file);
                     optimiseManifests();
                     setCapitalLabel();
+                    loadSalesLogButton.setEnabled(true);
+                    loadInventoryButton.setText("Re-load Item Properties");
+                    this.saveManifestButton.setEnabled(true);
+                    this.loadManifestButton.setEnabled(true);
                 } catch (IOException e1) {
                     JOptionPane.showMessageDialog(frame, "Failed to load the file: " + e1.getMessage());
                     e1.printStackTrace();
@@ -115,7 +126,7 @@ public class SuperMartGui {
                 fillInventoryTable(this.inventoryTable);
             }
         });
-        JButton loadSalesLogButton = new JButton("Load Sales Log");
+        loadSalesLogButton.setEnabled(false);
         loadSalesLogButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
@@ -126,6 +137,7 @@ public class SuperMartGui {
                     CSV.loadSalesLog(file);
                     optimiseManifests();
                     setCapitalLabel();
+                    this.saveManifestButton.setEnabled(true);
                 } catch (IOException e1) {
                     JOptionPane.showMessageDialog(frame, "Failed to load the file: " + e1.getMessage());
                     e1.printStackTrace();
@@ -176,13 +188,15 @@ public class SuperMartGui {
         JPanel manifestPane = new JPanel();
         manifestPane.setLayout(new BoxLayout(manifestPane, BoxLayout.Y_AXIS));
         JLabel manifestPaneTitle = new JLabel("Manifest");
+        manifestPaneTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         manifestPaneTitle.setFont(new Font("Default", Font.PLAIN, 18));
         manifestPane.add(manifestPaneTitle);
         this.manifestTable = new JTable();
         fillManifestTable(this.manifestTable);
         manifestPane.add(new JScrollPane(this.manifestTable));
-        JButton loadManifestButton = new JButton("Load Manifests");
-        loadManifestButton.addActionListener(e -> {
+        this.loadManifestButton = new JButton("Load Manifests");
+        this.loadManifestButton.setEnabled(false);
+        this.loadManifestButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
             int returnVal = fileChooser.showOpenDialog(frame);
@@ -200,10 +214,12 @@ public class SuperMartGui {
                 fillManifestTable(this.manifestTable);
                 fillInventoryTable(this.inventoryTable);
                 setCapitalLabel();
+                this.saveManifestButton.setEnabled(false);
             }
         });
-        JButton saveManifestButton = new JButton("Save Manifests");
-        saveManifestButton.addActionListener(e -> {
+        this.saveManifestButton = new JButton("Save Manifests");
+        this.saveManifestButton.setEnabled(false);
+        this.saveManifestButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
             int returnVal = fileChooser.showSaveDialog(frame);
@@ -218,8 +234,8 @@ public class SuperMartGui {
             }
         });
         JPanel buttonPanel = new JPanel();
-        buttonPanel.add(loadManifestButton);
-        buttonPanel.add(saveManifestButton);
+        buttonPanel.add(this.loadManifestButton);
+        buttonPanel.add(this.saveManifestButton);
         manifestPane.add(buttonPanel);
         return manifestPane;
     }
