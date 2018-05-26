@@ -41,6 +41,7 @@ public class SuperMartGui {
 
     private JLabel capitalLabel;
     private JTable manifestTable;
+    private JTable inventoryTable;
 
     /**
      * Creates a new instance of the GUI.
@@ -91,9 +92,9 @@ public class SuperMartGui {
         JLabel inventoryPaneTitle = new JLabel("Stored Inventory");
         inventoryPaneTitle.setFont(new Font("Default", Font.PLAIN, 18));
         inventoryPane.add(inventoryPaneTitle);
-        JTable inventoryTable = new JTable();
-        fillInventoryTable(inventoryTable);
-        inventoryPane.add(new JScrollPane(inventoryTable));
+        this.inventoryTable = new JTable();
+        fillInventoryTable(this.inventoryTable);
+        inventoryPane.add(new JScrollPane(this.inventoryTable));
         JButton loadInventoryButton = new JButton("Load Item Properties");
         loadInventoryButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
@@ -111,7 +112,7 @@ public class SuperMartGui {
                 } catch (CSVFormatException | DeliveryException e1) {
                     JOptionPane.showMessageDialog(frame, e1.getMessage());
                 }
-                fillInventoryTable(inventoryTable);
+                fillInventoryTable(this.inventoryTable);
             }
         });
         JButton loadSalesLogButton = new JButton("Load Sales Log");
@@ -131,7 +132,7 @@ public class SuperMartGui {
                 } catch (CSVFormatException | StockException | DeliveryException e1) {
                     JOptionPane.showMessageDialog(frame, e1.getMessage());
                 }
-                fillInventoryTable(inventoryTable);
+                fillInventoryTable(this.inventoryTable);
             }
         });
         JPanel buttonPanel = new JPanel();
@@ -197,6 +198,8 @@ public class SuperMartGui {
                     JOptionPane.showMessageDialog(frame, e1.getMessage());
                 }
                 fillManifestTable(this.manifestTable);
+                fillInventoryTable(this.inventoryTable);
+                setCapitalLabel();
             }
         });
         JButton saveManifestButton = new JButton("Save Manifests");
