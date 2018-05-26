@@ -64,10 +64,10 @@ public class RefrigeratedTruckImpl extends AbstractTruck implements Refrigerated
 
         @Override
         public RefrigeratedTruck build() {
-            if (cargo == null) {
+            if (this.cargo == null) {
                 throw new IllegalStateException("RefrigeratedTruck requires cargo");
             }
-            return new RefrigeratedTruckImpl(cargo);
+            return new RefrigeratedTruckImpl(this.cargo);
         }
 
         @Override

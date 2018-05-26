@@ -37,15 +37,15 @@ public class OrdinaryTruckTest {
     private int validQuantity = 100;
     private double validCost = 775;
     private Stock validStock = getStock(
-            ImmutableSet.of(ImmutablePair.of(getItem(false), validQuantity)),
+            ImmutableSet.of(ImmutablePair.of(getItem(false), this.validQuantity)),
             ImmutableSet.of(getItem(false)),
-            validQuantity
+            this.validQuantity
     );
 
     // Return builder for valid item
     private OrdinaryTruck.OrdinaryBuilder truckBuilder() {
         return SuperMartApplication.getInstance().getOrdinaryTruckBuilder()
-                .cargo(validStock);
+                .cargo(this.validStock);
     }
 
     // Build the valid item
@@ -71,9 +71,9 @@ public class OrdinaryTruckTest {
     public void testValidBuild() {
         OrdinaryTruck OrdinaryTruck = buildTruck();
         assertEquals("Ordinary", OrdinaryTruck.getType());
-        assertEquals(MAX_CAPACITY, OrdinaryTruck.getCargoCapacity());
-        assertEquals(validCost, OrdinaryTruck.getCost());
-        assertEquals(validStock, OrdinaryTruck.getCargo());
+        assertEquals(this.MAX_CAPACITY, OrdinaryTruck.getCargoCapacity());
+        assertEquals(this.validCost, OrdinaryTruck.getCost());
+        assertEquals(this.validStock, OrdinaryTruck.getCargo());
     }
 
     // 
@@ -95,9 +95,9 @@ public class OrdinaryTruckTest {
     public void testOnLowerThresholds() {
         // Generate parameters
         Stock boundaryStock = getStock(
-                ImmutableSet.of(ImmutablePair.of(getItem(false), MIN_CAPACITY)),
+                ImmutableSet.of(ImmutablePair.of(getItem(false), this.MIN_CAPACITY)),
                 ImmutableSet.of(getItem(false)),
-                MIN_CAPACITY);
+                this.MIN_CAPACITY);
         // Attempt to build
         buildUniqueTruck(boundaryStock);
     }
@@ -106,9 +106,9 @@ public class OrdinaryTruckTest {
     @Test
     public void testOnUpperThresholds() {
         // Generate parameters
-        Stock boundaryStock = getStock(ImmutableSet.of(ImmutablePair.of(getItem(false), MAX_CAPACITY)),
+        Stock boundaryStock = getStock(ImmutableSet.of(ImmutablePair.of(getItem(false), this.MAX_CAPACITY)),
                 ImmutableSet.of(getItem(false)),
-                MAX_CAPACITY);
+                this.MAX_CAPACITY);
         // Attempt to build
         buildUniqueTruck(boundaryStock);
     }
@@ -117,9 +117,9 @@ public class OrdinaryTruckTest {
     @Test(expected = IllegalStateException.class)
     public void testAboveUpperThresholds() {
         // Generate parameters
-        Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(getItem(false), MAX_CAPACITY + 1)),
+        Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(getItem(false), this.MAX_CAPACITY + 1)),
                 ImmutableSet.of(getItem(false)),
-                MAX_CAPACITY + 1);
+                this.MAX_CAPACITY + 1);
         // Attempt to build
         buildUniqueTruck(invalidStock);
     }
@@ -128,9 +128,9 @@ public class OrdinaryTruckTest {
     @Test(expected = IllegalStateException.class)
     public void testNoDryGoods() {
         // Generate parameters
-        Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(getItem(true), validQuantity)),
+        Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(getItem(true), this.validQuantity)),
                 ImmutableSet.of(getItem(true)),
-                validQuantity);
+                this.validQuantity);
         // Attempt to build
         buildUniqueTruck(invalidStock);
     }

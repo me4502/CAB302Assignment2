@@ -28,7 +28,7 @@ public class StockImpl implements Stock {
         //mapToInt unbox the Integer (i->i)
         //stock.values().stream().mapToInt(i->i).sum();
         int totalAmount = 0;
-        for (ImmutablePair<Item, Integer> pair : pairSet) {
+        for (ImmutablePair<Item, Integer> pair : this.pairSet) {
             totalAmount += pair.getRight();
         }
         return totalAmount;
@@ -38,7 +38,7 @@ public class StockImpl implements Stock {
     @Override
     public ImmutableSet<Item> getStockedItems() {
         HashSet<Item> tempSet = new HashSet<>();
-        for (ImmutablePair<Item, Integer> pair : pairSet) {
+        for (ImmutablePair<Item, Integer> pair : this.pairSet) {
             tempSet.add(pair.getLeft());
         }
         return ImmutableSet.copyOf(tempSet);
@@ -47,12 +47,12 @@ public class StockImpl implements Stock {
     // Return the stock map
     @Override
     public ImmutableSet<ImmutablePair<Item, Integer>> getStockedItemQuantities() {
-        return pairSet;
+        return this.pairSet;
     }
 
     @Override
     public OptionalInt getItemQuantity(Item item) {
-        for (ImmutablePair<Item, Integer> pair : pairSet) {
+        for (ImmutablePair<Item, Integer> pair : this.pairSet) {
             if (item.getName().equals(pair.getLeft().getName())) {
                 return OptionalInt.of(pair.getRight());
             }
@@ -74,16 +74,16 @@ public class StockImpl implements Stock {
             if (item == null) {
                 throw new IllegalArgumentException("Item cannot be null");
             }
-            if (stock.containsKey(item)) {
-                if (stock.get(item) < -quantity && quantity < 0) {
+            if (this.stock.containsKey(item)) {
+                if (this.stock.get(item) < -quantity && quantity < 0) {
                     throw new IllegalArgumentException("Cannot remove this many items");
                 }
-                stock.put(item, stock.get(item) + quantity);
+                this.stock.put(item, this.stock.get(item) + quantity);
             } else {
                 if (quantity < 0) {
                     throw new IllegalArgumentException("Cannot create an item with a negative quantity");
                 }
-                stock.put(item, quantity); 
+                this.stock.put(item, quantity);
             }
             return this;
         }
@@ -92,7 +92,7 @@ public class StockImpl implements Stock {
         public Stock build() {
             // create the immutable set here
             // add the immutable set of immutable pairs as a parameter
-            ImmutableSet<ImmutablePair<Item, Integer>> pairSet = stock.entrySet().stream()
+            ImmutableSet<ImmutablePair<Item, Integer>> pairSet = this.stock.entrySet().stream()
                     .map(e -> ImmutablePair.of(e.getKey(), e.getValue()))
                     .collect(ImmutableSet.toImmutableSet());
             return new StockImpl(pairSet);
@@ -101,7 +101,7 @@ public class StockImpl implements Stock {
         @Override
         public Builder reset() {
             // clear the map
-            stock.clear();
+            this.stock.clear();
             return this;
         }
     }

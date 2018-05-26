@@ -52,10 +52,10 @@ public class OrdinaryTruckImpl extends AbstractTruck implements OrdinaryTruck {
 
         @Override
         public OrdinaryTruck build() {
-            if (cargo == null) {
+            if (this.cargo == null) {
                 throw new IllegalStateException("OrdinaryTruck requires cargo");
             }
-            return new OrdinaryTruckImpl(cargo);
+            return new OrdinaryTruckImpl(this.cargo);
         }
 
         @Override

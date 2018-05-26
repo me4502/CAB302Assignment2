@@ -58,8 +58,8 @@ public class ManifestTest {
     // Make a list of them
     private List<Truck> getTruckList() {
         return Lists.newArrayList(
-                ordinaryTruck,
-                refrigeratedTruck
+                this.ordinaryTruck,
+                this.refrigeratedTruck
         );
     }
 

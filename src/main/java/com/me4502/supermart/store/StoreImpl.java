@@ -15,7 +15,6 @@ import java.util.Optional;
  * Implementation for the {@link Store} interface.
  * 
  * @author Liam Dale
- *
  */
 public class StoreImpl implements Store {
     private String name;
@@ -26,10 +25,9 @@ public class StoreImpl implements Store {
     private static StoreImpl instance;
 
     /**
-     * 
      * Create the singleton instance
      * 
-     * @param name
+     * @param name The name of this store
      */
     public StoreImpl(String name) {
         if (instance != null) {
@@ -60,12 +58,12 @@ public class StoreImpl implements Store {
 
     @Override
     public String getName() {
-        return name;
+        return this.name;
     }
 
     @Override
     public double getCapital() {
-        return capital;
+        return this.capital;
     }
 
     @Override
@@ -76,7 +74,7 @@ public class StoreImpl implements Store {
     @Override
     public String getFormattedCapital() {
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
-        return (capital > 0) ? currencyFormatter.format(this.capital) : "-" + currencyFormatter.format(this.capital * -1);
+        return (this.capital > 0) ? currencyFormatter.format(this.capital) : "-" + currencyFormatter.format(this.capital * -1);
     }
 
     @Override
@@ -94,24 +92,24 @@ public class StoreImpl implements Store {
 
     @Override
     public void addItem(Item item) {
-        if (!stockableItems.containsKey(item.getName())) {
-            stockableItems.put(item.getName(), item);
+        if (!this.stockableItems.containsKey(item.getName())) {
+            this.stockableItems.put(item.getName(), item);
         }
     }
 
     @Override
     public Optional<Item> getItem(String name) {
-        return Optional.ofNullable(stockableItems.get(name));
+        return Optional.ofNullable(this.stockableItems.get(name));
     }
 
     @Override
     public ImmutableSet<Item> getItems() {
-        return ImmutableSet.copyOf(stockableItems.values());
+        return ImmutableSet.copyOf(this.stockableItems.values());
     }
 
     @Override
     public Manifest getManifest() {
-        return manifest;
+        return this.manifest;
     }
 
     @Override

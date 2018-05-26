@@ -41,7 +41,7 @@ public class ManifestOptimiser {
         List<Item> coldItems = new ArrayList<>();
         List<Item> warmItems = new ArrayList<>();
 
-        cargo.getStockedItemQuantities().forEach(pair -> {
+        this.cargo.getStockedItemQuantities().forEach(pair -> {
             for (int i = 0; i < pair.getRight(); i++) {
                 if (pair.getLeft().isTemperatureControlled()) {
                     coldItems.add(pair.getLeft());

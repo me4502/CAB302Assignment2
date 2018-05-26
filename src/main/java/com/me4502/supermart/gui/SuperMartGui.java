@@ -106,7 +106,7 @@ public class SuperMartGui {
         loadInventoryButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
-            int returnVal = fileChooser.showOpenDialog(frame);
+            int returnVal = fileChooser.showOpenDialog(this.frame);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fileChooser.getSelectedFile();
                 try {
@@ -118,10 +118,10 @@ public class SuperMartGui {
                     this.saveManifestButton.setEnabled(true);
                     this.loadManifestButton.setEnabled(true);
                 } catch (IOException e1) {
-                    JOptionPane.showMessageDialog(frame, "Failed to load the file: " + e1.getMessage());
+                    JOptionPane.showMessageDialog(this.frame, "Failed to load the file: " + e1.getMessage());
                     e1.printStackTrace();
                 } catch (CSVFormatException | DeliveryException e1) {
-                    JOptionPane.showMessageDialog(frame, e1.getMessage());
+                    JOptionPane.showMessageDialog(this.frame, e1.getMessage());
                 }
                 fillInventoryTable(this.inventoryTable);
             }
@@ -130,7 +130,7 @@ public class SuperMartGui {
         loadSalesLogButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
-            int returnVal = fileChooser.showOpenDialog(frame);
+            int returnVal = fileChooser.showOpenDialog(this.frame);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fileChooser.getSelectedFile();
                 try {
@@ -139,10 +139,10 @@ public class SuperMartGui {
                     setCapitalLabel();
                     this.saveManifestButton.setEnabled(true);
                 } catch (IOException e1) {
-                    JOptionPane.showMessageDialog(frame, "Failed to load the file: " + e1.getMessage());
+                    JOptionPane.showMessageDialog(this.frame, "Failed to load the file: " + e1.getMessage());
                     e1.printStackTrace();
                 } catch (CSVFormatException | StockException | DeliveryException e1) {
-                    JOptionPane.showMessageDialog(frame, e1.getMessage());
+                    JOptionPane.showMessageDialog(this.frame, e1.getMessage());
                 }
                 fillInventoryTable(this.inventoryTable);
             }
@@ -157,7 +157,7 @@ public class SuperMartGui {
 
     private void fillInventoryTable(JTable inventoryTable) {
         // Create column names
-        String[] columns = new String[]{
+        String[] columns = {
                 "Item",
                 "Quantity",
                 "Manufacturing cost ($)",
@@ -199,17 +199,17 @@ public class SuperMartGui {
         this.loadManifestButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
-            int returnVal = fileChooser.showOpenDialog(frame);
+            int returnVal = fileChooser.showOpenDialog(this.frame);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fileChooser.getSelectedFile();
                 try {
                     CSV.loadManifest(file);
                     setCapitalLabel();
                 } catch (IOException e1) {
-                    JOptionPane.showMessageDialog(frame, "Failed to load the file: " + e1.getMessage());
+                    JOptionPane.showMessageDialog(this.frame, "Failed to load the file: " + e1.getMessage());
                     e1.printStackTrace();
                 } catch (CSVFormatException | DeliveryException e1) {
-                    JOptionPane.showMessageDialog(frame, e1.getMessage());
+                    JOptionPane.showMessageDialog(this.frame, e1.getMessage());
                 }
                 fillManifestTable(this.manifestTable);
                 fillInventoryTable(this.inventoryTable);
@@ -222,13 +222,13 @@ public class SuperMartGui {
         this.saveManifestButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files", "csv"));
-            int returnVal = fileChooser.showSaveDialog(frame);
+            int returnVal = fileChooser.showSaveDialog(this.frame);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fileChooser.getSelectedFile();
                 try {
                     CSV.exportManifest(file, StoreImpl.getInstance().getManifest());
                 } catch (IOException e1) {
-                    JOptionPane.showMessageDialog(frame, "Failed to save the file: " + e1.getMessage());
+                    JOptionPane.showMessageDialog(this.frame, "Failed to save the file: " + e1.getMessage());
                     e1.printStackTrace();
                 }
             }
@@ -251,7 +251,7 @@ public class SuperMartGui {
 
     private void fillManifestTable(JTable manifestTable) {
         // Create column names
-        String[] columns = new String[]{
+        String[] columns = {
                 "Type",
                 "Cargo Capacity",
                 "Cost ($)",

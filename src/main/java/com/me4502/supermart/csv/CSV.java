@@ -31,11 +31,10 @@ import java.util.NoSuchElementException;
 public class CSV {
 
 	/**
-	 * 
 	 * Return an item builder base off a string array from csv
 	 * 
-	 * @param line
-	 * @return
+	 * @param line The CSV line to parse
+	 * @return The Item Builder
 	 */
     private static Item.Builder itemBuilder(String[] line) {
         Item.Builder builder = SuperMartApplication.getInstance().getItemBuilder()
@@ -51,12 +50,11 @@ public class CSV {
     }
 
     /**
-     * 
      * Load item properties and set created items with quantity of zero in inventory
      * 
-     * @param file
-     * @throws IOException
-     * @throws CSVFormatException
+     * @param file The file to load
+     * @throws IOException if the file can't be loaded
+     * @throws CSVFormatException if the format is invalid
      */
     public static void loadItemProperties(File file) throws IOException, CSVFormatException {
     	Item tempItem;
@@ -80,16 +78,16 @@ public class CSV {
             	}
             } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
             	// Create a detailed message
-            	String message = "Invalid item formatting on line " + (i + 1) + ". \n\n"
-            					+ "Should be in the form:\n"
-            					+ "[item], [cost], [price], [reorder point], [reorder amount] OR\n"
-            					+ "[item], [cost], [price], [reorder point], [reorder amount], [temperature]\n\n"
-            					+ "But was presented as:\n";
+            	StringBuilder message = new StringBuilder("Invalid item formatting on line " + (i + 1) + ". \n\n"
+                        + "Should be in the form:\n"
+                        + "[item], [cost], [price], [reorder point], [reorder amount] OR\n"
+                        + "[item], [cost], [price], [reorder point], [reorder amount], [temperature]\n\n"
+                        + "But was presented as:\n");
             	List<String> lineList = Arrays.asList(lines.get(i));
             	for (String line : lineList) {
-            		message += (lineList.indexOf(line) != lineList.size() - 1) ? "[" + line + "], " : "[" + line + "]";
+            		message.append((lineList.indexOf(line) != lineList.size() - 1) ? "[" + line + "], " : "[" + line + "]");
             	}
-                throw new CSVFormatException(message);
+                throw new CSVFormatException(message.toString());
             }
         }
         // Set items in inventory, with zero quantity
@@ -98,13 +96,12 @@ public class CSV {
 
     
     /**
-     * 
      * Load a sales log, update the store capital and inventory appropriately
      * 
-     * @param file
-     * @throws IOException
-     * @throws StockException
-     * @throws CSVFormatException
+     * @param file The file to load
+     * @throws IOException if the file failed to be loaded
+     * @throws StockException if the stock was invalid
+     * @throws CSVFormatException if the format was invalid
      */
     public static void loadSalesLog(File file) throws IOException, StockException, CSVFormatException {
         Stock.Builder stockBuilder = SuperMartApplication.getInstance().getStockBuilder();
@@ -119,15 +116,15 @@ public class CSV {
                 stockBuilder.addStockedItem(StoreImpl.getInstance().getItem(lines.get(i)[0]).get(), Integer.parseInt(lines.get(i)[1]));
             } catch (NumberFormatException | CSVFormatException e) {
             	// Create a detailed message
-            	String message = "Invalid sales log formatting on line " + (i + 1) + ". \n\n"
-            					+ "Should be in the form:\n"
-            					+ "[item], [quantity]\n\n"
-            					+ "But was presented as:\n";
+            	StringBuilder message = new StringBuilder("Invalid sales log formatting on line " + (i + 1) + ". \n\n"
+                        + "Should be in the form:\n"
+                        + "[item], [quantity]\n\n"
+                        + "But was presented as:\n");
             	List<String> lineList = Arrays.asList(lines.get(i));
             	for (String line : lineList) {
-            		message += (lineList.indexOf(line) != lineList.size() - 1) ? "[" + line + "], " : "[" + line + "]";
+            		message.append((lineList.indexOf(line) != lineList.size() - 1) ? "[" + line + "], " : "[" + line + "]");
             	}
-                throw new CSVFormatException(message);
+                throw new CSVFormatException(message.toString());
             } catch (NoSuchElementException e) {
                 throw new StockException("Store doesn't stock " + lines.get(i)[0] + ", but sales log contains it.");
             }
@@ -162,13 +159,12 @@ public class CSV {
     
     
     /**
-     * 
      * Load a manifest, update the store manifest
      * 
-     * @param file
-     * @throws IOException
-     * @throws CSVFormatException
-     * @throws DeliveryException
+     * @param file The file to load
+     * @throws IOException if the file failed to load
+     * @throws CSVFormatException if the format is wrong
+     * @throws DeliveryException if there is an issue generating a delivery
      */
     public static void loadManifest(File file) throws IOException, CSVFormatException, DeliveryException {
         // Create builders
@@ -207,16 +203,16 @@ public class CSV {
                 }
             } else {
             	// Create a detailed message
-            	String message = "Invalid sales log formatting on line " + (i + 1) + ". \n\n"
-            					+ "Should be in the form:\n"
-            					+ ">[truck type] OR\n"
-            					+ "[item], [quantity]\n\n"
-            					+ "But was presented as:\n";
+            	StringBuilder message = new StringBuilder("Invalid sales log formatting on line " + (i + 1) + ". \n\n"
+                        + "Should be in the form:\n"
+                        + ">[truck type] OR\n"
+                        + "[item], [quantity]\n\n"
+                        + "But was presented as:\n");
             	List<String> lineList = Arrays.asList(lines.get(i));
             	for (String errorLine : lineList) {
-            		message += (lineList.indexOf(errorLine) != lineList.size() - 1) ? "[" + errorLine + "], " : "[" + errorLine + "]";
+            		message.append((lineList.indexOf(errorLine) != lineList.size() - 1) ? "[" + errorLine + "], " : "[" + errorLine + "]");
             	}
-                throw new CSVFormatException(message); 
+                throw new CSVFormatException(message.toString());
             }
         }
         
@@ -233,11 +229,10 @@ public class CSV {
     
     /**
      * Exports a manifest to the file location in the relevant format
-     * 
-     * 
+     *
      * @param file to write
      * @param manifest to be written
-     * @throws IOException
+     * @throws IOException if the file could not be written to
      */
     public static void exportManifest(File file, Manifest manifest) throws IOException {
         FileWriter writer = new FileWriter(file.getAbsolutePath());
@@ -252,12 +247,11 @@ public class CSV {
 
     
     /**
-     * 
      * Reads a csv and returns its contents
      * 
-     * @param file to be read
+     * @param file The file to read
      * @return list of lines in a csv
-     * @throws IOException
+     * @throws IOException if the file could not be read
      */
     private static ArrayList<String[]> readCSV(File file) throws IOException {
         ArrayList<String[]> linesList = new ArrayList<>();

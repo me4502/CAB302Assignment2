@@ -152,20 +152,20 @@ public class ItemImpl implements Item {
 
         @Override
         public Item build() {
-            if (name == null || manufacturingCost == null || sellPrice == null || reorderPoint == null || reorderAmount == null) {
+            if (this.name == null || this.manufacturingCost == null || this.sellPrice == null || this.reorderPoint == null || this.reorderAmount == null) {
                 throw new IllegalStateException("Need to set all parameters besides idealTemperature");
             }
-            return new ItemImpl(name, manufacturingCost, sellPrice, reorderPoint, reorderAmount, idealTemperature);
+            return new ItemImpl(this.name, this.manufacturingCost, this.sellPrice, this.reorderPoint, this.reorderAmount, this.idealTemperature);
         }
 
         @Override
         public Builder reset() {
-            name = null;
-            manufacturingCost = null;
-            sellPrice = null;
-            reorderPoint = null;
-            reorderAmount = null;
-            idealTemperature = OptionalDouble.empty();
+            this.name = null;
+            this.manufacturingCost = null;
+            this.sellPrice = null;
+            this.reorderPoint = null;
+            this.reorderAmount = null;
+            this.idealTemperature = OptionalDouble.empty();
             return this;
         }
     }

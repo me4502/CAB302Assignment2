@@ -27,7 +27,7 @@ public class RefrigeratedTruckTest {
     private Item getItem(double storageTemperature) {
         Item item = mock(Item.class);
         when(item.getIdealTemperature()).thenReturn(OptionalDouble.of(storageTemperature));
-        when(item.isTemperatureControlled()).thenReturn(storageTemperature <= MAX_TEMPERATURE);
+        when(item.isTemperatureControlled()).thenReturn(storageTemperature <= this.MAX_TEMPERATURE);
         return item;
     }
 
@@ -43,16 +43,16 @@ public class RefrigeratedTruckTest {
     // Valid build parameters
     private int validAmount = 100;
     private double validStorageTemp = 0;
-    private Item validItem = getItem(validStorageTemp);
+    private Item validItem = getItem(this.validStorageTemp);
     private double validCost = 1100;
-    private Stock validStock = getStock(ImmutableSet.of(ImmutablePair.of(validItem, validAmount)),
-            ImmutableSet.of(validItem),
-            validAmount);
+    private Stock validStock = getStock(ImmutableSet.of(ImmutablePair.of(this.validItem, this.validAmount)),
+            ImmutableSet.of(this.validItem),
+            this.validAmount);
 
     // Return builder for valid item
     private RefrigeratedTruck.RefrigeratedBuilder truckBuilder() {
         return SuperMartApplication.getInstance().getRefrigeratedTruckBuilder()
-                .cargo(validStock);
+                .cargo(this.validStock);
     }
 
     // Build the valid item
@@ -78,10 +78,10 @@ public class RefrigeratedTruckTest {
     public void testValidBuild() {
         RefrigeratedTruck RefrigeratedTruck = buildTruck();
         assertEquals("Refrigerated", RefrigeratedTruck.getType());
-        assertEquals(MAX_CAPACITY, RefrigeratedTruck.getCargoCapacity());
-        assertEquals(validCost, RefrigeratedTruck.getCost());
-        assertEquals(validStock, RefrigeratedTruck.getCargo());
-        assertEquals(validStorageTemp, RefrigeratedTruck.getStorageTemperature());
+        assertEquals(this.MAX_CAPACITY, RefrigeratedTruck.getCargoCapacity());
+        assertEquals(this.validCost, RefrigeratedTruck.getCost());
+        assertEquals(this.validStock, RefrigeratedTruck.getCargo());
+        assertEquals(this.validStorageTemp, RefrigeratedTruck.getStorageTemperature());
     }
 
     // 
@@ -102,10 +102,10 @@ public class RefrigeratedTruckTest {
     @Test
     public void testOnLowerThresholds() {
         // Generate boundary parameters
-        Item boundaryItem = getItem(MIN_TEMPERATURE);
-        Stock boundaryStock = getStock(ImmutableSet.of(ImmutablePair.of(boundaryItem, MIN_CAPACITY)),
+        Item boundaryItem = getItem(this.MIN_TEMPERATURE);
+        Stock boundaryStock = getStock(ImmutableSet.of(ImmutablePair.of(boundaryItem, this.MIN_CAPACITY)),
                 ImmutableSet.of(boundaryItem),
-                MIN_CAPACITY);
+                this.MIN_CAPACITY);
         // Attempt to build
         buildUniqueTruck(boundaryStock);
     }
@@ -114,10 +114,10 @@ public class RefrigeratedTruckTest {
     @Test
     public void testOnUpperThresholds() {
         // Generate boundary parameters
-        Item boundaryItem = getItem(MAX_TEMPERATURE);
-        Stock boundaryStock = getStock(ImmutableSet.of(ImmutablePair.of(boundaryItem, MAX_CAPACITY)),
+        Item boundaryItem = getItem(this.MAX_TEMPERATURE);
+        Stock boundaryStock = getStock(ImmutableSet.of(ImmutablePair.of(boundaryItem, this.MAX_CAPACITY)),
                 ImmutableSet.of(boundaryItem),
-                MAX_CAPACITY);
+                this.MAX_CAPACITY);
         // Attempt to build
         buildUniqueTruck(boundaryStock);
     }
@@ -126,10 +126,10 @@ public class RefrigeratedTruckTest {
     @Test(expected = IllegalStateException.class)
     public void testAboveUpperThresholds() {
         // Generate bad parameters
-        Item invalidItem = getItem(MAX_TEMPERATURE + 1);
-        Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(invalidItem, MAX_CAPACITY + 1)),
+        Item invalidItem = getItem(this.MAX_TEMPERATURE + 1);
+        Stock invalidStock = getStock(ImmutableSet.of(ImmutablePair.of(invalidItem, this.MAX_CAPACITY + 1)),
                 ImmutableSet.of(invalidItem),
-                MAX_CAPACITY + 1);
+                this.MAX_CAPACITY + 1);
         // Attempt to build
         buildUniqueTruck(invalidStock);
     }

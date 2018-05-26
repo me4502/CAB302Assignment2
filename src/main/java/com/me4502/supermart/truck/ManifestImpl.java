@@ -32,13 +32,13 @@ public class ManifestImpl implements Manifest {
 
         @Override
         public Builder addTruck(Truck truck) {
-            trucksBuilder.add(truck);
+            this.trucksBuilder.add(truck);
             return this;
         }
 
         @Override
         public Manifest build() {
-            return new ManifestImpl(trucksBuilder.build());
+            return new ManifestImpl(this.trucksBuilder.build());
         }
 
         @Override
