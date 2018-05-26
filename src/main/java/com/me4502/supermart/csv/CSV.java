@@ -188,7 +188,7 @@ public class CSV {
 	                if (StoreImpl.getInstance().getItem(line[0]).isPresent()) {
 	                    stockBuilder.addStockedItem(StoreImpl.getInstance().getItem(line[0]).get(), Integer.parseInt(line[1]));
 	                } else {
-	                    throw new DeliveryException("Store doesn't stock " + line[0] + ", but sales log contains it.");
+	                    throw new DeliveryException("Store doesn't stock " + line[0] + ", but manifest contains it.");
 	                }
             	} catch (IllegalStateException | IllegalArgumentException e) {
                 	throw new CSVFormatException(e.getMessage());
