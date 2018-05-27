@@ -43,11 +43,13 @@ public class ManifestImpl implements Manifest {
 
         @Override
         public Manifest build() {
+            // Build a ManifestImpl from the trucks
             return new ManifestImpl(this.trucksBuilder.build());
         }
 
         @Override
         public Builder reset() {
+            // Clear the truck builder
             this.trucksBuilder = new ImmutableSet.Builder<>();
             return this;
         }

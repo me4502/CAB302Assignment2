@@ -34,6 +34,7 @@ public class RefrigeratedTruckImpl extends AbstractTruck implements Refrigerated
 
     @Override
     public double getStorageTemperature() {
+        // Find the lowest ideal temperature inside the valid range
         return getCargo().getStockedItems()
                 .stream()
                 .map(Item::getIdealTemperature)
@@ -60,6 +61,7 @@ public class RefrigeratedTruckImpl extends AbstractTruck implements Refrigerated
 
         @Override
         public RefrigeratedBuilder cargo(Stock cargo) {
+            // Don't allow cargo too large to be added to the truck
             if (cargo.getTotalAmount() > RefrigeratedTruck.getCapacity()) {
                 throw new IllegalStateException("Cargo exceeds capacity");
             }
@@ -69,6 +71,7 @@ public class RefrigeratedTruckImpl extends AbstractTruck implements Refrigerated
 
         @Override
         public RefrigeratedTruck build() {
+            // Fail if required parameters aren't set
             if (this.cargo == null) {
                 throw new IllegalStateException("RefrigeratedTruck requires cargo");
             }

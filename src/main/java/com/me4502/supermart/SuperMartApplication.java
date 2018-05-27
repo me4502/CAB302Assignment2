@@ -24,6 +24,7 @@ public class SuperMartApplication {
      * Construct a new instance of the SuperMart Application
      */
     public SuperMartApplication() {
+        // Set the singleton instance, or fail if already set
         if (instance != null) {
             throw new IllegalStateException("Application already running!");
         }

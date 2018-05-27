@@ -45,9 +45,11 @@ public class OrdinaryTruckImpl extends AbstractTruck implements OrdinaryTruck {
 
         @Override
         public OrdinaryBuilder cargo(Stock cargo) {
+            // Don't allow trucks that have too much cargo to be made
             if (cargo.getTotalAmount() > OrdinaryTruck.getCapacity()) {
                 throw new IllegalStateException("Cargo exceeds capacity");
             }
+            // Don't allow temperature-controlled items in a non-fridge truck
             if (cargo.getStockedItems().stream().anyMatch(Item::isTemperatureControlled)) {
                 throw new IllegalStateException("Cargo must not contain temperature controlled items");
             }
@@ -57,6 +59,7 @@ public class OrdinaryTruckImpl extends AbstractTruck implements OrdinaryTruck {
 
         @Override
         public OrdinaryTruck build() {
+            // Fail if the required properties haven't been set
             if (this.cargo == null) {
                 throw new IllegalStateException("OrdinaryTruck requires cargo");
             }

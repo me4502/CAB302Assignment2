@@ -23,6 +23,7 @@ public class ArrayTableModel extends AbstractTableModel {
      * @param editable If it's editable
      */
     public ArrayTableModel(Object[][] data, String[] columns, boolean editable) {
+        // Ensure that the data size matches the columns.
         if (data.length > 0 && data[0].length != columns.length) {
             throw new IllegalArgumentException("Data must have the same width as the columns");
         }
