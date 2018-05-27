@@ -16,12 +16,6 @@ public class ItemImpl implements Item {
     private Integer reorderAmount;
     private OptionalDouble idealTemperature;
 
-    // Constructs an item, can overload with storage temperature
-	/*
-	public ItemImpl(String name, Double manufacturingCost, Double sellPrice, Integer reorderPoint, Integer reorderAmount) {
-		this(name, manufacturingCost, sellPrice, reorderPoint, reorderAmount, OptionalDouble.empty());
-	}
-	*/
     private ItemImpl(String name, Double manufacturingCost, Double sellPrice, Integer reorderPoint, Integer reorderAmount,
             OptionalDouble idealTemperature) {
         this.name = name;

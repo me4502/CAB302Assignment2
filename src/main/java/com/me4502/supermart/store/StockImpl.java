@@ -22,11 +22,8 @@ public class StockImpl implements Stock {
         this.pairSet = pairSet;
     }
 
-    // Getting the total amount of items
     @Override
     public int getTotalAmount() {
-        //mapToInt unbox the Integer (i->i)
-        //stock.values().stream().mapToInt(i->i).sum();
         int totalAmount = 0;
         for (ImmutablePair<Item, Integer> pair : this.pairSet) {
             totalAmount += pair.getRight();
@@ -34,7 +31,6 @@ public class StockImpl implements Stock {
         return totalAmount;
     }
 
-    // Gets a set of all stocked items
     @Override
     public ImmutableSet<Item> getStockedItems() {
         HashSet<Item> tempSet = new HashSet<>();
@@ -44,7 +40,6 @@ public class StockImpl implements Stock {
         return ImmutableSet.copyOf(tempSet);
     }
 
-    // Return the stock map
     @Override
     public ImmutableSet<ImmutablePair<Item, Integer>> getStockedItemQuantities() {
         return this.pairSet;
@@ -90,8 +85,6 @@ public class StockImpl implements Stock {
 
         @Override
         public Stock build() {
-            // create the immutable set here
-            // add the immutable set of immutable pairs as a parameter
             ImmutableSet<ImmutablePair<Item, Integer>> pairSet = this.stock.entrySet().stream()
                     .map(e -> ImmutablePair.of(e.getKey(), e.getValue()))
                     .collect(ImmutableSet.toImmutableSet());
@@ -100,7 +93,6 @@ public class StockImpl implements Stock {
 
         @Override
         public Builder reset() {
-            // clear the map
             this.stock.clear();
             return this;
         }
