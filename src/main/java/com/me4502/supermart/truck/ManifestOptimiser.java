@@ -41,6 +41,7 @@ public class ManifestOptimiser {
         List<Item> coldItems = new ArrayList<>();
         List<Item> warmItems = new ArrayList<>();
 
+        // Seperate the items into a list of singular cold and warm items.
         this.cargo.getStockedItemQuantities().forEach(pair -> {
             for (int i = 0; i < pair.getRight(); i++) {
                 if (pair.getLeft().isTemperatureControlled()) {
@@ -51,8 +52,10 @@ public class ManifestOptimiser {
             }
         });
 
+        // Sort the cold items by temperature in ascending order.
         coldItems.sort(Comparator.comparingDouble(item -> item.getIdealTemperature().getAsDouble()));
 
+        // Create all the refrigerated trucks, filling in order of coldest to warmest.
         while (!coldItems.isEmpty()) {
             stockBuilder.reset();
             refrigeratedBuilder.reset();
@@ -62,6 +65,7 @@ public class ManifestOptimiser {
                 stockBuilder.addStockedItem(coldItems.get(0), 1);
                 coldItems.remove(0);
             }
+            // If there is remaining room on the trucks, put warm items in there.
             while (size < RefrigeratedTruck.getCapacity() && !warmItems.isEmpty()) {
                 size++;
                 stockBuilder.addStockedItem(warmItems.get(0), 1);
@@ -70,6 +74,7 @@ public class ManifestOptimiser {
             manifestBuilder.addTruck(refrigeratedBuilder.cargo(stockBuilder.build()).build());
         }
 
+        // Put the remaining warm items on ordinary trucks.
         while (!warmItems.isEmpty()) {
             stockBuilder.reset();
             ordinaryBuilder.reset();
