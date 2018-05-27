@@ -9,6 +9,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -18,12 +19,13 @@ import java.util.Optional;
  */
 public class StoreImpl implements Store {
 
+    private static StoreImpl instance;
+
     private String name;
     private double capital;
     private Stock inventory;
-    private HashMap<String, Item> stockableItems;
+    private Map<String, Item> stockableItems;
     private Manifest manifest;
-    private static StoreImpl instance;
 
     /**
      * Create the singleton instance
