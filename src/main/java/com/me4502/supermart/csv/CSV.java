@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 /**
  * Used for parsing different csv file formats, reads and writes
@@ -262,13 +263,11 @@ public class CSV {
      * @throws IOException if the file could not be read
      */
     private static ArrayList<String[]> readCSV(File file) throws IOException {
-        ArrayList<String[]> linesList = new ArrayList<>();
-        String line;
+        ArrayList<String[]> linesList;
         FileReader fileReader = new FileReader(file.getAbsolutePath());
         BufferedReader bufferedReader = new BufferedReader(fileReader);
-        while ((line = bufferedReader.readLine()) != null) {
-            linesList.add(line.split(","));
-        }
+        linesList = bufferedReader.lines().map(line -> line.split(","))
+                .collect(Collectors.toCollection(ArrayList::new));
         bufferedReader.close();
         return linesList;
     }

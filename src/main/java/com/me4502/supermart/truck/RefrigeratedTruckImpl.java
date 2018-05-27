@@ -18,6 +18,11 @@ public class RefrigeratedTruckImpl extends AbstractTruck implements Refrigerated
     private static final double MAX_TEMP = 10;
     private static final String TYPE = "Refrigerated";
 
+    /**
+     * Creates a refrigerated truck.
+     *
+     * @param cargo The cargo
+     */
     private RefrigeratedTruckImpl(Stock cargo) {
         super(cargo);
     }

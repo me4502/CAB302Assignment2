@@ -14,6 +14,11 @@ public class OrdinaryTruckImpl extends AbstractTruck implements OrdinaryTruck {
 
     private static final String TYPE = "Ordinary";
 
+    /**
+     * Creates an ordinary truck.
+     *
+     * @param cargo The cargo
+     */
     private OrdinaryTruckImpl(Stock cargo) {
         super(cargo);
     }

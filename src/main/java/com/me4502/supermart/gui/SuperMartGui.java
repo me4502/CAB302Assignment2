@@ -65,6 +65,7 @@ public class SuperMartGui {
         tabPane.addTab("Manifest", createManifestPane());
         this.frame.add(tabPane);
 
+        // Setup the actual frame
         this.frame.setVisible(true);
         this.frame.setSize(750, 500);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

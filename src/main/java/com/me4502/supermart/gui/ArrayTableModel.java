@@ -14,7 +14,18 @@ public class ArrayTableModel extends AbstractTableModel {
     private String[] columns;
     private boolean editable;
 
+    /**
+     * Creates a ArrayTableModel, using a two-dimensional data array, a column array,
+     * and whether the table is editable.
+     *
+     * @param data The data array, this must have the same width as the column argument
+     * @param columns The columns
+     * @param editable If it's editable
+     */
     public ArrayTableModel(Object[][] data, String[] columns, boolean editable) {
+        if (data.length > 0 && data[0].length != columns.length) {
+            throw new IllegalArgumentException("Data must have the same width as the columns");
+        }
         this.data = data;
         this.columns = columns;
         this.editable = editable;

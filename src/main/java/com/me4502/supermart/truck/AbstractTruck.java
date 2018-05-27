@@ -11,6 +11,11 @@ public abstract class AbstractTruck implements Truck {
 
     private Stock cargo;
 
+    /**
+     * Creates an Abstract Truck
+     *
+     * @param cargo The cargo
+     */
     AbstractTruck(Stock cargo) {
         this.cargo = cargo;
     }

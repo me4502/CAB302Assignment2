@@ -12,6 +12,11 @@ public class ManifestImpl implements Manifest {
 
     private ImmutableSet<Truck> trucks;
 
+    /**
+     * Creates a new manifest from a set of trucks.
+     *
+     * @param trucks The trucks
+     */
     private ManifestImpl(ImmutableSet<Truck> trucks) {
         this.trucks = trucks;
     }

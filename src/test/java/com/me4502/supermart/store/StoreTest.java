@@ -18,6 +18,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Tests functionality of the Store class.
+ *
+ * @author Madeline Miller
+ */
 public class StoreTest {
 
     @Before
