@@ -21,7 +21,7 @@ public class StoreImpl implements Store {
     private String name;
     private double capital;
     private Stock inventory;
-    private HashMap<String, Item> stockableItems = new HashMap<>();
+    private HashMap<String, Item> stockableItems;
     private Manifest manifest;
     private static StoreImpl instance;
 
@@ -38,8 +38,9 @@ public class StoreImpl implements Store {
         this.name = name;
         // Initial capital is $100,000
         this.capital = 100000;
-        // Start with empty inventory and manifest
+        // Start with empty inventory, stockable items and manifest
         this.inventory = SuperMartApplication.getInstance().getStockBuilder().build();
+        this.stockableItems = new HashMap<>();
         this.manifest = SuperMartApplication.getInstance().getManifestBuilder().build();
         instance = this;
     }
