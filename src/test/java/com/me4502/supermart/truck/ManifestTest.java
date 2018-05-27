@@ -19,11 +19,9 @@ import org.junit.Test;
 import java.util.List;
 
 /**
- * 
  * Test functionality of the ManifestImpl class
- * 
- * @author Liam Dale
  *
+ * @author Liam Dale
  */
 public class ManifestTest {
 
@@ -46,7 +44,7 @@ public class ManifestTest {
         return stock;
     }
 
-    // Mock ordinaryTrck
+    // Mock ordinaryTruck
     private OrdinaryTruck getOrdinaryTruck() {
         Stock stock = getStock();
         OrdinaryTruck ordinaryTruck = mock(OrdinaryTruck.class);
@@ -65,6 +63,7 @@ public class ManifestTest {
     // List of trucks to fill manifest
     private Truck ordinaryTruck = getOrdinaryTruck();
     private Truck refrigeratedTruck = getRefrigeratedTruck();
+
     private List<Truck> getTruckList() {
         return Lists.newArrayList(
                 this.ordinaryTruck,
@@ -98,7 +97,7 @@ public class ManifestTest {
         getInstance().getManifestBuilder().build();
     }
 
-    // Test that manifest has been empteid on rest
+    // Test that manifest has been emptied on rest
     @Test
     public void testResetWorks() {
         Manifest.Builder builder = validManifestBuilder().reset();
@@ -113,7 +112,7 @@ public class ManifestTest {
             assertTrue(truck.getCargo().getTotalAmount() > 0);
         }
     }
-    
+
     // Test that the manifest has been built with same objects
     @Test
     public void testSetsContainSameItems() {

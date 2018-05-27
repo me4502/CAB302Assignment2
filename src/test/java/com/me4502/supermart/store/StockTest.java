@@ -99,13 +99,13 @@ public class StockTest {
     @Test
     public void testBuildHasItems() {
         Stock stock = testStockBuilder1().build();
-        for (ImmutablePair<Item, Integer> stockQuant : stock.getStockedItemQuantities()) {
-            switch (stockQuant.getRight()) {
+        for (ImmutablePair<Item, Integer> stockQuantity : stock.getStockedItemQuantities()) {
+            switch (stockQuantity.getRight()) {
                 case 1:
-                    assertEquals(stockQuant.getLeft().getName(), getItem1().getName());
+                    assertEquals(stockQuantity.getLeft().getName(), getItem1().getName());
                     break;
                 case 2:
-                    assertEquals(stockQuant.getLeft().getName(), getItem2().getName());
+                    assertEquals(stockQuantity.getLeft().getName(), getItem2().getName());
                     break;
                 default:
                     fail();

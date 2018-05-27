@@ -17,9 +17,8 @@ public class ItemImpl implements Item {
     private OptionalDouble idealTemperature;
 
     /**
-     * 
      * Creates an Item
-     * 
+     *
      * @param name of item
      * @param manufacturingCost of item
      * @param sellPrice of item
@@ -89,9 +88,9 @@ public class ItemImpl implements Item {
 
         @Override
         public Builder name(String name) {
-        	// Item names can't be empty
+            // Item names can't be empty
             if (name.length() < 1) {
-            	throw new IllegalArgumentException("Name must not be empty");
+                throw new IllegalArgumentException("Name must not be empty");
             }
             this.name = name;
             return this;
@@ -99,7 +98,7 @@ public class ItemImpl implements Item {
 
         @Override
         public Builder manufacturingCost(double manufacturingCost) {
-        	// Manufacturing cost must be positive
+            // Manufacturing cost must be positive
             if (manufacturingCost < 0) {
                 throw new IllegalArgumentException("Manufacturing cost must be positive");
             }
@@ -109,7 +108,7 @@ public class ItemImpl implements Item {
 
         @Override
         public Builder sellPrice(double sellPrice) {
-        	// Sell price must be positive
+            // Sell price must be positive
             if (sellPrice < 0) {
                 throw new IllegalArgumentException("Sell price must positive");
             }
@@ -119,7 +118,7 @@ public class ItemImpl implements Item {
 
         @Override
         public Builder reorderPoint(int reorderPoint) {
-        	// Can't have negative quantities
+            // Can't have negative quantities
             if (reorderPoint < 0) {
                 throw new IllegalArgumentException("Reorder point must positive");
             }
@@ -129,7 +128,7 @@ public class ItemImpl implements Item {
 
         @Override
         public Builder reorderAmount(int reorderAmount) {
-        	// Can't have negative reorder amounts
+            // Can't have negative reorder amounts
             if (reorderAmount < 0) {
                 throw new IllegalArgumentException("Reorder amount must positive");
             }
@@ -139,13 +138,13 @@ public class ItemImpl implements Item {
 
         @Override
         public Builder idealTemperature(double idealTemperature) {
-        	// Items can't be stored below -20 degrees
+            // Items can't be stored below -20 degrees
             if (idealTemperature < -20) {
-                throw new IllegalArgumentException("Items under 20 deg Celcius can't be stored in a truck");
+                throw new IllegalArgumentException("Items under 20 deg Celsius can't be stored in a truck");
             }
             // Items above 10 degrees are dry goods
             if (idealTemperature > 10) {
-                throw new IllegalArgumentException("Items over 10 deg Celcius are considered dry goods");
+                throw new IllegalArgumentException("Items over 10 deg Celsius are considered dry goods");
             }
             this.idealTemperature = OptionalDouble.of(idealTemperature);
             return this;
@@ -153,7 +152,7 @@ public class ItemImpl implements Item {
 
         @Override
         public Item build() {
-        	// All parameters must be set
+            // All parameters must be set
             if (this.name == null || this.manufacturingCost == null || this.sellPrice == null || this.reorderPoint == null
                     || this.reorderAmount == null) {
                 throw new IllegalStateException("Need to set all parameters besides idealTemperature");
@@ -164,7 +163,7 @@ public class ItemImpl implements Item {
 
         @Override
         public Builder reset() {
-        	// Empty fields
+            // Empty fields
             this.name = null;
             this.manufacturingCost = null;
             this.sellPrice = null;

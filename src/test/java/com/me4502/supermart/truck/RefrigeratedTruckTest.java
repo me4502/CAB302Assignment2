@@ -16,11 +16,9 @@ import org.junit.Test;
 import java.util.OptionalDouble;
 
 /**
- * 
  * Test functionality of the RefrigeratedTruckImpl class
- * 
- * @author Liam Dale
  *
+ * @author Liam Dale
  */
 public class RefrigeratedTruckTest {
 
@@ -74,7 +72,7 @@ public class RefrigeratedTruckTest {
                 .build();
     }
 
-    // Get the supermart instance for testing
+    // Get the SuperMart instance for testing
     @Before
     public void setupApplication() {
         new SuperMartApplication();
@@ -83,12 +81,12 @@ public class RefrigeratedTruckTest {
     // Check that the valid truck has build properly
     @Test
     public void testValidBuild() {
-        RefrigeratedTruck RefrigeratedTruck = buildTruck();
-        assertEquals("Refrigerated", RefrigeratedTruck.getType());
-        assertEquals(this.MAX_CAPACITY, RefrigeratedTruck.getCargoCapacity());
-        assertEquals(this.validCost, RefrigeratedTruck.getCost());
-        assertEquals(this.validStock, RefrigeratedTruck.getCargo());
-        assertEquals(this.validStorageTemp, RefrigeratedTruck.getStorageTemperature());
+        RefrigeratedTruck refrigeratedTruck = buildTruck();
+        assertEquals("Refrigerated", refrigeratedTruck.getType());
+        assertEquals(this.MAX_CAPACITY, refrigeratedTruck.getCargoCapacity());
+        assertEquals(this.validCost, refrigeratedTruck.getCost());
+        assertEquals(this.validStock, refrigeratedTruck.getCargo());
+        assertEquals(this.validStorageTemp, refrigeratedTruck.getStorageTemperature());
     }
 
     // Test that can't build an empty truck

@@ -77,10 +77,10 @@ public class StoreImpl implements Store {
 
     @Override
     public String getFormattedCapital() {
-    	// Create a number formatter to apply to capital
+        // Create a number formatter to apply to capital
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
         // Ternary operator which formats differently for positive and negative values
-        return (this.capital > 0) ? currencyFormatter.format(this.capital) : "-" + currencyFormatter.format(this.capital * -1);
+        return (this.capital > 0) ? currencyFormatter.format(this.capital) : '-' + currencyFormatter.format(this.capital * -1);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class StoreImpl implements Store {
 
     @Override
     public void setInventory(Stock inventory) {
-    	// If inventory is null throw an exception
+        // If inventory is null throw an exception
         if (inventory == null) {
             throw new IllegalArgumentException("Inventory can't be null");
         }
@@ -99,7 +99,7 @@ public class StoreImpl implements Store {
 
     @Override
     public void addItem(Item item) {
-    	// Before adding the item check there are no duplicate names
+        // Before adding the item check there are no duplicate names
         if (!this.stockableItems.containsKey(item.getName())) {
             this.stockableItems.put(item.getName(), item);
         }
@@ -143,7 +143,7 @@ public class StoreImpl implements Store {
                 // Sum value of trucks
                 totalValue += truck.getCost();
                 // Sum value of item manufacturing costs and add items to builder (csv checks if stockable)
-                for (ImmutablePair<Item, Integer> itemPair : truck.getCargo().getStockedItemQuantities()) {                    
+                for (ImmutablePair<Item, Integer> itemPair : truck.getCargo().getStockedItemQuantities()) {
                     totalValue += itemPair.getLeft().getManufacturingCost() * itemPair.getRight();
                     stockBuilder.addStockedItem(itemPair.getLeft(), itemPair.getRight());
                 }

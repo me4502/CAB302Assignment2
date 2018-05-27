@@ -158,7 +158,7 @@ public class StoreTest {
     }
 
     @Test
-    public void testAddingDuplicateItemsDontAdd() {
+    public void testNoDuplicateItems() {
         Store instance = StoreImpl.getInstance();
         Item mockItem = mock(Item.class);
         when(mockItem.getName()).thenReturn("Test Item");
@@ -194,15 +194,15 @@ public class StoreTest {
     public void testSettingManifest() {
         Store instance = StoreImpl.getInstance();
 
-        Item mockitem = mock(Item.class);
-        when(mockitem.getName()).thenReturn("Test");
-        instance.addItem(mockitem);
+        Item mockItem = mock(Item.class);
+        when(mockItem.getName()).thenReturn("Test");
+        instance.addItem(mockItem);
 
         Stock mockStockTruck = mock(Stock.class);
-        when(mockStockTruck.getStockedItemQuantities()).thenReturn(ImmutableSet.of(new ImmutablePair<>(mockitem, 1)));
+        when(mockStockTruck.getStockedItemQuantities()).thenReturn(ImmutableSet.of(new ImmutablePair<>(mockItem, 1)));
 
         Stock mockStockStore = mock(Stock.class);
-        when(mockStockStore.getStockedItemQuantities()).thenReturn(ImmutableSet.of(new ImmutablePair<>(mockitem, 0)));
+        when(mockStockStore.getStockedItemQuantities()).thenReturn(ImmutableSet.of(new ImmutablePair<>(mockItem, 0)));
         instance.setInventory(mockStockStore);
 
         Truck mockTruck = mock(Truck.class);
@@ -221,21 +221,21 @@ public class StoreTest {
         }
         assertEquals(mockManifest, instance.getManifest());
         assertEquals(0.0, instance.getCapital(), 0.001);
-        assertEquals(1, instance.getInventory().getItemQuantity(mockitem).orElse(0));
+        assertEquals(1, instance.getInventory().getItemQuantity(mockItem).orElse(0));
     }
 
     @Test(expected = DeliveryException.class)
     public void testSettingManifestInvalidItem() throws DeliveryException {
         Store instance = StoreImpl.getInstance();
 
-        Item mockitem = mock(Item.class);
-        when(mockitem.getName()).thenReturn("Test");
+        Item mockItem = mock(Item.class);
+        when(mockItem.getName()).thenReturn("Test");
 
         Stock mockStockTruck = mock(Stock.class);
-        when(mockStockTruck.getStockedItemQuantities()).thenReturn(ImmutableSet.of(new ImmutablePair<>(mockitem, 1)));
+        when(mockStockTruck.getStockedItemQuantities()).thenReturn(ImmutableSet.of(new ImmutablePair<>(mockItem, 1)));
 
         Stock mockStockStore = mock(Stock.class);
-        when(mockStockStore.getStockedItemQuantities()).thenReturn(ImmutableSet.of(new ImmutablePair<>(mockitem, 0)));
+        when(mockStockStore.getStockedItemQuantities()).thenReturn(ImmutableSet.of(new ImmutablePair<>(mockItem, 0)));
         instance.setInventory(mockStockStore);
 
         Truck mockTruck = mock(Truck.class);
@@ -253,15 +253,15 @@ public class StoreTest {
     public void testSettingManifestNoUpdate() {
         Store instance = StoreImpl.getInstance();
 
-        Item mockitem = mock(Item.class);
-        when(mockitem.getName()).thenReturn("Test");
-        instance.addItem(mockitem);
+        Item mockItem = mock(Item.class);
+        when(mockItem.getName()).thenReturn("Test");
+        instance.addItem(mockItem);
 
         Stock mockStockTruck = mock(Stock.class);
-        when(mockStockTruck.getStockedItemQuantities()).thenReturn(ImmutableSet.of(new ImmutablePair<>(mockitem, 1)));
+        when(mockStockTruck.getStockedItemQuantities()).thenReturn(ImmutableSet.of(new ImmutablePair<>(mockItem, 1)));
 
         Stock mockStockStore = mock(Stock.class);
-        when(mockStockStore.getStockedItemQuantities()).thenReturn(ImmutableSet.of(new ImmutablePair<>(mockitem, 0)));
+        when(mockStockStore.getStockedItemQuantities()).thenReturn(ImmutableSet.of(new ImmutablePair<>(mockItem, 0)));
         instance.setInventory(mockStockStore);
 
         Truck mockTruck = mock(Truck.class);

@@ -15,11 +15,9 @@ import org.junit.Test;
 
 
 /**
- * 
  * Test functionality of the OrdinaryTruckImpl class
- * 
- * @author Liam Dale
  *
+ * @author Liam Dale
  */
 public class OrdinaryTruckTest {
 
@@ -68,7 +66,7 @@ public class OrdinaryTruckTest {
                 .build();
     }
 
-    // Get the supermart instance for testing
+    // Get the SuperMart instance for testing
     @Before
     public void setupApplication() {
         new SuperMartApplication();
@@ -77,11 +75,11 @@ public class OrdinaryTruckTest {
     // Check that the valid truck has build properly
     @Test
     public void testValidBuild() {
-        OrdinaryTruck OrdinaryTruck = buildTruck();
-        assertEquals("Ordinary", OrdinaryTruck.getType());
-        assertEquals(this.MAX_CAPACITY, OrdinaryTruck.getCargoCapacity());
-        assertEquals(this.validCost, OrdinaryTruck.getCost());
-        assertEquals(this.validStock, OrdinaryTruck.getCargo());
+        OrdinaryTruck ordinaryTruck = buildTruck();
+        assertEquals("Ordinary", ordinaryTruck.getType());
+        assertEquals(this.MAX_CAPACITY, ordinaryTruck.getCargoCapacity());
+        assertEquals(this.validCost, ordinaryTruck.getCost());
+        assertEquals(this.validStock, ordinaryTruck.getCargo());
     }
 
     // Test that can't build an empty truck
