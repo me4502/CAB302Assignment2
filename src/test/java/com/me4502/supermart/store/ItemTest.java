@@ -67,6 +67,13 @@ public class ItemTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void testInvalidName() {
+        // Can't have a blank name
+        SuperMartApplication.getInstance().getItemBuilder()
+                .name("");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void testInvalidManufacturingCost() {
         // Can't have a negative manufacturing cost
         SuperMartApplication.getInstance().getItemBuilder()

@@ -224,6 +224,31 @@ public class StoreTest {
         assertEquals(1, instance.getInventory().getItemQuantity(mockitem).orElse(0));
     }
 
+    @Test(expected = DeliveryException.class)
+    public void testSettingManifestInvalidItem() throws DeliveryException {
+        Store instance = StoreImpl.getInstance();
+
+        Item mockitem = mock(Item.class);
+        when(mockitem.getName()).thenReturn("Test");
+
+        Stock mockStockTruck = mock(Stock.class);
+        when(mockStockTruck.getStockedItemQuantities()).thenReturn(ImmutableSet.of(new ImmutablePair<>(mockitem, 1)));
+
+        Stock mockStockStore = mock(Stock.class);
+        when(mockStockStore.getStockedItemQuantities()).thenReturn(ImmutableSet.of(new ImmutablePair<>(mockitem, 0)));
+        instance.setInventory(mockStockStore);
+
+        Truck mockTruck = mock(Truck.class);
+        when(mockTruck.getCost()).thenReturn(1000.0);
+        when(mockTruck.getCargo()).thenReturn(mockStockTruck);
+
+        Manifest mockManifest = mock(Manifest.class);
+        when(mockManifest.getTrucks()).thenReturn(ImmutableSet.of(mockTruck));
+
+        instance.setCapital(1000.0);
+        instance.setManifest(mockManifest, true);
+    }
+
     @Test
     public void testSettingManifestNoUpdate() {
         Store instance = StoreImpl.getInstance();

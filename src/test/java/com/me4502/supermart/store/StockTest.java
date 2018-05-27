@@ -149,6 +149,27 @@ public class StockTest {
     }
 
     @Test
+    public void testBuilderMergerCanSubtract() {
+        Item mockItem = mock(Item.class);
+        // This should error, as 1 + -2 is -1, which is invalid.
+        Stock stock = SuperMartApplication.getInstance().getStockBuilder()
+                .addStockedItem(mockItem, 2)
+                .addStockedItem(mockItem, -1)
+                .build();
+        assertEquals(1, stock.getStockedItemQuantities().asList().get(0).getRight().intValue());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBuilderMergerDoesntAllowNegatives() {
+        Item mockItem = mock(Item.class);
+        // This should error, as 1 + -2 is -1, which is invalid.
+        SuperMartApplication.getInstance().getStockBuilder()
+                .addStockedItem(mockItem, 1)
+                .addStockedItem(mockItem, -2)
+                .build();
+    }
+
+    @Test
     public void testGetAmount() {
         assertEquals(3, testStockBuilder1().build().getTotalAmount());
     }

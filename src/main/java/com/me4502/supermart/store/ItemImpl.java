@@ -73,22 +73,6 @@ public class ItemImpl implements Item {
         return this.idealTemperature.isPresent();
     }
 
-    @Override
-    // This is necessary to compare instances of Item
-    public boolean equals(Object obj) {
-    	// If the argument is an Item, and it has the same name property as this then they're equal
-        if (obj instanceof Item) {
-            return this.name.equals(((Item) obj).getName());
-        }
-        return false;
-    }
-
-    @Override
-    // This is also necessary to compare instances of Item
-    public int hashCode() {
-        return this.name.hashCode();
-    }
-
     /**
      * {@inheritDoc}
      *
