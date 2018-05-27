@@ -212,7 +212,7 @@ public class CSV {
                 }
             } else {
                 // Create a detailed message
-                StringBuilder message = new StringBuilder("Invalid sales log formatting on line " + (i + 1) + ". \n\n"
+                StringBuilder message = new StringBuilder("Invalid manifest formatting on line " + (i + 1) + ". \n\n"
                         + "Should be in the form:\n"
                         + ">[truck type] OR\n"
                         + "[item], [quantity]\n\n"

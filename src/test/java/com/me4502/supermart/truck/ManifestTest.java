@@ -18,6 +18,13 @@ import org.junit.Test;
 
 import java.util.List;
 
+/**
+ * 
+ * Test functionality of the ManifestImpl class
+ * 
+ * @author Liam Dale
+ *
+ */
 public class ManifestTest {
 
     @Before
@@ -30,6 +37,7 @@ public class ManifestTest {
         SuperMartApplication.getInstance().close();
     }
 
+    // Mock stock
     private Stock getStock() {
         Stock stock = mock(Stock.class);
         when(stock.getStockedItemQuantities()).thenReturn(ImmutableSet.of(ImmutablePair.of(mock(Item.class), 1)));
@@ -38,6 +46,7 @@ public class ManifestTest {
         return stock;
     }
 
+    // Mock ordinaryTrck
     private OrdinaryTruck getOrdinaryTruck() {
         Stock stock = getStock();
         OrdinaryTruck ordinaryTruck = mock(OrdinaryTruck.class);
@@ -45,6 +54,7 @@ public class ManifestTest {
         return ordinaryTruck;
     }
 
+    // Mock refrigeratedTruck
     private RefrigeratedTruck getRefrigeratedTruck() {
         Stock stock = getStock();
         RefrigeratedTruck RefrigeratedTruck = mock(RefrigeratedTruck.class);
@@ -52,10 +62,9 @@ public class ManifestTest {
         return RefrigeratedTruck;
     }
 
+    // List of trucks to fill manifest
     private Truck ordinaryTruck = getOrdinaryTruck();
     private Truck refrigeratedTruck = getRefrigeratedTruck();
-
-    // Make a list of them
     private List<Truck> getTruckList() {
         return Lists.newArrayList(
                 this.ordinaryTruck,
@@ -63,6 +72,7 @@ public class ManifestTest {
         );
     }
 
+    // Builder for valid manifest
     private Manifest.Builder validManifestBuilder() {
         Manifest.Builder builder = getInstance().getManifestBuilder();
         for (Truck truck : getTruckList()) {
@@ -71,27 +81,31 @@ public class ManifestTest {
         return builder;
     }
 
+    // Return valid manifest
     private Manifest buildValidManifest() {
         return validManifestBuilder().build();
     }
 
+    // Test build works
     @Test
     public void canBuildValid() {
         buildValidManifest();
     }
 
+    // Can build an empty manifest
     @Test
     public void testEmptySucceeds() {
         getInstance().getManifestBuilder().build();
     }
 
-    //Allow an empty manifest
+    // Test that manifest has been empteid on rest
     @Test
     public void testResetWorks() {
         Manifest.Builder builder = validManifestBuilder().reset();
         assertTrue(builder.build().getTrucks().isEmpty());
     }
 
+    // Can't have an empty truck in the manifest
     @Test
     public void noEmptyTrucks() {
         Manifest manifest = buildValidManifest();
@@ -99,7 +113,8 @@ public class ManifestTest {
             assertTrue(truck.getCargo().getTotalAmount() > 0);
         }
     }
-
+    
+    // Test that the manifest has been built with same objects
     @Test
     public void testSetsContainSameItems() {
         Manifest manifest = buildValidManifest();

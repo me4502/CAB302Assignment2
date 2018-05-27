@@ -13,6 +13,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+
+/**
+ * 
+ * Test functionality of the OrdinaryTruckImpl class
+ * 
+ * @author Liam Dale
+ *
+ */
 public class OrdinaryTruckTest {
 
     private final int MIN_CAPACITY = 1;
@@ -76,14 +84,14 @@ public class OrdinaryTruckTest {
         assertEquals(this.validStock, OrdinaryTruck.getCargo());
     }
 
-    // 
+    // Test that can't build an empty truck
     @Test(expected = IllegalStateException.class)
     public void testInvalidEmptyBuild() {
         OrdinaryTruck.OrdinaryBuilder builder = SuperMartApplication.getInstance().getOrdinaryTruckBuilder();
         builder.build();
     }
 
-    //
+    // Truck should be empty after reset,  test this fails
     @Test(expected = IllegalStateException.class)
     public void testResetWorks() {
         OrdinaryTruck.OrdinaryBuilder builder = truckBuilder().reset();

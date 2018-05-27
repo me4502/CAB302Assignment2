@@ -15,6 +15,13 @@ import org.junit.Test;
 
 import java.util.OptionalDouble;
 
+/**
+ * 
+ * Test functionality of the RefrigeratedTruckImpl class
+ * 
+ * @author Liam Dale
+ *
+ */
 public class RefrigeratedTruckTest {
 
     private final int MIN_CAPACITY = 1;
@@ -84,14 +91,14 @@ public class RefrigeratedTruckTest {
         assertEquals(this.validStorageTemp, RefrigeratedTruck.getStorageTemperature());
     }
 
-    // 
+    // Test that can't build an empty truck
     @Test(expected = IllegalStateException.class)
     public void testInvalidEmptyBuild() {
         RefrigeratedTruck.RefrigeratedBuilder builder = SuperMartApplication.getInstance().getRefrigeratedTruckBuilder();
         builder.build();
     }
 
-    //
+    // Truck should be empty after reset, test this fails
     @Test(expected = IllegalStateException.class)
     public void testResetWorks() {
         RefrigeratedTruck.RefrigeratedBuilder builder = truckBuilder().reset();

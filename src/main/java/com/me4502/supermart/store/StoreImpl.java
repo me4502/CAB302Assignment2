@@ -34,8 +34,11 @@ public class StoreImpl implements Store {
         if (instance != null) {
             throw new IllegalStateException("This object has already been instantiated");
         }
+        // Construct with chosen name
         this.name = name;
+        // Initial capital is $100,000
         this.capital = 100000;
+        // Start with empty inventory and manifest
         this.inventory = SuperMartApplication.getInstance().getStockBuilder().build();
         this.manifest = SuperMartApplication.getInstance().getManifestBuilder().build();
         instance = this;
@@ -74,7 +77,9 @@ public class StoreImpl implements Store {
 
     @Override
     public String getFormattedCapital() {
+    	// Create a number formatter to apply to capital
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
+        // Ternary operator which formats differently for positive and negative values
         return (this.capital > 0) ? currencyFormatter.format(this.capital) : "-" + currencyFormatter.format(this.capital * -1);
     }
 
@@ -85,6 +90,7 @@ public class StoreImpl implements Store {
 
     @Override
     public void setInventory(Stock inventory) {
+    	// If inventory is null throw an exception
         if (inventory == null) {
             throw new IllegalArgumentException("Inventory can't be null");
         }
@@ -93,6 +99,7 @@ public class StoreImpl implements Store {
 
     @Override
     public void addItem(Item item) {
+    	// Before adding the item check there are no duplicate names
         if (!this.stockableItems.containsKey(item.getName())) {
             this.stockableItems.put(item.getName(), item);
         }
@@ -135,14 +142,10 @@ public class StoreImpl implements Store {
             for (Truck truck : manifest.getTrucks()) {
                 // Sum value of trucks
                 totalValue += truck.getCost();
-                // Sum value of item manufacturing costs and add items -- ensure that they're stockable
-                for (ImmutablePair<Item, Integer> itemPair : truck.getCargo().getStockedItemQuantities()) {
-                    if (StoreImpl.getInstance().getItem(itemPair.getLeft().getName()).isPresent()) {
-                        totalValue += itemPair.getLeft().getManufacturingCost() * itemPair.getRight();
-                        stockBuilder.addStockedItem(itemPair.getLeft(), itemPair.getRight());
-                    } else {
-                        throw new DeliveryException("Store doesn't stock " + itemPair.getLeft().getName() + ", but manifest log contains it.");
-                    }
+                // Sum value of item manufacturing costs and add items to builder (csv checks if stockable)
+                for (ImmutablePair<Item, Integer> itemPair : truck.getCargo().getStockedItemQuantities()) {                    
+                    totalValue += itemPair.getLeft().getManufacturingCost() * itemPair.getRight();
+                    stockBuilder.addStockedItem(itemPair.getLeft(), itemPair.getRight());
                 }
             }
 
